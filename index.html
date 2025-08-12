@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TutorMe</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        h1, h2 { text-align: center; }
+        #booking, #videos { margin-bottom: 40px; }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            margin-bottom: 20px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to TutorMe!</h1>
+        <p>Book a tutoring session with us or check out our educational videos.</p>
+
+        <div id="booking">
+            <h2>Book a Session</h2>
+            <select id="available-dates"></select>
+            <button onclick="bookSession()">Book Now</button>
+        </div>
+
+        <div id="videos">
+            <h2>Our Videos</h2>
+            <div id="video-list"></div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Load available dates
+        const availableDates = document.getElementById('available-dates');
+        db.collection("availableSlots").where("booked", "==", false).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                let option = document.createElement("option");
+                option.value = doc.id;
+                option.text = new Date(doc.data().date).toLocaleString();
+                availableDates.appendChild(option);
+            });
+        });
+
+        // Load videos
+        const videoList = document.getElementById('video-list');
+        db.collection("videos").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                let videoDiv = document.createElement("div");
+                videoDiv.classList.add("video-container");
+                videoDiv.innerHTML = `<iframe src="https://www.youtube.com/embed/${doc.data().videoId}" frameborder="0" allowfullscreen></iframe>`;
+                videoList.appendChild(videoDiv);
+            });
+        });
+
+        function bookSession() {
+            const selectedDateId = availableDates.value;
+            if (selectedDateId) {
+                db.collection("availableSlots").doc(selectedDateId).update({
+                    booked: true
+                }).then(() => {
+                    alert("Session booked successfully!");
+                    location.reload();
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>
