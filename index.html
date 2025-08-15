@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Tutorme | www.tutormee.co.uk | A-Level & GCSE Tutoring</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
+
         :root {
             --sociology: #ffc300;
             --psychology: #a259d9;
@@ -77,7 +79,31 @@
         .cta-btn:hover {
             background: var(--physics);
         }
-
+        .description-section {
+            background: #f3f0ff;
+            border-left: 8px solid var(--psychology);
+            border-radius: 12px;
+            margin: 2.5rem auto 2rem auto;
+            max-width: 850px;
+            padding: 2rem 2rem 1.5rem 2rem;
+            box-shadow: 0 2px 12px #a259d920;
+        }
+        .description-section h2 {
+            color: var(--psychology);
+            margin-top: 0;
+        }
+        .description-section ul {
+            margin: 1.2rem 0 0 1.5rem;
+            padding: 0;
+            font-size: 1.07rem;
+        }
+        .description-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .description-section strong {
+            color: var(--accent);
+        }
         .subjects {
             display: flex;
             flex-wrap: wrap;
@@ -117,27 +143,79 @@
             font-size: 1rem;
             color: #444;
         }
-        footer {
+        /* Calendar and Appointments Section */
+        .calendar-appointments-section {
+            background: #e0f7fa;
+            border-left: 8px solid var(--biology);
+            border-radius: 12px;
+            margin: 2.5rem auto;
+            max-width: 900px;
+            padding: 2rem 2rem 1.5rem 2rem;
+            box-shadow: 0 2px 12px #00b4d820;
+        }
+        .calendar-appointments-section h2 {
+            color: var(--biology);
+            margin-top: 0;
+        }
+        .calendar-container {
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        .appointments-section {
+            margin-top: 2rem;
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px #0001;
+        }
+        .appointments-section h3 {
+            color: var(--sociology);
+        }
+        .appointments-link {
+            display: inline-block;
             background: var(--accent);
             color: #fff;
-            text-align: center;
-            padding: 1.5rem 1rem 1rem 1rem;
-            margin-top: 2rem;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
             font-size: 1.1rem;
+            margin-top: 1rem;
+            transition: background 0.2s;
         }
-        footer a {
+        .appointments-link:hover {
+            background: var(--physics);
+        }
+        /* Simple calendar style */
+        table.calendar {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        table.calendar th, table.calendar td {
+            border: 1px solid #bbb;
+            padding: 0.5rem;
+            width: 14.2%;
+            text-align: center;
+        }
+        table.calendar th {
+            background: var(--biology);
             color: #fff;
-            text-decoration: underline;
+            font-weight: bold;
         }
-        @media (max-width: 900px) {
-            .subjects {
-                flex-direction: column;
-                align-items: center;
-            }
+        table.calendar td {
+            background: #fff;
+        }
+        table.calendar caption {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--biology);
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
+    <!-- Use this for header and nav on all pages -->
     <header>
         <h1>Tutorme</h1>
         <p>Specialist online tutoring for A-Level & GCSE</p>
@@ -146,16 +224,30 @@
         </div>
     </header>
     <nav>
-        <a href="#about">About</a>
-        <a href="#subjects">Subjects</a>
-        <a href="#parents">For Parents</a>
-        <a href="#children">For Students</a>
-        <a href="#contact">Contact</a>
+        <a href="index.html">Home</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="videos.html">Videos</a>
+        <a href="login.html">Admin Login</a>
     </nav>
     <section class="hero">
         <h2>Start Your Success Journey!</h2>
         <p>Boost confidence and results in <b>Sociology</b>, <b>Psychology</b> (A-Level) and <b>Chemistry</b>, <b>Biology</b>, <b>Physics</b> (GCSE).</p>
-        <a href="#contact" class="cta-btn">Book a Free Consultation</a>
+        <a href="bookings.html" class="cta-btn">Book a Free Consultation</a>
+    </section>
+        <!-- Why Tutorme Section -->
+    <section class="description-section" id="why-tutorme">
+        <h2>Why should you choose Tutorme?</h2>
+        <p>
+            At <strong>Tutorme</strong> we have teachers from different backgrounds who are nurturing and attentive to each pupil’s needs. As a collective, we bring over <strong>10 years of experience</strong> teaching A-level and GCSE students.
+        </p>
+        <ul>
+            <li><strong>Experienced Head of Department</strong></li>
+            <li><strong>Experience examining for AQA exam board</strong></li>
+            <li><strong>Exam results better than national average</strong></li>
+            <li><strong>Oxbridge mentoring</strong></li>
+            <li><strong>Successful track record</strong> of helping students achieve university places at Oxford, Cambridge, and other top Russell Group universities</li>
+            <li><strong>Consistent positive value added</strong></li>
+        </ul>
     </section>
 
     <section class="subjects" id="subjects">
@@ -185,6 +277,7 @@
             <p>Make sense of the physical world—engaging support for GCSE Physics.</p>
         </div>
     </section>
+    <!-- Use this for the footer on all pages -->
     <footer>
         &copy; 2025 Tutorme | <a href="https://www.tutormee.co.uk" target="_blank">www.tutormee.co.uk</a>. All rights reserved.
     </footer>
