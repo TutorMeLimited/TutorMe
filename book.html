@@ -142,6 +142,75 @@
     <footer>
         &copy; 2025 Tutorme | <a href="https://www.tutormee.co.uk" target="_blank">www.tutormee.co.uk</a>. All rights reserved.
     </footer>
+    <!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
+        authDomain: "tutorme-99ca8.firebaseapp.com",
+        projectId: "tutorme-99ca8",
+        storageBucket: "tutorme-99ca8.appspot.com",
+        messagingSenderId: "1012080798952",
+        appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Get slotId from URL
+    function getSlotId() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('slot');
+    }
+
+    const slotId = getSlotId();
+    const bookingForm = document.getElementById('booking-form');
+    const msgDiv = document.getElementById('msg');
+
+    if (!slotId) {
+        bookingForm.style.display = 'none';
+        msgDiv.textContent = "No slot selected. Please go back and choose a slot.";
+    } else {
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            // Get slot info
+            db.collection("availableSlots").doc(slotId).get().then(doc => {
+                if (!doc.exists) {
+                    msgDiv.textContent = "Selected slot does not exist.";
+                    return;
+                }
+                const slotData = doc.data();
+                if (slotData.booked) {
+                    msgDiv.textContent = "Sorry, this slot has already been booked.";
+                    return;
+                }
+                // Add booking
+                db.collection("bookings").add({
+                    slotId: slotId,
+                    name: name,
+                    email: email,
+                    slotTime: slotData.date,
+                    bookedAt: new Date().toISOString(),
+                    archived: false
+                }).then(() => {
+                    // Mark slot as booked
+                    return db.collection("availableSlots").doc(slotId).update({ booked: true });
+                }).then(() => {
+                    msgDiv.textContent = "Booking confirmed! Check your email for details.";
+                    bookingForm.reset();
+                    bookingForm.style.display = 'none';
+                }).catch(err => {
+                    msgDiv.textContent = "Error: " + err.message;
+                });
+            }).catch(err => {
+                msgDiv.textContent = "Error: " + err.message;
+            });
+        });
+    }
+</script>
     <!-- Add your Firebase JS here -->
 </body>
 </html>
