@@ -2,244 +2,191 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TutorMe | About Us</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Tutorme | www.tutormee.co.uk | A-Level & GCSE Tutoring</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         :root {
-            --col-pri: #3498db;
-            --col-sec: #222;
-            --col-bg: #f4f8fb;
+            --sociology: #ffc300;
+            --psychology: #a259d9;
+            --chemistry: #38b000;
+            --biology: #00b4d8;
+            --physics: #4361ee;
+            --header: #fff;
+            --text: #222;
+            --accent: #f72585;
         }
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            color: #222;
-            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-            min-height: 100vh;
-            position: relative;
+            margin: 0; padding: 0;
+            background: #f8f9fa;
+            color: var(--text);
         }
-        .bg-fade {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 0;
-            background: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1200&q=80') center center/cover no-repeat;
-            opacity: 0.13;
-            pointer-events: none;
+        header {
+            background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
+            color: var(--header);
+            text-align: center;
+            padding: 2rem 1rem 1rem 1rem;
         }
-        .header {
-            background: rgba(26,37,51,0.92);
-            color: white;
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+        .website-link {
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
         }
-        .header .logo {
-            font-size: 1.6em;
-            font-weight: 600;
-            letter-spacing: 1px;
+        .website-link a {
+            color: var(--header);
+            text-decoration: underline;
         }
-        .header nav {
-            display: flex;
-            gap: 18px;
+        nav {
+            background: var(--header);
+            box-shadow: 0 2px 8px #0001;
+            padding: 1rem;
+            text-align: center;
         }
-        .header nav a {
-            color: white;
+        nav a {
+            margin: 0 1rem;
+            color: var(--accent);
             text-decoration: none;
-            padding: 6px 18px;
-            border-radius: 5px;
-            font-size: 1em;
-            font-weight: 400;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--physics);
+        }
+        .hero {
+            padding: 2rem 1rem 1rem 1rem;
+            background: #fff5e1;
+            text-align: center;
+        }
+        .hero h2 {
+            color: var(--accent);
+            font-size: 2rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+        }
+        .cta-btn {
+            background: var(--accent);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            display: inline-block;
             transition: background 0.2s;
         }
-        .header nav a:hover {
-            background: #3498db;
+        .cta-btn:hover {
+            background: var(--physics);
         }
-        .about-container {
-            max-width: 420px;
-            margin: 60px auto 40px auto;
-            background: rgba(255,255,255,0.92);
-            padding: 32px 22px 24px 22px;
-            border-radius: 14px;
-            box-shadow: 0 2px 16px rgba(44,62,80,0.07);
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        h1 {
-            color: #3498db;
-            font-size: 2em;
-            margin-bottom: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        h2 {
-            color: #1a2533;
-            margin-top: 28px;
-            font-size: 1.15em;
-            font-weight: 500;
-        }
-        p {
-            color: #444;
-            font-size: 1.08em;
-            margin-bottom: 18px;
-            line-height: 1.6;
-        }
-        ul {
-            text-align: left;
-            display: inline-block;
-            margin: 0 auto 18px auto;
-            padding-left: 0;
-            font-size: 1em;
-            color: #333;
-        }
-        ul li {
-            margin-bottom: 10px;
-            list-style: none;
-            position: relative;
-            padding-left: 20px;
-        }
-        ul li:before {
-            content: "✔";
-            color: #3498db;
-            position: absolute;
-            left: 0;
-            font-size: 1em;
-        }
-        .slide-links {
+
+        .subjects {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 24px;
-            margin-top: 24px;
+            gap: 2rem;
+            margin: 2.5rem 0;
         }
-        .slide-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #f4f8fb;
-            padding: 16px 22px;
-            border-radius: 8px;
-            box-shadow: 0 1px 4px rgba(44,62,80,0.04);
-            text-decoration: none;
-            color: #2c3e50;
-            font-size: 1em;
-            font-weight: 500;
-            transition: box-shadow 0.2s, background 0.2s, color 0.2s;
-            border: 1px solid #e0eafc;
-        }
-        .slide-link:hover {
-            background: #eaf6ff;
-            color: #3498db;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
-            border-color: #3498db;
-        }
-        .slide-link img {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 6px;
-        }
-        @media (max-width: 600px) {
-            .about-container { padding: 16px 4px; }
-            .slide-links { flex-direction: column; gap: 12px; }
-            .header { padding: 12px 8px; }
-        }
-        /* Custom Edit Info Button */
-        .custom__edit--info {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            bottom: 1em;
-            right: 1em;
-            z-index: 3000;
-            border-radius: 50%;
-            padding: 0;
+        .subject {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px #0002;
+            width: 270px;
+            padding: 1.8rem 1.2rem 1.2rem 1.2rem;
             text-align: center;
-            margin: 1em;
-            background: #745B99;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .subject:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 6px 20px #0003;
+        }
+        .subject.sociology { border-top: 6px solid var(--sociology); }
+        .subject.psychology { border-top: 6px solid var(--psychology); }
+        .subject.chemistry { border-top: 6px solid var(--chemistry); }
+        .subject.biology { border-top: 6px solid var(--biology); }
+        .subject.physics { border-top: 6px solid var(--physics); }
+        .subject img {
+            width: 68px;
+            height: 68px;
+            margin-bottom: 1rem;
+        }
+        .subject h3 {
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .subject p {
+            font-size: 1rem;
+            color: #444;
+        }
+        footer {
+            background: var(--accent);
             color: #fff;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.35);
+            text-align: center;
+            padding: 1.5rem 1rem 1rem 1rem;
+            margin-top: 2rem;
+            font-size: 1.1rem;
         }
-        .custom__edit--info svg {
-            line-height: 40px;
-            height: 40px;
-            width: 40px;
-            cursor: pointer;
+        footer a {
+            color: #fff;
+            text-decoration: underline;
         }
-        .custom__edit--info div {
-            position: absolute;
-            display: block;
-            white-space: nowrap;
-            bottom: 0;
-            right: 100%;
-            border-radius: 4px;
-            padding: 0 2em;
-            box-shadow: inherit;
-            background: inherit;
-            opacity: 0;
-            transform: translateX(0);
-            visibility: hidden;
-            transition: opacity .2s ease, visibility 0s ease .2s, transform .2s ease;
-        }
-        .custom__edit--info p {
-            white-space: nowrap;
-            line-height: 1.8;
-            text-align: left;
-            text-transform: none;
-        }
-        .custom__edit--info small {
-            margin-right: 5px;
-            opacity: .75;
-            text-transform: uppercase;
-            user-select: none;
-        }
-        .custom__edit--info:hover div {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-1em);
-            transition-delay: 0s;
+        @media (max-width: 900px) {
+            .subjects {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="bg-fade"></div>
-    <header class="header">
-        <div class="logo">TutorMe</div>
-        <nav>
-            <a href="bookings.html">Bookings</a>
-            <a href="videos.html">Videos</a>
-            <a href="login.html">Admin Login</a>
-        </nav>
-    </header>
-    <div class="about-container">
-        <h1>About Us</h1>
-        <p>
-            <strong>TutorMe</strong> helps students reach their academic goals with expert tutors and a curated video library.<br>
-            Our mission: make learning accessible, engaging, and effective.
-        </p>
-        <h2>Why TutorMe?</h2>
-        <ul>
-            <li>Experienced tutors in many subjects</li>
-            <li>Simple online session booking</li>
-            <li>Free, high-quality educational videos</li>
-            <li>Supportive, student-focused community</li>
-        </ul>
-        <div class="slide-links">
-            <a class="slide-link" href="bookings.html">
-                <img src="https://img.icons8.com/ios-filled/50/3498db/calendar.png" alt="Bookings">
-                Bookings
-            </a>
-            <a class="slide-link" href="videos.html">
-                <img src="https://img.icons8.com/ios-filled/50/3498db/youtube-play.png" alt="Videos">
-                Videos
-            </a>
+    <header>
+        <h1>Tutorme</h1>
+        <p>Specialist online tutoring for A-Level & GCSE</p>
+        <div class="website-link">
+            Visit us: <a href="https://www.tutormee.co.uk" target="_blank">www.tutormee.co.uk</a>
         </div>
-    </div>
-   
+    </header>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#subjects">Subjects</a>
+        <a href="#parents">For Parents</a>
+        <a href="#children">For Students</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <section class="hero">
+        <h2>Start Your Success Journey!</h2>
+        <p>Boost confidence and results in <b>Sociology</b>, <b>Psychology</b> (A-Level) and <b>Chemistry</b>, <b>Biology</b>, <b>Physics</b> (GCSE).</p>
+        <a href="#contact" class="cta-btn">Book a Free Consultation</a>
+    </section>
+
+    <section class="subjects" id="subjects">
+        <div class="subject sociology">
+            <img src="https://img.icons8.com/color/96/group-background-selected.png" alt="Sociology Icon"/>
+            <h3>Sociology (A-Level)</h3>
+            <p>Understand society, culture, and human behaviour. Engaging lessons for exam success.</p>
+        </div>
+        <div class="subject psychology">
+            <img src="https://img.icons8.com/color/96/psychology.png" alt="Psychology Icon"/>
+            <h3>Psychology (A-Level)</h3>
+            <p>Explore the mind, behaviour, and mental processes. Expert support for top grades.</p>
+        </div>
+        <div class="subject chemistry">
+            <img src="https://img.icons8.com/color/96/test-tube.png" alt="Chemistry Icon"/>
+            <h3>Chemistry (GCSE)</h3>
+            <p>Fun experiments and clear explanations to master GCSE Chemistry concepts.</p>
+        </div>
+        <div class="subject biology">
+            <img src="https://img.icons8.com/color/96/plant-cell.png" alt="Biology Icon"/>
+            <h3>Biology (GCSE)</h3>
+            <p>Interactive lessons on life sciences, tailored for GCSE students.</p>
+        </div>
+        <div class="subject physics">
+            <img src="https://img.icons8.com/color/96/physics.png" alt="Physics Icon"/>
+            <h3>Physics (GCSE)</h3>
+            <p>Make sense of the physical world—engaging support for GCSE Physics.</p>
+        </div>
+    </section>
+    <footer>
+        &copy; 2025 Tutorme | <a href="https://www.tutormee.co.uk" target="_blank">www.tutormee.co.uk</a>. All rights reserved.
+    </footer>
 </body>
 </html>
