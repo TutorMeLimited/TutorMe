@@ -1,177 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>Admin Login - Tutormee</title>
-    <style>
-        :root {
-            --sociology: #e7b718;
-            --psychology: #a259d9;
-            --chemistry: #38b000;
-            --biology: #00b4d8;
-            --physics: #4361ee;
-            --header: #fff;
-            --text: #222;
-            --accent: #f72585;
-        }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0; padding: 0;
-            background: #f8f9fa;
-            color: var(--text);
-        }
-        header {
-            background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
-            color: var(--header);
-            text-align: center;
-            padding: 2rem 1rem 1rem 1rem;
-        }
-        .website-link {
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
-        }
-        .website-link a {
-            color: var(--header);
-            text-decoration: underline;
-        }
-        nav {
-            background: var(--header);
-            box-shadow: 0 2px 8px #0001;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 1rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.2s;
-        }
-        nav a:hover {
-            color: var(--physics);
-        }
-        .container {
-            max-width: 400px;
-            margin: 2.5rem auto;
-            background: #fff;
-            padding: 2rem 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px #0002;
-        }
-        h2 { color: var(--accent); text-align: center; margin-bottom: 30px; }
-        label {
-            display: block;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 1rem;
-        }
-        button {
-            background: var(--accent);
-            color: #fff;
-            padding: 1rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 1.5rem;
-            display: block;
-            width: 100%;
-            border: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: var(--physics);
-        }
-        .msg {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--accent);
-        }
-        footer {
-            background: var(--accent);
-            color: #fff;
-            text-align: center;
-            padding: 1.5rem 1rem 1rem 1rem;
-            margin-top: 2rem;
-            font-size: 1.1rem;
-        }
-        footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<title>Admin Login - Tutormee</title>
+<style>
+:root {
+--sociology: #e7b718;
+--psychology: #a259d9;
+--chemistry: #38b000;
+--biology: #00b4d8;
+--physics: #4361ee;
+--header: #fff;
+--text: #222;
+--accent: #f72585;
+}
+body {
+font-family: 'Segoe UI', Arial, sans-serif;
+margin: 0; padding: 0;
+background: #f8f9fa;
+color: var(--text);
+}
+header {
+background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
+color: var(--header);
+text-align: center;
+padding: 2rem 1rem 1rem 1rem;
+}
+.website-link {
+margin-top: 0.5rem;
+font-size: 1.1rem;
+}
+.website-link a {
+color: var(--header);
+text-decoration: underline;
+}
+nav {
+background: var(--header);
+box-shadow: 0 2px 8px #0001;
+padding: 1rem;
+text-align: center;
+}
+nav a {
+margin: 0 1rem;
+color: var(--accent);
+text-decoration: none;
+font-weight: bold;
+transition: color 0.2s;
+}
+nav a:hover {
+color: var(--physics);
+}
+.container {
+max-width: 400px;
+margin: 2.5rem auto;
+background: #fff;
+padding: 2rem 1.5rem;
+border-radius: 16px;
+box-shadow: 0 2px 12px #0002;
+}
+h2 { color: var(--accent); text-align: center; margin-bottom: 30px; }
+label {
+display: block;
+margin-top: 1rem;
+margin-bottom: 0.5rem;
+font-weight: bold;
+}
+input {
+width: 100%;
+padding: 0.8rem;
+border-radius: 8px;
+border: 1px solid #ccc;
+font-size: 1rem;
+}
+button {
+background: var(--accent);
+color: #fff;
+padding: 1rem 2rem;
+border-radius: 40px;
+text-decoration: none;
+font-weight: bold;
+margin-top: 1.5rem;
+display: block;
+width: 100%;
+border: none;
+font-size: 1.1rem;
+cursor: pointer;
+transition: background 0.2s;
+}
+button:hover {
+background: var(--physics);
+}
+.msg {
+text-align: center;
+margin-top: 1rem;
+color: var(--accent);
+font-weight: bold;
+}
+footer {
+background: var(--accent);
+color: #fff;
+text-align: center;
+padding: 1.5rem 1rem 1rem 1rem;
+margin-top: 2rem;
+font-size: 1.1rem;
+}
+footer a {
+color: #fff;
+text-decoration: underline;
+}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Tutormee</h1>
-        <p>Specialist online tutoring for A-Level & GCSE</p>
-        <div class="website-link">
-            Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
-        </div>
-    </header>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="Our-services.html">Our Services</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="videos.html">Videos</a>
-        <a href="login.html">Admin Login</a>
-    </nav>
-    <div class="container">
-        <h2>Admin Login</h2>
-        <form id="login-form">
-            <label for="email">Email</label>
-            <input type="email" id="email" required>
-            <label for="password">Password</label>
-            <input type="password" id="password" required>
-            <button type="submit">Login</button>
-        </form>
-        <div class="msg" id="msg"></div>
-    </div>
-    <footer>
-        &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
-    </footer>
-    <!-- Add your login JS here -->
+<header>
+<h1>Tutormee</h1>
+<p>Specialist online tutoring for A-Level & GCSE</p>
+<div class="website-link">
+Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
+</div>
+</header>
+<nav>
+<a href="index.html">Home</a>
+<a href="Our-services.html">Our Services</a>
+<a href="bookings.html">Bookings</a>
+<a href="videos.html">Videos</a>
+<a href="login.html">Admin Login</a>
+</nav>
+<div class="container">
+<h2>Admin Login</h2>
+<form id="login-form">
+<label for="email">Email</label>
+<input type="email" id="email" required>
+<label for="password">Password</label>
+<input type="password" id="password" required>
+<button type="submit">Login</button>
+</form>
+<div class="msg" id="msg"></div>
+</div>
+<footer>
+&copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
+</footer>
     <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
 
-    <script>
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "Tutormee-99ca8.firebaseapp.com",
-            projectId: "Tutormee-99ca8",
-            storageBucket: "Tutormee-99ca8.appspot.com",
-            messagingSenderId: "1012080798952",
-            appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
-        };
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
+        authDomain: "Tutormee-99ca8.firebaseapp.com",
+        projectId: "Tutormee-99ca8",
+        storageBucket: "Tutormee-99ca8.appspot.com",
+        messagingSenderId: "1012080798952",
+        appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
+    };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const msgDiv = document.getElementById('msg');
 
-        document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        msgDiv.innerText = ''; // Clear previous messages
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // User successfully signed in. Now, check their claims.
+                return userCredential.user.getIdTokenResult();
+            })
+            .then((idTokenResult) => {
+                // Check if the 'admin' custom claim is true.
+                if (!!idTokenResult.claims.admin) {
+                    // If it is, redirect to the dashboard.
                     window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    document.getElementById('msg').innerText = error.message;
-                });
-        });
-    </script>
-</body>
+                } else {
+                    // If not, show an error and sign them out.
+                    msgDiv.innerText = 'Access Denied: You are not an administrator.';
+                    auth.signOut();
+                }
+            })
+            .catch((error) => {
+                // Handle errors like wrong password, user not found, etc.
+                msgDiv.innerText = error.message;
+            });
+    });
+</script>
+    </body>
 </html>
