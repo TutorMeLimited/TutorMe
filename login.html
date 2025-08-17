@@ -2,98 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - TutorMe</title>
+    <title>Admin Login - Tutormee</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
-        body { font-family: sans-serif; margin: 0; background-color: #f4f4f4; }
-        .header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px 30px;
+        :root {
+            --sociology: #ffc300;
+            --psychology: #a259d9;
+            --chemistry: #38b000;
+            --biology: #00b4d8;
+            --physics: #4361ee;
+            --accent: #f72585;
+            --header: #fff;
+            --text: #222;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: #f8f9fa;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        .header .logo {
-            font-size: 1.8em;
-            font-weight: bold;
+        header {
+            background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
+            color: var(--header);
+            text-align: center;
+            padding: 2rem 1rem 1rem 1rem;
         }
-        .header nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-        .login-page {
+        .container {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 70px);
+            padding: 2rem;
         }
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
+        .login-box {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px #0002;
+            width: 100%;
+            max-width: 400px;
             text-align: center;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        input { display: block; margin-bottom: 15px; padding: 12px; width: 250px; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 12px; width: 100%; background-color: #3498db; color: white; cursor: pointer; border: none; border-radius: 5px; font-size: 1em; }
-        button:hover { background-color: #2980b9; }
+        h2 {
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box; /* Important */
+        }
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: var(--physics);
+        }
+        #error-message {
+            color: var(--accent);
+            margin-top: 1rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-
-    <!-- Consistent header for all pages -->
-    <header class="header">
-        <div class="logo">TutorMe</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="bookings.html">Bookings</a>
-            <a href="videos.html">Videos</a>
-            <a href="login.html">Admin Login</a>
-        </nav>
+    <header>
+        <h1>Tutormee</h1>
+        <p>Admin Login</p>
     </header>
 
-    <div class="login-page">
-        <div class="login-container">
-            <h2>Admin Login</h2>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button onclick="login()">Login</button>
+    <div class="container">
+        <div class="login-box">
+            <h2>Sign In</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p id="error-message"></p>
         </div>
     </div>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-
     <script>
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "tutorme-99ca8.firebaseapp.com",
-            projectId: "tutorme-99ca8",
-            storageBucket: "tutorme-99ca8.appspot.com",
+            authDomain: "Tutormee-99ca8.firebaseapp.com",
+            projectId: "Tutormee-99ca8",
+            storageBucket: "Tutormee-99ca8.appspot.com",
             messagingSenderId: "1012080798952",
             appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
         };
-
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        function login() {
+        document.getElementById('login-form').addEventListener('submit', e => {
+            e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        }
-    </script>
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = ''; // Clear previous errors
 
+            auth.signInWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    // Sign in success. Redirect to the protected dashboard.
+                    console.log('Login successful, redirecting to dashboard...');
+                    
+                    // --- THIS IS THE CORRECTED LINE ---
+                    window.location.href = 'dashboard.html'; 
+                })
+                .catch(error => {
+                    // Handle Errors here.
+                    errorMessage.textContent = error.message;
+                });
+        });
+    </script>
 </body>
 </html>
