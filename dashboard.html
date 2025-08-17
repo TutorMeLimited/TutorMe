@@ -1,31 +1,216 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Login</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Tutormee</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; }
-        .login-container { padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
-        input { display: block; width: 250px; padding: 0.75rem; margin: 0.5rem 0 1rem 0; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 0.75rem; border: none; background-color: #f72585; color: white; font-size: 1rem; border-radius: 4px; cursor: pointer; }
-        .error { color: red; margin-top: 1rem; }
+        :root {
+            --sociology: #ffc300;
+            --psychology: #a259d9;
+            --chemistry: #38b000;
+            --biology: #00b4d8;
+            --physics: #4361ee;
+            --header: #fff;
+            --text: #222;
+            --accent: #f72585;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0; padding: 0;
+            background: #f8f9fa;
+            color: var(--text);
+        }
+        header {
+            background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
+            color: var(--header);
+            text-align: center;
+            padding: 2rem 1rem 1rem 1rem;
+        }
+        .website-link {
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .website-link a {
+            color: var(--header);
+            text-decoration: underline;
+        }
+        nav {
+            background: var(--header);
+            box-shadow: 0 2px 8px #0001;
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        nav a {
+            margin: 0 1rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--physics);
+        }
+        #sign-out-link {
+            cursor: pointer;
+            color: var(--physics);
+        }
+        .container {
+            max-width: 900px;
+            margin: 2.5rem auto;
+            background: #fff;
+            padding: 2rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px #0002;
+        }
+        h2 { color: var(--accent); text-align: center; margin-bottom: 10px; }
+        #auth-status {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        .section {
+            margin-bottom: 2.5rem;
+        }
+        .section h3 {
+            color: var(--psychology);
+            margin-bottom: 1rem;
+        }
+        .list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 4px #0001;
+        }
+        .list-item {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 1rem;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: var(--physics);
+        }
+        .small {
+            font-size: 0.95em;
+            color: #666;
+        }
+        .form-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        .form-inline input[type="datetime-local"],
+        .form-inline input[type="text"] {
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        .form-inline button {
+            margin-left: 0;
+            margin-top: 0;
+        }
+        .success {
+            color: var(--chemistry);
+            margin-left: 1rem;
+        }
+        .error {
+            color: var(--accent);
+            margin-left: 1rem;
+        }
+        footer {
+            background: var(--accent);
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem 1rem 1rem 1rem;
+            margin-top: 2rem;
+            font-size: 1.1rem;
+        }
+        footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Admin Login</h2>
-        <form id="login-form">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Log In</button>
-        </form>
-        <p id="error-message" class="error"></p>
-    </div>
+    <header>
+        <h1>Tutormee</h1>
+        <p>Specialist online tutoring for A-Level & GCSE </p>
+        <div class="website-link">
+            Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
+        </div>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <!-- The Sign Out link will be shown by JS only when a user is logged in -->
+        <a id="sign-out-link" style="display: none;">Sign Out</a>
+    </nav>
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+        <p id="auth-status">Checking authentication status...</p>
 
+        <!-- The main dashboard content is hidden by default until the user is verified -->
+        <div id="dashboard-content" style="display: none;">
+            <div class="section">
+                <h3>Upcoming Bookings</h3>
+                <div class="list" id="bookings-list"></div>
+            </div>
+            <div class="section">
+                <h3>Unsold (Unbooked & Unbookable) Slots</h3>
+                <div class="list" id="unsold-list"></div>
+            </div>
+            <div class="section">
+                <h3>Available Slots</h3>
+                <form id="add-slot-form" class="form-inline">
+                    <input type="datetime-local" id="slot-date" required>
+                    <button type="submit" class="btn">Add Available Date</button>
+                    <span id="slot-msg"></span>
+                </form>
+                <div class="list" id="slots-list"></div>
+            </div>
+            <div class="section">
+                <h3>Videos</h3>
+                <form id="add-video-form" class="form-inline">
+                    <input type="text" id="video-id" placeholder="YouTube Video ID or URL" required>
+                    <button type="submit" class="btn">Add Video</button>
+                    <span id="video-msg"></span>
+                </form>
+                <div class="list" id="videos-list"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
+    </footer>
+
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <!-- ADDED: Firebase Authentication SDK is required for the auth guard -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
     <script>
+        // --- 1. INITIALIZE FIREBASE ---
         const firebaseConfig = {
             apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
             authDomain: "Tutormee-99ca8.firebaseapp.com",
@@ -35,23 +220,236 @@
             appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
         };
         firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
         const auth = firebase.auth();
 
-        document.getElementById('login-form').addEventListener('submit', e => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
+        // --- 2. AUTHENTICATION GUARD ---
+        // This is the main fix. It runs before any other code.
+        auth.onAuthStateChanged(user => {
+            const authStatus = document.getElementById('auth-status');
+            const dashboardContent = document.getElementById('dashboard-content');
+            const signOutLink = document.getElementById('sign-out-link');
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then(userCredential => {
-                    // Signed in successfully, redirect to the dashboard.
-                    // IMPORTANT: Make sure your dashboard file is named 'dashboard.html'
-                    window.location.href = 'dashboard.html';
-                })
-                .catch(error => {
-                    errorMessage.textContent = error.message;
+            if (user) {
+                // USER IS LOGGED IN: Show the dashboard
+                authStatus.textContent = `Logged in as: ${user.email}`;
+                dashboardContent.style.display = 'block';
+                signOutLink.style.display = 'inline';
+
+                // Now that we are authenticated, we can safely load the data
+                loadAllData();
+            } else {
+                // USER IS NOT LOGGED IN: Redirect to the login page
+                authStatus.textContent = "You are not authorized. Redirecting to login...";
+                // Make sure your login page is named 'login.html'
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Sign Out Button functionality
+        document.getElementById('sign-out-link').addEventListener('click', () => {
+            auth.signOut().catch(error => console.error('Sign out error:', error));
+            // onAuthStateChanged will automatically handle the redirect after sign-out
+        });
+        
+        // --- 3. DATA LOADING AND MANAGEMENT ---
+
+        // Helper function to call all loaders
+        function loadAllData() {
+            loadBookings();
+            loadUnsold();
+            loadSlots();
+            loadVideos();
+        }
+        
+        // Load Bookings
+        function loadBookings() {
+            db.collection("bookings").orderBy("slotTime").get().then(snapshot => {
+                const list = document.getElementById('bookings-list');
+                list.innerHTML = "";
+                const now = Date.now();
+                let hasItems = false;
+                snapshot.forEach(doc => {
+                    const b = doc.data();
+                    if (new Date(b.slotTime).getTime() > now && !b.archived) {
+                        hasItems = true;
+                        const div = document.createElement('div');
+                        div.className = "list-item";
+                        div.innerHTML = `<b>${new Date(b.slotTime).toLocaleString()}</b><br>
+                            Name: ${b.name} | Email: ${b.email}
+                            <button class="btn btn-archive-booking" data-id="${doc.id}" data-slotid="${b.slotId}">Archive</button>`;
+                        list.appendChild(div);
+                    }
                 });
+                if (!hasItems) list.innerHTML = "<div class='small'>No upcoming bookings.</div>";
+                attachArchiveBookingHandlers();
+            });
+        }
+        
+        // IMPROVED: Attach handlers for archiving bookings using a batch write
+        function attachArchiveBookingHandlers() {
+             document.querySelectorAll('.btn-archive-booking').forEach(btn => {
+                btn.onclick = function() {
+                    if (!confirm('Are you sure you want to archive this booking and make the slot available again?')) return;
+                    
+                    const bookingId = this.getAttribute('data-id');
+                    const slotId = this.getAttribute('data-slotid');
+
+                    // Use a batched write to ensure both operations succeed or fail together
+                    const batch = db.batch();
+
+                    const bookingRef = db.collection("bookings").doc(bookingId);
+                    batch.update(bookingRef, { archived: true });
+
+                    if (slotId) {
+                        const slotRef = db.collection("availableSlots").doc(slotId);
+                        batch.update(slotRef, { booked: false });
+                    }
+                    
+                    batch.commit().then(() => {
+                        console.log("Booking archived and slot updated successfully.");
+                        loadAllData(); // Refresh all lists
+                    }).catch(error => {
+                        console.error("Error archiving booking: ", error);
+                        alert("Could not archive booking. See console for details.");
+                    });
+                };
+            });
+        }
+        
+        // Generic handler for archiving items (Slots and Videos)
+        function attachArchiveHandlers(selector, collectionName) {
+            document.querySelectorAll(selector).forEach(btn => {
+                btn.onclick = function() {
+                    if (confirm(`Archive this item from ${collectionName}?`)) {
+                        db.collection(collectionName).doc(this.getAttribute('data-id')).update({ archived: true })
+                          .then(() => loadAllData())
+                          .catch(error => console.error(`Error archiving ${collectionName}:`, error));
+                    }
+                };
+            });
+        }
+
+        // Load Unsold Slots
+        function loadUnsold() {
+            db.collection("availableSlots").where("booked", "==", false).orderBy("date").get().then(snapshot => {
+                const list = document.getElementById('unsold-list');
+                list.innerHTML = "";
+                const minTime = Date.now() + 60 * 60 * 1000; // 1 hour from now
+                let hasItems = false;
+                snapshot.forEach(doc => {
+                    const s = doc.data();
+                    if (new Date(s.date).getTime() <= minTime && !s.archived) {
+                        hasItems = true;
+                        const div = document.createElement('div');
+                        div.className = "list-item";
+                        div.innerHTML = `<b>${new Date(s.date).toLocaleString()}</b>
+                            <button class="btn btn-archive-slot" data-id="${doc.id}">Archive</button>`;
+                        list.appendChild(div);
+                    }
+                });
+                if (!hasItems) list.innerHTML = "<div class='small'>No unsold (unbookable) slots.</div>";
+                attachArchiveHandlers('.btn-archive-slot', 'availableSlots');
+            });
+        }
+
+        // Load Available Slots
+        function loadSlots() {
+            db.collection("availableSlots").orderBy("date").get().then(snapshot => {
+                const list = document.getElementById('slots-list');
+                list.innerHTML = "";
+                const now = Date.now();
+                let hasItems = false;
+                snapshot.forEach(doc => {
+                    const s = doc.data();
+                    if (new Date(s.date).getTime() > now && !s.archived) {
+                        hasItems = true;
+                        const status = s.booked ? "<span style='color:var(--accent)'>Booked</span>" : "<span style='color:var(--chemistry)'>Available</span>";
+                        const div = document.createElement('div');
+                        div.className = "list-item";
+                        div.innerHTML = `<b>${new Date(s.date).toLocaleString()}</b> - ${status}
+                            <button class="btn btn-archive-slot" data-id="${doc.id}">Archive</button>`;
+                        list.appendChild(div);
+                    }
+                });
+                if (!hasItems) list.innerHTML = "<div class='small'>No future slots available.</div>";
+                attachArchiveHandlers('.btn-archive-slot', 'availableSlots');
+            });
+        }
+        
+        // Load Videos
+        function loadVideos() {
+            db.collection("videos").orderBy("videoId").get().then(snapshot => {
+                const list = document.getElementById('videos-list');
+                list.innerHTML = "";
+                let hasItems = false;
+                snapshot.forEach(doc => {
+                    const v = doc.data();
+                    if (!v.archived) {
+                        hasItems = true;
+                        const div = document.createElement('div');
+                        div.className = "list-item";
+                        div.innerHTML = `<a href="https://www.youtube.com/watch?v=${v.videoId}" target="_blank">${v.videoId}</a>
+                            <button class="btn btn-archive-video" data-id="${doc.id}">Archive</button>`;
+                        list.appendChild(div);
+                    }
+                });
+                if (!hasItems) list.innerHTML = "<div class='small'>No videos added.</div>";
+                attachArchiveHandlers('.btn-archive-video', 'videos');
+            });
+        }
+
+        // --- 4. FORM SUBMISSION HANDLERS ---
+
+        // Add Available Slot Form
+        document.getElementById('add-slot-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const slotInput = document.getElementById('slot-date');
+            const msg = document.getElementById('slot-msg');
+            if (!slotInput.value) {
+                msg.textContent = "Please select a date."; msg.className = "error"; return;
+            }
+            db.collection("availableSlots").add({
+                date: new Date(slotInput.value).toISOString(),
+                booked: false,
+                archived: false
+            }).then(() => {
+                msg.textContent = "Slot added!"; msg.className = "success";
+                slotInput.value = "";
+                loadAllData();
+            }).catch(err => {
+                msg.textContent = "Error: " + err.message; msg.className = "error";
+            });
+        });
+
+        // Add Video Form
+        document.getElementById('add-video-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const videoInput = document.getElementById('video-id');
+            const msg = document.getElementById('video-msg');
+
+            function extractVideoId(str) {
+                const regex = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([A-Za-z0-9_-]{11})/;
+                const match = str.match(regex);
+                if (match && match[1]) return match[1];
+                if (/^[A-Za-z0-9_-]{11}$/.test(str.trim())) return str.trim();
+                return null;
+            }
+            const videoId = extractVideoId(videoInput.value);
+
+            if (!videoId) {
+                msg.textContent = "Invalid YouTube URL or ID."; msg.className = "error"; return;
+            }
+            db.collection("videos").add({
+                videoId: videoId,
+                archived: false
+            }).then(() => {
+                msg.textContent = "Video added!"; msg.className = "success";
+                videoInput.value = "";
+                loadVideos();
+            }).catch(err => {
+                msg.textContent = "Error: " + err.message; msg.className = "error";
+            });
         });
     </script>
 </body>
