@@ -1,185 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <title>Admin Login - Tutormee</title>
-  <style>
-    :root {
-      --sociology: #e7b718;
-      --psychology: #a259d9;
-      --chemistry: #38b000;
-      --biology: #00b4d8;
-      --physics: #4361ee;
-      --header: #fff;
-      --text: #222;
-      --accent: #f72585;
-    }
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: #f8f9fa;
-      color: var(--text);
-    }
-    header {
-      background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
-      color: var(--header);
-      text-align: center;
-      padding: 2rem 1rem 1rem 1rem;
-    }
-    .website-link {
-      margin-top: 0.5rem;
-      font-size: 1.1rem;
-    }
-    .website-link a {
-      color: var(--header);
-      text-decoration: underline;
-    }
-    nav {
-      background: var(--header);
-      box-shadow: 0 2px 8px #0001;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav a {
-      margin: 0 1rem;
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.2s;
-    }
-    nav a:hover {
-      color: var(--physics);
-    }
-    .container {
-      max-width: 400px;
-      margin: 2.5rem auto;
-      background: #fff;
-      padding: 2rem 1.5rem;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px #0002;
-    }
-    h2 { color: var(--accent); text-align: center; margin-bottom: 30px; }
-    label {
-      display: block;
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 0.8rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-    button {
-      background: var(--accent);
-      color: #fff;
-      padding: 1rem 2rem;
-      border-radius: 40px;
-      text-decoration: none;
-      font-weight: bold;
-      margin-top: 1.5rem;
-      display: block;
-      width: 100%;
-      border: none;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: var(--physics);
-    }
-    .msg {
-      text-align: center;
-      margin-top: 1rem;
-      color: var(--accent);
-    }
-    footer {
-      background: var(--accent);
-      color: #fff;
-      text-align: center;
-      padding: 1.5rem 1rem 1rem 1rem;
-      margin-top: 2rem;
-      font-size: 1.1rem;
-    }
-    footer a {
-      color: #fff;
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TutorMe</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --col-pri: #3498db;
+            --col-sec: #222;
+            --col-bg: #f4f8fb;
+            --font-heading: "Montserrat", Arial, sans-serif;
+            --font-body: "Montserrat", Arial, sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            margin: 0;
+            background: var(--col-bg);
+            color: var(--col-sec);
+            min-height: 100vh;
+        }
+        .bg-fade {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            background: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=1200&q=80') center center/cover no-repeat;
+            opacity: 0.09;
+            pointer-events: none;
+        }
+        .header {
+            background: var(--col-pri);
+            color: #fff;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+            position: relative;
+            z-index: 2;
+        }
+        .header .logo {
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-family: var(--font-heading);
+        }
+        .header nav {
+            display: flex;
+            gap: 18px;
+        }
+        .header nav a, .header nav button {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: var(--font-body);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .header nav a:hover, .header nav button:hover {
+            background: #217dbb;
+            color: #fff;
+        }
+        .container {
+            max-width: 520px;
+            margin: 48px auto 32px auto;
+            background: #fff;
+            padding: 36px 28px 28px 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(44,62,80,0.10);
+            position: relative;
+            z-index: 1;
+        }
+        .management-section {
+            margin-bottom: 32px;
+            padding: 0 0 18px 0;
+            border-bottom: 1px solid #e0eafc;
+        }
+        .management-section:last-child {
+            border-bottom: none;
+        }
+        h2 {
+            font-family: var(--font-heading);
+            color: var(--col-pri);
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+        input[type="datetime-local"], input[type="text"] {
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            width: 100%;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+        }
+        button {
+            padding: 12px 0;
+            width: 100%;
+            background-color: var(--col-pri);
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: var(--font-body);
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #217dbb;
+        }
+        @media (max-width: 600px) {
+            .header { padding: 12px 8px; }
+            .container { padding: 18px 6px; }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Tutormee</h1>
-    <p>Specialist online tutoring for A-Level & GCSE</p>
-    <div class="website-link">
-      Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
+    <div class="bg-fade"></div>
+    <header class="header">
+        <div class="logo">TutorMe</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="bookings.html">Bookings</a>
+            <a href="videos.html">Videos</a>
+            <a href="login.html">Admin Login</a>
+            <button onclick="logout()">Logout</button>
+        </nav>
+    </header>
+    <div class="container">
+        <div id="manage-dates" class="management-section">
+            <h2>Add Available Date Slot</h2>
+            <input type="datetime-local" id="new-date">
+            <button onclick="addDate()">Add Date</button>
+        </div>
+        <div id="manage-videos" class="management-section">
+            <h2>Add New YouTube Video</h2>
+            <input type="text" id="video-id" placeholder="Enter YouTube Video ID (e.g., dQw4w9WgXcQ)">
+            <button onclick="addVideo()">Add Video</button>
+        </div>
     </div>
-  </header>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="Our-services.html">Our Services</a>
-    <a href="bookings.html">Bookings</a>
-    <a href="videos.html">Videos</a>
-    <a href="login.html">Admin Login</a>
-  </nav>
-  <div class="container">
-    <h2>Admin Login</h2>
-    <form id="login-form">
-      <label for="email">Email</label>
-      <input type="email" id="email" required />
-      <label for="password">Password</label>
-      <input type="password" id="password" required />
-      <button type="submit">Login</button>
-    </form>
-    <div class="msg" id="msg"></div>
-  </div>
-  <footer>
-    &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
-  </footer>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
+            authDomain: "tutorme-99ca8.firebaseapp.com",
+            projectId: "tutorme-99ca8",
+            storageBucket: "tutorme-99ca8.appspot.com",
+            messagingSenderId: "1012080798952",
+            appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
+        };
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-      authDomain: "Tutormee-99ca8.firebaseapp.com",
-      projectId: "Tutormee-99ca8",
-      storageBucket: "Tutormee-99ca8.appspot.com",
-      messagingSenderId: "1012080798952",
-      appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    document.getElementById('login-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const msg = document.getElementById('msg');
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          return userCredential.user.getIdTokenResult();
-        })
-        .then((idTokenResult) => {
-          if (idTokenResult.claims.admin) {
-            window.location.href = 'dashboard.html';
-          } else {
-            msg.innerText = "Access denied: Admin privileges required.";
-            auth.signOut();
-          }
-        })
-        .catch((error) => {
-          msg.innerText = error.message;
+        // Auth guard: Check if user is logged in
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.replace('login.html');
+            }
         });
-    });
-  </script>
+
+        function addDate() {
+            const newDateInput = document.getElementById('new-date');
+            if (newDateInput.value) {
+                db.collection("availableSlots").add({
+                    date: newDateInput.value,
+                    booked: false
+                }).then(() => {
+                    alert("Date added successfully!");
+                    newDateInput.value = "";
+                }).catch(error => {
+                    console.error("Error adding date: ", error);
+                    alert("Error adding date. Check the console for details.");
+                });
+            }
+        }
+
+        function addVideo() {
+            const videoIdInput = document.getElementById('video-id');
+            if (videoIdInput.value) {
+                db.collection("videos").add({
+                    videoId: videoIdInput.value
+                }).then(() => {
+                    alert("Video added successfully!");
+                    videoIdInput.value = "";
+                }).catch(error => {
+                    console.error("Error adding video: ", error);
+                    alert("Error adding video. Check the console for details.");
+                });
+            }
+        }
+
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.replace('login.html');
+            });
+        }
+    </script>
 </body>
 </html>
