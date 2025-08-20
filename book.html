@@ -69,7 +69,7 @@
         const form = document.getElementById('booking-form');
         const nameInput = document.getElementById('student-name');
         const emailInput = document.getElementById('student-email');
-        const phoneInput = document.getElementById('student-phone'); // Get phone input
+        const phoneInput = document.getElementById('student-phone');
         const confirmBtn = document.getElementById('confirm-booking-btn');
         const messageEl = document.getElementById('form-message');
         const slotDetailsContainer = document.getElementById('slot-details-container');
@@ -103,21 +103,41 @@
             e.preventDefault();
             confirmBtn.disabled = true;
             confirmBtn.textContent = 'Submitting...';
-
-            const bookingsRef = db.ref('bookings');
-            // Add studentPhone to the booking object
-            bookingsRef.push({
+            
+            // Create a single data object to make it easier to reuse
+            const studentData = {
                 studentName: nameInput.value,
                 studentEmail: emailInput.value,
                 studentPhone: phoneInput.value,
                 date: selectedSlotDate
-            })
+            };
+
+            const bookingsRef = db.ref('bookings');
+            
+            // 1. Push the student data to the 'bookings' part of the database
+            bookingsRef.push(studentData)
             .then(() => {
+                // 2. Once saved, update the original time slot to mark it as booked
                 const slotToUpdateRef = db.ref(`availableSlots/${slotId}`);
                 return slotToUpdateRef.update({ isBooked: true });
             })
             .then(() => {
-                bookingContainer.innerHTML = "<h2>Thank You!</h2><p>Your free consultation has been booked successfully. We will be in touch shortly.</p>";
+                // 3. **NEW STEP**: Once everything is saved, call our email function
+                // Netlify makes our function available at this special URL
+                fetch('/.netlify/functions/send-confirmation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        studentName: studentData.studentName, 
+                        studentEmail: studentData.studentEmail,
+                        bookedDate: studentData.date // Pass the date to the function
+                    })
+                })
+                // Log if the email trigger fails, but don't stop the user's success message
+                .catch(err => console.error('Email trigger failed:', err));
+                
+                // 4. Show the success message to the user, now mentioning the email
+                bookingContainer.innerHTML = "<h2>Thank You!</h2><p>Your free consultation has been booked successfully. A confirmation email has been sent to your inbox.</p>";
             })
             .catch(error => {
                 console.error("Booking failed:", error);
