@@ -5,218 +5,10 @@
     <title>Tutormee | www.Tutormee.co.uk | A-Level & GCSE & GCSE Tutoring</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-
-        :root {
-            --sociology: #ffc300;
-            --psychology: #a259d9;
-            --chemistry: #38b000;
-            --biology: #00b4d8;
-            --physics: #4361ee;
-            --header: #fff;
-            --text: #222;
-            --accent: #f72585;
-        }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0; padding: 0;
-            background: #f8f9fa;
-            color: var(--text);
-        }
-        header {
-            background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
-            color: var(--header);
-            text-align: center;
-            padding: 2rem 1rem 1rem 1rem;
-        }
-        .website-link {
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
-        }
-        .website-link a {
-            color: var(--header);
-            text-decoration: underline;
-        }
-        nav {
-            background: var(--header);
-            box-shadow: 0 2px 8px #0001;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 1rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.2s;
-        }
-        nav a:hover {
-            color: var(--physics);
-        }
-        .hero {
-            padding: 2rem 1rem 1rem 1rem;
-            background: #fff5e1;
-            text-align: center;
-        }
-        .hero h2 {
-            color: var(--accent);
-            font-size: 2rem;
-        }
-        .hero p {
-            font-size: 1.2rem;
-        }
-        .cta-btn {
-            background: var(--accent);
-            color: #fff;
-            padding: 1rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 1rem;
-            display: inline-block;
-            transition: background 0.2s;
-        }
-        .cta-btn:hover {
-            background: var(--physics);
-        }
-        .description-section {
-            background: #f3f0ff;
-            border-left: 8px solid var(--psychology);
-            border-radius: 12px;
-            margin: 2.5rem auto 2rem auto;
-            max-width: 850px;
-            padding: 2rem 2rem 1.5rem 2rem;
-            box-shadow: 0 2px 12px #a259d920;
-        }
-        .description-section-2 {
-            background: #f3f0ff;
-            border-left: 8px solid var(--psychology);
-            border-radius: 12px;
-            margin: 2.5rem auto 2rem auto;
-            max-width: 850px;
-            padding: 2rem 2rem 1.5rem 2rem;
-            box-shadow: 0 2px 12px #0d8a3620;
-        }
-        .description-section h2 {
-            color: var(--psychology);
-            margin-top: 0;
-        }
-        .description-section ul {
-            margin: 1.2rem 0 0 1.5rem;
-            padding: 0;
-            font-size: 1.07rem;
-        }
-        .description-section li {
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-        .description-section strong {
-            color: var(--accent);
-        }
-        .offerings-section {
-            background: #e0f7fa;
-            border-left: 8px solid var(--biology);
-            border-radius: 12px;
-            margin: 2.5rem auto;
-            max-width: 850px;
-            padding: 2rem;
-            box-shadow: 0 2px 12px #00b4d820;
-        }
-        .offerings-section h2 {
-            color: var(--biology);
-            margin-top: 0;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .offerings-container {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .offering {
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px #0001;
-            text-align: center;
-            flex: 1;
-            min-width: 250px;
-        }
-        .offering i {
-            font-size: 2.5rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-        .offering h3 {
-            color: var(--physics);
-            margin-top: 0;
-        }
-        .subjects {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2.5rem 1rem;
-        }
-        .subject {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px #0002;
-            width: 320px; /* Increased width for more content */
-            padding: 1.8rem 1.5rem; /* Adjusted padding */
-            text-align: left; /* Aligned text to the left for readability */
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        .subject:hover {
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 6px 20px #0003;
-        }
-        .subject-header {
-            text-align: center;
-        }
-        .subject.sociology { border-top: 6px solid var(--sociology); }
-        .subject.psychology { border-top: 6px solid var(--psychology); }
-        .subject.chemistry { border-top: 6px solid var(--chemistry); }
-        .subject.biology { border-top: 6px solid var(--biology); }
-        .subject.physics { border-top: 6px solid var(--physics); }
-
-        .subject img {
-            width: 68px;
-            height: 68px;
-            margin-bottom: 1rem;
-        }
-        .subject h3 {
-            margin-top: 0;
-            font-size: 1.3rem;
-        }
-        .subject p {
-            font-size: 1rem;
-            color: #444;
-            line-height: 1.5; /* Improved line height */
-            flex-grow: 1; /* Allows paragraph to take up space */
-        }
-        footer {
-            background: var(--accent);
-            color: #fff;
-            text-align: center;
-            padding: 1.5rem 1rem 1rem 1rem;
-            margin-top: 2rem;
-            font-size: 1.1rem;
-        }
-        footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Use this for header and nav on all pages -->
     <header>
         <h1>Tutormee</h1>
         <p>Specialist online tutoring for A-Level & GCSE</p>
@@ -229,10 +21,10 @@
         <a href="Our-services.html">Our Services</a>
         <a href="bookings.html">Bookings</a>
         <a href="videos.html">Videos</a>
+        <a href="contact-us.html">Contact Us</a>
         <a href="login.html">Admin Login</a>
     </nav>
     
-    <!-- Our Offerings Section -->
     <section class="offerings-section" id="our-offerings">
         <h2>Our Offerings</h2>
         <div class="offerings-container">
@@ -248,22 +40,17 @@
             </div>
         </div>
     </section>
-     <section class="description-section" id="why-Tutormee">
+     <section class="description-section" id="why-Tutormee-sociology">
         <h2>Benefits of getting a GCSE and A level Sociology Tutor</h2>
-       
         <ul>
             <li><strong>A tutor works alongside a student, helping them navigate their way through complex sociological theories. Students develop a good understanding of how to apply these principles to contemporary social issues.</strong></li>
-            <li><strong>Sociology tuition encourages students to reflect on the world around them as well as their role within it. Tuition also teaches key skills that are beneficial in everyday life, such as how to present a coherent argument.
-</strong></li>
+            <li><strong>Sociology tuition encourages students to reflect on the world around them as well as their role within it. Tuition also teaches key skills that are beneficial in everyday life, such as how to present a coherent argument.</strong></li>
             <li><strong>A Sociology tutor challenges students’ to explore ideas on a deeper level, while increasing their competency across this popular subject. </strong></li>
-            
         </ul>
     </section>
 
-    <!-- Why Tutormee Section -->
-    <section class="description-section" id="why-Tutormee">
+    <section class="description-section" id="why-Tutormee-psychology">
         <h2>Benefits of getting a GCSE and A level Psychology Tutor</h2>
-        
         <ul>
             <li><strong>An A level & Gcse Psychology tutor fully guides students in their exploration of this rewarding subject.</strong></li>
             <li><strong>A tutor helps students develop their critical analysis, independent thinking and research skills. Tutors also work through a wide range of modules, case studies and exam preparation techniques.</strong></li>
@@ -272,8 +59,6 @@
         </ul>
     </section>
 
-    
-    <!-- Use this for the footer on all pages -->
     <footer>
         &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
     </footer>

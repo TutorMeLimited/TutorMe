@@ -2,117 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book Session - Tutormee</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Booking - Tutormee</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <style>
-        :root {
-            --sociology: #ffc300;
-            --psychology: #a259d9;
-            --chemistry: #38b000;
-            --biology: #00b4d8;
-            --physics: #4361ee;
-            --header: #fff;
-            --text: #222;
-            --accent: #f72585;
-        }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0; padding: 0;
-            background: #f8f9fa;
-            color: var(--text);
-        }
-        header {
-            background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
-            color: var(--header);
-            text-align: center;
-            padding: 2rem 1rem 1rem 1rem;
-        }
-        .website-link {
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
-        }
-        .website-link a {
-            color: var(--header);
-            text-decoration: underline;
-        }
-        nav {
-            background: var(--header);
-            box-shadow: 0 2px 8px #0001;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 1rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.2s;
-        }
-        nav a:hover {
-            color: var(--physics);
-        }
-        .container {
-            max-width: 400px;
-            margin: 2.5rem auto;
-            background: #fff;
-            padding: 2rem 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px #0002;
-        }
-        h2 {
-            color: var(--accent);
-            text-align: center;
-        }
-        label {
-            display: block;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 1rem;
-        }
-        button {
-            background: var(--accent);
-            color: #fff;
-            padding: 1rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 1.5rem;
-            display: block;
-            width: 100%;
-            border: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: var(--physics);
-        }
-        .msg {
-            text-align: center;
-            margin-top: 1rem;
-            color: var(--accent);
-        }
-        footer {
-            background: var(--accent);
-            color: #fff;
-            text-align: center;
-            padding: 1.5rem 1rem 1rem 1rem;
-            margin-top: 2rem;
-            font-size: 1.1rem;
-        }
-        footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
@@ -127,91 +20,113 @@
         <a href="Our-services.html">Our Services</a>
         <a href="bookings.html">Bookings</a>
         <a href="videos.html">Videos</a>
+        <a href="contact-us.html">Contact Us</a>
         <a href="login.html">Admin Login</a>
     </nav>
-    <div class="container">
-        <h2>Enter Your Details</h2>
+    
+    <div class="container" id="booking-container">
+        <h2>Confirm Your Booking</h2>
+        <div id="slot-details-container" style="display: none;">
+            <p>You have selected the following time slot:</p>
+            <div id="selected-slot-details" class="slot-details"></div>
+        </div>
         <form id="booking-form">
-            <label for="name">Name</label>
-            <input type="text" id="name" required>
-            <label for="email">Email</label>
-            <input type="email" id="email" required>
-            <button type="submit">Confirm Booking</button>
+            <div class="form-group">
+                <label for="student-name">Your Full Name</label>
+                <input type="text" id="student-name" required>
+            </div>
+            <div class="form-group">
+                <label for="student-email">Your Email Address</label>
+                <input type="email" id="student-email" required>
+            </div>
+            <div class="form-group">
+                <label for="student-phone">Your Phone Number</label>
+                <input type="tel" id="student-phone" required>
+            </div>
+            <button type="submit" id="confirm-booking-btn" class="cta-btn" disabled>Confirm Booking</button>
         </form>
-        <div class="msg" id="msg"></div>
+        <p id="form-message" class="message"></p>
     </div>
-    <footer>
-        &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
-    </footer>
-    <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-        authDomain: "Tutormee-99ca8.firebaseapp.com",
-        projectId: "Tutormee-99ca8",
-        storageBucket: "Tutormee-99ca8.appspot.com",
-        messagingSenderId: "1012080798952",
-        appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
 
-    // Get slotId from URL
-    function getSlotId() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get('slot');
-    }
+    <footer>&copy; 2025 Tutormee</footer>
 
-    const slotId = getSlotId();
-    const bookingForm = document.getElementById('booking-form');
-    const msgDiv = document.getElementById('msg');
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
+            authDomain: "tutorme-99ca8.firebaseapp.com",
+            databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "tutorme-99ca8",
+            storageBucket: "tutorme-99ca8.appspot.com",
+            messagingSenderId: "1012080798952",
+            appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d",
+            measurementId: "G-L8TJGV46E6"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-    if (!slotId) {
-        bookingForm.style.display = 'none';
-        msgDiv.textContent = "No slot selected. Please go back and choose a slot.";
-    } else {
-        bookingForm.addEventListener('submit', function(e) {
+        const form = document.getElementById('booking-form');
+        const nameInput = document.getElementById('student-name');
+        const emailInput = document.getElementById('student-email');
+        const phoneInput = document.getElementById('student-phone'); // Get phone input
+        const confirmBtn = document.getElementById('confirm-booking-btn');
+        const messageEl = document.getElementById('form-message');
+        const slotDetailsContainer = document.getElementById('slot-details-container');
+        const selectedSlotDetails = document.getElementById('selected-slot-details');
+        const bookingContainer = document.getElementById('booking-container');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const slotId = urlParams.get('slotId');
+        let selectedSlotDate = null;
+
+        if (!slotId) {
+            bookingContainer.innerHTML = "<h2>Error</h2><p>No booking slot was selected. Please <a href='bookings.html'>go back</a> and choose a time.</p>";
+        } else {
+            const slotRef = db.ref(`availableSlots/${slotId}`);
+            slotRef.once('value').then(snapshot => {
+                if (!snapshot.exists() || snapshot.val().isBooked) {
+                    bookingContainer.innerHTML = "<h2>Sorry, this slot is no longer available.</h2><p>It may have been booked by someone else. Please <a href='bookings.html'>choose another slot</a>.</p>";
+                    return;
+                }
+                const slotData = snapshot.val();
+                selectedSlotDate = slotData.date;
+                const formattedDate = new Date(selectedSlotDate).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+
+                selectedSlotDetails.textContent = formattedDate;
+                slotDetailsContainer.style.display = 'block';
+                confirmBtn.disabled = false;
+            });
+        }
+
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
+            confirmBtn.disabled = true;
+            confirmBtn.textContent = 'Submitting...';
 
-            // Get slot info
-            db.collection("availableSlots").doc(slotId).get().then(doc => {
-                if (!doc.exists) {
-                    msgDiv.textContent = "Selected slot does not exist.";
-                    return;
-                }
-                const slotData = doc.data();
-                if (slotData.booked) {
-                    msgDiv.textContent = "Sorry, this slot has already been booked.";
-                    return;
-                }
-                // Add booking
-                db.collection("bookings").add({
-                    slotId: slotId,
-                    name: name,
-                    email: email,
-                    slotTime: slotData.date,
-                    bookedAt: new Date().toISOString(),
-                    archived: false
-                }).then(() => {
-                    // Mark slot as booked
-                    return db.collection("availableSlots").doc(slotId).update({ booked: true });
-                }).then(() => {
-                    msgDiv.textContent = "Booking confirmed! Check your email for details.";
-                    bookingForm.reset();
-                    bookingForm.style.display = 'none';
-                }).catch(err => {
-                    msgDiv.textContent = "Error: " + err.message;
-                });
-            }).catch(err => {
-                msgDiv.textContent = "Error: " + err.message;
+            const bookingsRef = db.ref('bookings');
+            // Add studentPhone to the booking object
+            bookingsRef.push({
+                studentName: nameInput.value,
+                studentEmail: emailInput.value,
+                studentPhone: phoneInput.value,
+                date: selectedSlotDate
+            })
+            .then(() => {
+                const slotToUpdateRef = db.ref(`availableSlots/${slotId}`);
+                return slotToUpdateRef.update({ isBooked: true });
+            })
+            .then(() => {
+                bookingContainer.innerHTML = "<h2>Thank You!</h2><p>Your free consultation has been booked successfully. We will be in touch shortly.</p>";
+            })
+            .catch(error => {
+                console.error("Booking failed:", error);
+                messageEl.textContent = "An error occurred. Please try again.";
+                messageEl.className = 'message error';
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = 'Confirm Booking';
             });
         });
-    }
-</script>
-    <!-- Add your Firebase JS here -->
+    </script>
 </body>
 </html>

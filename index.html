@@ -5,232 +5,12 @@
     <title>Tutormee | www.Tutormee.co.uk | A-Level & GCSE & GCSE Tutoring</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <style>
-
-        :root {
-            --sociology: #ffc300;
-            --psychology: #a259d9;
-            --chemistry: #38b000;
-            --biology: #00b4d8;
-            --physics: #4361ee;
-            --header: #fff;
-            --text: #222;
-            --accent: #f72585;
-        }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0; padding: 0;
-            background: #f8f9fa;
-            color: var(--text);
-        }
-        header {
-            background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
-            color: var(--header);
-            text-align: center;
-            padding: 2rem 1rem 1rem 1rem;
-        }
-        .website-link {
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
-        }
-        .website-link a {
-            color: var(--header);
-            text-decoration: underline;
-        }
-        nav {
-            background: var(--header);
-            box-shadow: 0 2px 8px #0001;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 1rem;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.2s;
-        }
-        nav a:hover {
-            color: var(--physics);
-        }
-        .hero {
-            padding: 2rem 1rem 1rem 1rem;
-            background: #fff5e1;
-            text-align: center;
-        }
-        .hero h2 {
-            color: var(--accent);
-            font-size: 2rem;
-        }
-        .hero p {
-            font-size: 1.2rem;
-        }
-        .cta-btn {
-            background: var(--accent);
-            color: #fff;
-            padding: 1rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 1rem;
-            display: inline-block;
-            transition: background 0.2s;
-        }
-        .cta-btn:hover {
-            background: var(--physics);
-        }
-        .description-section {
-            background: #f3f0ff;
-            border-left: 8px solid var(--psychology);
-            border-radius: 12px;
-            margin: 2.5rem auto 2rem auto;
-            max-width: 850px;
-            padding: 2rem 2rem 1.5rem 2rem;
-            box-shadow: 0 2px 12px #a259d920;
-        }
-        .description-section h2 {
-            color: var(--psychology);
-            margin-top: 0;
-        }
-        .description-section ul {
-            margin: 1.2rem 0 0 1.5rem;
-            padding: 0;
-            font-size: 1.07rem;
-        }
-        .description-section li {
-            margin-bottom: 0.5rem;
-            line-height: 1.5;
-        }
-        .description-section strong {
-            color: var(--accent);
-        }
-        .subjects {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2.5rem 0;
-        }
-        .subject {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px #0002;
-            width: 270px;
-            padding: 1.8rem 1.2rem 1.2rem 1.2rem;
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
-        .subject:hover {
-            transform: translateY(-6px) scale(1.03);
-            box-shadow: 0 6px 20px #0003;
-        }
-        .subject.sociology { border-top: 6px solid var(--sociology); }
-        .subject.psychology { border-top: 6px solid var(--psychology); }
-        .subject.chemistry { border-top: 6px solid var(--chemistry); }
-        .subject.biology { border-top: 6px solid var(--biology); }
-        .subject.physics { border-top: 6px solid var(--physics); }
-        .subject img {
-            width: 68px;
-            height: 68px;
-            margin-bottom: 1rem;
-        }
-        .subject h3 {
-            margin-top: 0;
-            font-size: 1.3rem;
-        }
-        .subject p {
-            font-size: 1rem;
-            color: #444;
-        }
-        /* Calendar and Appointments Section */
-        .calendar-appointments-section {
-            background: #e0f7fa;
-            border-left: 8px solid var(--biology);
-            border-radius: 12px;
-            margin: 2.5rem auto;
-            max-width: 900px;
-            padding: 2rem 2rem 1.5rem 2rem;
-            box-shadow: 0 2px 12px #00b4d820;
-        }
-        .calendar-appointments-section h2 {
-            color: var(--biology);
-            margin-top: 0;
-        }
-        .calendar-container {
-            margin: 1.5rem 0;
-            overflow-x: auto;
-        }
-        .appointments-section {
-            margin-top: 2rem;
-            background: #fff;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px #0001;
-        }
-        .appointments-section h3 {
-            color: var(--sociology);
-        }
-        .appointments-link {
-            display: inline-block;
-            background: var(--accent);
-            color: #fff;
-            padding: 0.8rem 2rem;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 1rem;
-            transition: background 0.2s;
-        }
-        .appointments-link:hover {
-            background: var(--physics);
-        }
-        /* Simple calendar style */
-        table.calendar {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 1rem;
-        }
-        table.calendar th, table.calendar td {
-            border: 1px solid #bbb;
-            padding: 0.5rem;
-            width: 14.2%;
-            text-align: center;
-        }
-        table.calendar th {
-            background: var(--biology);
-            color: #fff;
-            font-weight: bold;
-        }
-        table.calendar td {
-            background: #fff;
-        }
-        table.calendar caption {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: var(--biology);
-            margin-bottom: 0.5rem;
-        }
-         footer {
-            background: var(--accent);
-            color: #fff;
-            text-align: center;
-            padding: 1.5rem 1rem 1rem 1rem;
-            margin-top: 2rem;
-            font-size: 1.1rem;
-        }
-        footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Use this for header and nav on all pages -->
     <header>
         <h1>Tutormee</h1>
-        <p>Specialist online tutoring for A-Level & GCSE </p>
+        <p>Specialist online tutoring for A-Level & GCSE</p>
         <div class="website-link">
             Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
         </div>
@@ -240,8 +20,8 @@
         <a href="Our-services.html">Our Services</a>
         <a href="bookings.html">Bookings</a>
         <a href="videos.html">Videos</a>
+        <a href="contact-us.html">Contact Us</a>
         <a href="login.html">Admin Login</a>
-        
     </nav>
     <section class="hero">
         <h2>Start Your Success Journey!</h2>
@@ -291,7 +71,6 @@
             <p>Make sense of the physical world—engaging support for GCSE Physics.</p>
         </div>
     </section>
-    <!-- Use this for the footer on all pages -->
     <footer>
         &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
     </footer>
