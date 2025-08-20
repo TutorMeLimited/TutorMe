@@ -7,7 +7,23 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="login-body">
+<body>
+    <header>
+        <h1>Tutormee</h1>
+        <p>Specialist online tutoring for A-Level & GCSE</p>
+        <div class="website-link">
+            Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
+        </div>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="Our-services.html">Our Services</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="videos.html">Videos</a>
+        <a href="contact-us.html">Contact Us</a>
+        <a href="login.html">Admin Login</a>
+    </nav>
+    
     <div class="login-container">
         <h1>Admin Sign In</h1>
         <p>Please enter your credentials to access the dashboard.</p>
@@ -25,12 +41,15 @@
         <p id="error-message"></p>
     </div>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <!-- JavaScript Logic -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "tutorme-99ca8.firebaseapp.com",
+            authDomain: "tutorme-9_9ca8.firebaseapp.com",
             databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tutorme-99ca8",
             storageBucket: "tutorme-99ca8.firebasestorage.app",

@@ -458,3 +458,17 @@ h2 {
 .message-span { transition: opacity 0.3s; }
 .message-span.success { color: var(--chemistry); font-weight: bold; margin-left: 1rem; }
 .message-span.error { color: var(--accent); font-weight: bold; margin-left: 1rem; }
+.login-container {
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px #0003;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 2.5rem auto; /* ADDED this to center it horizontally like other containers */
+}
+.login-container h1 { color: var(--accent); margin-bottom: 0.5rem; }
+.login-container p { color: #666; margin-bottom: 2rem; }
+.login-container .btn { border-radius: 20px; width: 100%;}
+#error-message { color: var(--accent); margin-top: 1rem; height: 20px; font-weight: bold; }
