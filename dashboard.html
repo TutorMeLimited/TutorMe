@@ -29,32 +29,32 @@
         <h2>Admin Dashboard</h2>
         <p id="auth-status">Verifying authentication...</p>
 
-        <div id="dashboard-content" style="display: none;">
-            <div class="section">
-                <h3>Upcoming Bookings</h3>
+        <div id="dashboard-content" style="display: none;" class="dashboard-grid">
+            <div class="section section-bookings">
+                <h3><i class="fas fa-calendar-check"></i> Upcoming Bookings</h3>
                 <div class="list" id="bookings-list"></div>
             </div>
-            <div class="section">
-                <h3>Unsold (Unbooked & Past) Slots</h3>
-                <div class="list" id="unsold-list"></div>
-            </div>
-            <div class="section">
-                <h3>Available Slots</h3>
+            <div class="section section-slots">
+                <h3><i class="fas fa-plus-circle"></i> Available Slots</h3>
                 <form id="add-slot-form" class="form-inline">
                     <input type="datetime-local" id="slot-date" required>
-                    <button type="submit" class="btn">Add Available Date</button>
+                    <button type="submit" class="btn">Add Slot</button>
                     <span id="slot-msg" class="message-span"></span>
                 </form>
                 <div class="list" id="slots-list"></div>
             </div>
-            <div class="section">
-                <h3>Videos</h3>
+            <div class="section section-videos">
+                <h3><i class="fas fa-video"></i> Videos</h3>
                 <form id="add-video-form" class="form-inline">
                     <input type="text" id="video-id" placeholder="YouTube Video ID or URL" required>
                     <button type="submit" class="btn">Add Video</button>
                     <span id="video-msg" class="message-span"></span>
                 </form>
                 <div class="list" id="videos-list"></div>
+            </div>
+            <div class="section section-unsold">
+                <h3><i class="fas fa-archive"></i> Unsold (Past) Slots</h3>
+                <div class="list" id="unsold-list"></div>
             </div>
         </div>
     </div>
@@ -151,19 +151,18 @@
             });
         };
 
-        const loadBookings = () => {
+        function loadBookings() {
             setupListListener(bookingsList, 'bookings', 
                 booking => new Date(booking.date) > new Date(), 
-                // Updated format function to include email and phone
                 booking => `
                     ${formatDate(booking.date)} - <strong>${booking.studentName || 'N/A'}</strong><br>
                     <small>Email: ${booking.studentEmail || 'N/A'} | Phone: ${booking.studentPhone || 'N/A'}</small>
                 `,
                 'No upcoming bookings.'
             );
-        };
+        }
 
-        const loadUnsoldSlots = () => {
+        function loadUnsoldSlots() {
             setupListListener(unsoldList, 'availableSlots', 
                 slot => new Date(slot.date) < new Date() && !slot.isBooked, 
                 slot => formatDate(slot.date), 
@@ -171,29 +170,22 @@
             );
         };
 
-        const loadAvailableSlots = () => {
+        function loadAvailableSlots() {
             setupListListener(slotsList, 'availableSlots',
                 slot => new Date(slot.date) > new Date() && !slot.isBooked,
                 slot => formatDate(slot.date), 
                 'No available slots to show.'
             );
-        };
+        }
 
-        const loadVideos = () => {
-            const videosRef = db.ref('videos');
-            videosRef.on('value', snapshot => {
-                videosList.innerHTML = '';
-                if (!snapshot.exists()) {
-                    videosList.innerHTML = `<p>No videos added yet.</p>`;
-                    return;
-                }
-                snapshot.forEach(childSnapshot => {
-                    const video = childSnapshot.val();
-                    const text = `<a href="https://www.youtube.com/watch?v=${video.id}" target="_blank">youtube.com/watch?v=${video.id}</a>`;
-                    renderListItem(videosList, text, childSnapshot.key, (id) => videosRef.child(id).remove());
-                });
-            });
-        };
+        function loadVideos() {
+            // Use the generic listener for consistency.
+            setupListListener(videosList, 'videos',
+                () => true, // No filter needed, show all videos
+                video => `<a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" rel="noopener noreferrer">youtube.com/watch?v=${video.id}</a>`,
+                'No videos added yet.'
+            );
+        }
 
         const showMessage = (element, text, isSuccess) => {
             element.textContent = text;

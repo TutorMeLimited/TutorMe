@@ -122,6 +122,12 @@ footer a {
     font-size: 1rem;
     box-sizing: border-box;
 }
+.form-group input:focus {
+    outline: none;
+    border-color: var(--physics);
+    box-shadow: 0 0 0 3px #4361ee30;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
 
 h2 {
     color: var(--accent);
@@ -349,21 +355,11 @@ h2 {
 }
 
 .contact-form textarea { resize: vertical; min-height: 150px; }
-.contact-form button {
-    background: var(--accent);
-    color: #fff;
-    padding: 1rem 2rem;
-    border-radius: 40px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 1rem;
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background 0.2s;
+/* This block had a syntax error. It's better to use the .cta-btn class on the button in contact-us.html for consistency. */
+/* For example: <button type="submit" class="cta-btn">Send</button> */
+.contact-form .cta-btn {
     align-self: center;
 }
-.contact-form button:hover { background: var(--physics); }
 
 /* --- Page Specific: Videos --- */
 #videos-container {
@@ -393,12 +389,19 @@ h2 {
 }
 
 /* --- Page Specific: Login --- */
-.login-body {
+.login-page-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.login-main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    flex-grow: 1; /* Allows this container to fill available space */
     background: linear-gradient(135deg, var(--sociology), var(--psychology), var(--physics));
+    padding: 2rem 1rem;
 }
 .login-container {
     background: #fff;
@@ -408,19 +411,40 @@ h2 {
     text-align: center;
     width: 100%;
     max-width: 400px;
+    animation: fadeInSlideUp 0.5s ease-out forwards;
+    /* The margin is handled by the parent .login-body flex container. */
 }
 .login-container h1 { color: var(--accent); margin-bottom: 0.5rem; }
 .login-container p { color: #666; margin-bottom: 2rem; }
-.login-container .btn { border-radius: 20px; width: 100%;}
+.login-container .cta-btn {
+    width: 100%;
+    border-radius: 30px; /* Match the booking confirmation button */
+}
+.login-container .form-group {
+    text-align: center;
+}
 #error-message { color: var(--accent); margin-top: 1rem; height: 20px; font-weight: bold; }
+.login-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 
 /* --- Page Specific: Dashboard --- */
 #dashboard-container {
     max-width: 900px;
-}
-#dashboard-container nav {
-     display: flex; justify-content: center; align-items: center;
 }
 #sign-out-link { cursor: pointer; color: var(--physics); }
 #auth-status { text-align: center; margin-bottom: 30px; color: #555; }
@@ -458,17 +482,3 @@ h2 {
 .message-span { transition: opacity 0.3s; }
 .message-span.success { color: var(--chemistry); font-weight: bold; margin-left: 1rem; }
 .message-span.error { color: var(--accent); font-weight: bold; margin-left: 1rem; }
-.login-container {
-    background: #fff;
-    padding: 2.5rem 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px #0003;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    margin: 2.5rem auto; /* ADDED this to center it horizontally like other containers */
-}
-.login-container h1 { color: var(--accent); margin-bottom: 0.5rem; }
-.login-container p { color: #666; margin-bottom: 2rem; }
-.login-container .btn { border-radius: 20px; width: 100%;}
-#error-message { color: var(--accent); margin-top: 1rem; height: 20px; font-weight: bold; }

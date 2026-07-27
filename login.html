@@ -6,8 +6,9 @@
     <title>Admin Sign In - Tutormee</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="login-page-body">
     <header>
         <h1>Tutormee</h1>
         <p>Specialist online tutoring for A-Level & GCSE</p>
@@ -24,22 +25,35 @@
         <a href="login.html">Admin Login</a>
     </nav>
     
-    <div class="login-container">
-        <h1>Admin Sign In</h1>
-        <p>Please enter your credentials to access the dashboard.</p>
-        <form id="login-form">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit" class="btn">Sign In</button>
-        </form>
-        <p id="error-message"></p>
-    </div>
+    <main class="login-main">
+        <div class="login-container">
+            <i class="fas fa-user-shield login-icon"></i>
+            <h1>Admin Sign In</h1>
+            <p>Please enter your credentials to access the dashboard.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" required placeholder="you@example.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+                </div>
+                <button type="submit" class="cta-btn">Sign In</button>
+            </form>
+            <p id="error-message"></p>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
+    </footer>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -49,7 +63,7 @@
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "tutorme-9_9ca8.firebaseapp.com",
+            authDomain: "tutorme-99ca8.firebaseapp.com",
             databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tutorme-99ca8",
             storageBucket: "tutorme-99ca8.firebasestorage.app",
@@ -65,7 +79,7 @@
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('error-message');
-        const submitButton = loginForm.querySelector('.btn');
+        const submitButton = loginForm.querySelector('.cta-btn');
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();

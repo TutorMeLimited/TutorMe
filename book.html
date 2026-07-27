@@ -43,7 +43,7 @@
                 <label for="student-phone">Your Phone Number</label>
                 <input type="tel" id="student-phone" required>
             </div>
-            <button type="submit" id="confirm-booking-btn" class="cta-btn" disabled>Confirm Booking</button>
+            <button type="submit" id="confirm-booking-btn" class="cta-btn" disabled>Pay & Confirm Booking</button>
         </form>
         <p id="form-message" class="message"></p>
     </div>
@@ -52,19 +52,23 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
             authDomain: "tutorme-99ca8.firebaseapp.com",
             databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "tutorme-99ca8",
-            storageBucket: "tutorme-99ca8.appspot.com",
+            storageBucket: "tutorme-99ca8.firebasestorage.app",
             messagingSenderId: "1012080798952",
             appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d",
             measurementId: "G-L8TJGV46E6"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+
+        let stripe; // Will be initialized after fetching the key
+        let formattedDate = '';
 
         const form = document.getElementById('booking-form');
         const nameInput = document.getElementById('student-name');
@@ -79,7 +83,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const slotId = urlParams.get('slotId');
         let selectedSlotDate = null;
-
         if (!slotId) {
             bookingContainer.innerHTML = "<h2>Error</h2><p>No booking slot was selected. Please <a href='bookings.html'>go back</a> and choose a time.</p>";
         } else {
@@ -91,7 +94,7 @@
                 }
                 const slotData = snapshot.val();
                 selectedSlotDate = slotData.date;
-                const formattedDate = new Date(selectedSlotDate).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+                formattedDate = new Date(selectedSlotDate).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
 
                 selectedSlotDetails.textContent = formattedDate;
                 slotDetailsContainer.style.display = 'block';
@@ -99,52 +102,51 @@
             });
         }
 
+        // Fetch the Stripe Publishable Key from our new function
+        fetch('/.netlify/functions/get-stripe-key')
+            .then(res => res.json())
+            .then(data => {
+                stripe = Stripe(data.publishableKey);
+            })
+            .catch(err => {
+                console.error("Failed to fetch Stripe key", err);
+                messageEl.textContent = "Could not initialize payment system. Please refresh the page.";
+                messageEl.className = 'message error';
+            });
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Submitting...';
+            confirmBtn.textContent = 'Redirecting to payment...';
             
-            // Create a single data object to make it easier to reuse
-            const studentData = {
-                studentName: nameInput.value,
-                studentEmail: emailInput.value,
-                studentPhone: phoneInput.value,
-                date: selectedSlotDate
-            };
-
-            const bookingsRef = db.ref('bookings');
-            
-            // 1. Push the student data to the 'bookings' part of the database
-            bookingsRef.push(studentData)
-            .then(() => {
-                // 2. Once saved, update the original time slot to mark it as booked
-                const slotToUpdateRef = db.ref(`availableSlots/${slotId}`);
-                return slotToUpdateRef.update({ isBooked: true });
+            // Call our Netlify function to create a checkout session
+            fetch('/.netlify/functions/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    slotId: slotId,
+                    studentName: nameInput.value,
+                    studentEmail: emailInput.value,
+                    studentPhone: phoneInput.value,
+                    date: selectedSlotDate,
+                    formattedDate: formattedDate
+                }),
             })
-            .then(() => {
-                // 3. **NEW STEP**: Once everything is saved, call our email function
-                // Netlify makes our function available at this special URL
-                fetch('/.netlify/functions/send-confirmation', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        studentName: studentData.studentName, 
-                        studentEmail: studentData.studentEmail,
-                        bookedDate: studentData.date // Pass the date to the function
-                    })
-                })
-                // Log if the email trigger fails, but don't stop the user's success message
-                .catch(err => console.error('Email trigger failed:', err));
-                
-                // 4. Show the success message to the user, now mentioning the email
-                bookingContainer.innerHTML = "<h2>Thank You!</h2><p>Your free consultation has been booked successfully. A confirmation email has been sent to your inbox.</p>";
+            .then(res => res.json())
+            .then(data => {
+                if (data.sessionId) {
+                    // Redirect to Stripe Checkout
+                    return stripe.redirectToCheckout({ sessionId: data.sessionId });
+                } else {
+                    throw new Error('Could not create checkout session.');
+                }
             })
-            .catch(error => {
-                console.error("Booking failed:", error);
-                messageEl.textContent = "An error occurred. Please try again.";
-                messageEl.className = 'message error';
+            .catch((error) => {
+                console.error('Error:', error);
+                messageEl.textContent = "An error occurred while preparing the payment. Please try again.";
+                messageEl.className = 'message error'
                 confirmBtn.disabled = false;
-                confirmBtn.textContent = 'Confirm Booking';
+                confirmBtn.textContent = 'Pay & Confirm Booking';
             });
         });
     </script>
