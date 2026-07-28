@@ -52,7 +52,7 @@ exports.handler = async function(event) {
         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
         const session = await stripe.checkout.sessions.create({
-            mode: 'payment',
+            mode: 'subscription',
             customer_email: studentEmail,
             line_items: [
                 {
