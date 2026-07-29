@@ -30,6 +30,27 @@
         <p id="auth-status">Verifying authentication...</p>
 
         <div id="dashboard-content" style="display: none;" class="dashboard-grid">
+            <!-- This section was missing its HTML but had corresponding JavaScript. I've added it back. -->
+            <div class="section section-slots">
+                <h3><i class="fas fa-calendar-plus"></i> Manage Available Slots</h3>
+                <form id="add-slot-form" class="form-inline">
+                    <input type="datetime-local" id="slot-date" required>
+                    <button type="submit" class="btn">Add Slot</button>
+                    <span id="slot-msg" class="message-span"></span>
+                </form>
+                <div class="list" id="slots-list"></div>
+            </div>
+
+            <div class="section section-bookings">
+                <h3><i class="fas fa-calendar-check"></i> Upcoming Bookings</h3>
+                <div class="list" id="bookings-list"></div>
+            </div>
+
+            <div class="section section-unsold">
+                <h3><i class="fas fa-history"></i> Past Unsold Slots</h3>
+                <div class="list" id="unsold-list"></div>
+            </div>
+            
             <div class="section section-videos">
                 <h3><i class="fas fa-video"></i> Videos</h3>
                 <form id="add-video-form" class="form-inline">
@@ -54,6 +75,7 @@
         const signOutLink = document.getElementById('sign-out-link');
         const bookingsList = document.getElementById('bookings-list');
         const unsoldList = document.getElementById('unsold-list');
+        // Get references to all the interactive elements on the page.
         const slotsList = document.getElementById('slots-list');
         const videosList = document.getElementById('videos-list');
         const addSlotForm = document.getElementById('add-slot-form');
@@ -63,6 +85,7 @@
         const slotMsg = document.getElementById('slot-msg');
         const videoMsg = document.getElementById('video-msg');
 
+        // Fetch the Firebase configuration from our Netlify function first.
         fetch('/.netlify/functions/get-firebase-config')
             .then(response => response.json())
             .then(firebaseConfig => {
@@ -76,10 +99,12 @@
                 authStatus.textContent = "Error: Could not load dashboard configuration.";
             });
 
+        // This function runs after Firebase is initialized.
         function initializePage(auth, db) {
             auth.onAuthStateChanged(user => {
                 if (user) {
                     authStatus.textContent = `Welcome, ${user.email}`;
+                    // Only show the dashboard content if the user is authenticated.
                     dashboardContent.style.display = 'block';
                     signOutLink.style.display = 'inline';
                     loadDashboardData(db);
@@ -88,6 +113,7 @@
                 }
             });
 
+            // Set up event listeners for user actions.
             signOutLink.addEventListener('click', () => {
                 auth.signOut();
             });
@@ -96,15 +122,27 @@
                 e.preventDefault();
                 handleAddVideo(db);
             });
+
+            addSlotForm.addEventListener('submit', e => {
+                e.preventDefault();
+                if (!slotDateInput.value) return;
+                // Push a new slot to the 'availableSlots' path in the database.
+                db.ref('availableSlots').push({ date: slotDateInput.value, isBooked: false })
+                    .then(() => showMessage(slotMsg, 'Slot added!', true))
+                    .catch(err => showMessage(slotMsg, err.message, false));
+                addSlotForm.reset();
+            });
         }
 
+        // Kicks off the loading of data for all sections of the dashboard.
         function loadDashboardData(db) {
-            loadBookings();
-            loadUnsoldSlots();
-            loadAvailableSlots();
+            loadBookings(db);
+            loadUnsoldSlots(db);
+            loadAvailableSlots(db);
             loadVideos(db);
         }
         
+        // A helper function to format ISO date strings into a more readable format.
         const formatDate = (isoString) => new Date(isoString).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
 
         const renderListItem = (listElement, text, id, onRemove) => {
@@ -119,6 +157,16 @@
             listElement.appendChild(item);
         };
         
+        /**
+         * A generic function to set up a real-time listener for a list of items from Firebase.
+         * It handles fetching, filtering, formatting, and rendering items, including the empty state.
+         * @param {HTMLElement} listElement - The DOM element to render the list into.
+         * @param {string} dbPath - The path in the Firebase Realtime Database (e.g., 'videos').
+         * @param {function} filterFn - A function that returns true if an item should be included.
+         * @param {function} formatFn - A function that returns the HTML string for an item.
+         * @param {string} emptyMsg - The message to display if the list is empty.
+         * @param {firebase.database.Database} db - The Firebase database instance.
+         */
         const setupListListener = (listElement, dbPath, filterFn, formatFn, emptyMsg) => {
             const dbRef = db.ref(dbPath).orderByChild('date');
             dbRef.on('value', snapshot => {
@@ -138,8 +186,9 @@
             });
         };
 
-        function loadBookings() {
-            setupListListener(bookingsList, 'bookings', 
+        // Load and display upcoming bookings.
+        function loadBookings(db) {
+            setupListListener(bookingsList, 'bookings',
                 booking => new Date(booking.date) > new Date(), 
                 booking => `
                     ${formatDate(booking.date)} - <strong>${booking.studentName || 'N/A'}</strong><br>
@@ -149,15 +198,17 @@
             );
         }
 
-        function loadUnsoldSlots() {
-            setupListListener(unsoldList, 'availableSlots', 
+        // Load and display slots from the past that were never booked.
+        function loadUnsoldSlots(db) {
+            setupListListener(unsoldList, 'availableSlots',
                 slot => new Date(slot.date) < new Date() && !slot.isBooked, 
                 slot => formatDate(slot.date), 
                 'No past unsold slots.'
             );
         };
 
-        function loadAvailableSlots() {
+        // Load and display future slots that are available for booking.
+        function loadAvailableSlots(db) {
             setupListListener(slotsList, 'availableSlots',
                 slot => new Date(slot.date) > new Date() && !slot.isBooked,
                 slot => formatDate(slot.date), 
@@ -165,6 +216,7 @@
             );
         }
 
+        // Load and display the list of YouTube videos.
         function loadVideos(db) {
             setupListListener(videosList, 'videos',
                 () => true, 
@@ -173,6 +225,7 @@
             );
         }
 
+        // A helper to show a temporary success or error message next to a form.
         const showMessage = (element, text, isSuccess) => {
             element.textContent = text;
             element.className = isSuccess ? 'message-span success' : 'message-span error';
@@ -180,18 +233,11 @@
             setTimeout(() => { element.style.opacity = 0; }, 3000);
         };
 
-        addSlotForm.addEventListener('submit', e => {
-            e.preventDefault();
-            if (!slotDateInput.value) return;
-            db.ref('availableSlots').push({ date: slotDateInput.value, isBooked: false })
-                .then(() => showMessage(slotMsg, 'Slot added!', true))
-                .catch(err => showMessage(slotMsg, err.message, false));
-            addSlotForm.reset();
-        });
-
+        // Handles the logic for adding a new video.
         function handleAddVideo(db) {
             let videoId = videoIdInput.value.trim();
             if (!videoId) return;
+            // Try to extract the video ID from a full YouTube URL.
             try {
                 if (videoId.includes("youtube.com") || videoId.includes("youtu.be")) {
                     const url = new URL(videoId);
@@ -203,6 +249,8 @@
                 showMessage(videoMsg, 'Invalid YouTube ID or URL.', false);
                 return;
             }
+
+            // Push the new video ID to the 'videos' path in the database.
             db.ref('videos').push({ id: videoId })
                 .then(() => showMessage(videoMsg, 'Video added!', true))
                 .catch(err => showMessage(videoMsg, err.message, false));
