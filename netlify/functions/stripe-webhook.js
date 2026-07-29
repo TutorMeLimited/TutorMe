@@ -5,7 +5,9 @@ const axios = require('axios');
 
 // Initialize Firebase Admin SDK
 // You must set GOOGLE_APPLICATION_CREDENTIALS as a JSON environment variable in Netlify
-initializeApp();
+initializeApp({
+    databaseURL: process.env.DATABASE_URL,
+});
 
 const db = getDatabase();
 

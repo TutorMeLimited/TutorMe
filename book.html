@@ -31,19 +31,19 @@
             <div id="selected-slot-details" class="slot-details"></div>
         </div>
         <form id="booking-form">
+            <p>Please provide your details below. Clicking the button will open your email client to send the request.</p>
             <div class="form-group">
                 <label for="student-name">Your Full Name</label>
                 <input type="text" id="student-name" required>
             </div>
             <div class="form-group">
-                <label for="student-email">Your Email Address</label>
-                <input type="email" id="student-email" required>
-            </div>
-            <div class="form-group">
                 <label for="student-phone">Your Phone Number</label>
-                <input type="tel" id="student-phone" required>
+                <div class="phone-input-wrapper">
+                    <span class="phone-prefix">+44</span>
+                    <input type="tel" id="student-phone" required placeholder="7123 456789">
+                </div>
             </div>
-            <button type="submit" id="confirm-booking-btn" class="cta-btn" disabled>Pay & Confirm Booking</button>
+            <button type="submit" id="confirm-booking-btn" class="cta-btn" disabled>Request Booking via Email</button>
         </form>
         <p id="form-message" class="message"></p>
     </div>
@@ -52,7 +52,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
@@ -67,12 +66,10 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let stripe; // Will be initialized after fetching the key
         let formattedDate = '';
 
         const form = document.getElementById('booking-form');
         const nameInput = document.getElementById('student-name');
-        const emailInput = document.getElementById('student-email');
         const phoneInput = document.getElementById('student-phone');
         const confirmBtn = document.getElementById('confirm-booking-btn');
         const messageEl = document.getElementById('form-message');
@@ -81,73 +78,55 @@
         const bookingContainer = document.getElementById('booking-container');
 
         const urlParams = new URLSearchParams(window.location.search);
-        const slotId = urlParams.get('slotId');
-        let selectedSlotDate = null;
-        if (!slotId) {
-            bookingContainer.innerHTML = "<h2>Error</h2><p>No booking slot was selected. Please <a href='bookings.html'>go back</a> and choose a time.</p>";
-        } else {
-            const slotRef = db.ref(`availableSlots/${slotId}`);
-            slotRef.once('value').then(snapshot => {
-                if (!snapshot.exists() || snapshot.val().isBooked) {
-                    bookingContainer.innerHTML = "<h2>Sorry, this slot is no longer available.</h2><p>It may have been booked by someone else. Please <a href='bookings.html'>choose another slot</a>.</p>";
-                    return;
-                }
-                const slotData = snapshot.val();
-                selectedSlotDate = slotData.date;
-                formattedDate = new Date(selectedSlotDate).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+        const dateTimeParam = urlParams.get('datetime');
 
+        if (!dateTimeParam) {
+            bookingContainer.innerHTML = "<h2>Error</h2><p>No date and time were selected. Please <a href='bookings.html'>go back</a> and choose your preferred time.</p>";
+        } else {
+            try {
+                const selectedDateTime = new Date(decodeURIComponent(dateTimeParam));
+                // Format the date for display and for the email body
+                formattedDate = selectedDateTime.toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+                
                 selectedSlotDetails.textContent = formattedDate;
                 slotDetailsContainer.style.display = 'block';
                 confirmBtn.disabled = false;
-            });
+            } catch (e) {
+                 bookingContainer.innerHTML = "<h2>Error</h2><p>The selected date and time are invalid. Please <a href='bookings.html'>go back</a> and try again.</p>";
+            }
         }
-
-        // Fetch the Stripe Publishable Key from our new function
-        fetch('/.netlify/functions/get-stripe-key')
-            .then(res => res.json())
-            .then(data => {
-                stripe = Stripe(data.publishableKey);
-            })
-            .catch(err => {
-                console.error("Failed to fetch Stripe key", err);
-                messageEl.textContent = "Could not initialize payment system. Please refresh the page.";
-                messageEl.className = 'message error';
-            });
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Redirecting to payment...';
-            
-            // Call our Netlify function to create a checkout session
-            fetch('/.netlify/functions/create-checkout-session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    slotId: slotId,
-                    studentName: nameInput.value,
-                    studentEmail: emailInput.value,
-                    studentPhone: phoneInput.value,
-                    date: selectedSlotDate,
-                    formattedDate: formattedDate
-                }),
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.sessionId) {
-                    // Redirect to Stripe Checkout
-                    return stripe.redirectToCheckout({ sessionId: data.sessionId });
-                } else {
-                    throw new Error('Could not create checkout session.');
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                messageEl.textContent = "An error occurred while preparing the payment. Please try again.";
-                messageEl.className = 'message error'
-                confirmBtn.disabled = false;
-                confirmBtn.textContent = 'Pay & Confirm Booking';
-            });
+            confirmBtn.textContent = 'Opening Email...';
+
+            const studentName = nameInput.value;
+            const studentPhone = phoneInput.value;
+
+            const recipientEmail = "tutormewest@gmail.com";
+            const subject = `Booking Request for: ${formattedDate}`;
+            const body = `
+Hello,
+
+I would like to request a consultation for the following time:
+${formattedDate}
+
+My details are:
+Name: ${studentName}
+Phone: +44 ${studentPhone}
+
+Please confirm this booking.
+
+Thank you,
+${studentName}
+            `;
+
+            // Create and trigger the mailto link
+            window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            messageEl.textContent = "Your email client has been opened to send the request. Please complete sending the email to finalize your booking request.";
+            messageEl.className = 'message success';
         });
     </script>
 </body>
