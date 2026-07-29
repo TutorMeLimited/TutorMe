@@ -64,7 +64,6 @@
         const selectedSlotDetails = document.getElementById('selected-slot-details');
         const bookingContainer = document.getElementById('booking-container');
 
-        // Fetch config and then initialize the page
         fetch('/.netlify/functions/get-firebase-config')
             .then(response => response.json())
             .then(firebaseConfig => {
@@ -86,7 +85,6 @@
             } else {
                 try {
                     const selectedDateTime = new Date(decodeURIComponent(dateTimeParam));
-                    // Format the date for display and for the email body
                     formattedDate = selectedDateTime.toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
                     
                     selectedSlotDetails.textContent = formattedDate;
@@ -123,7 +121,6 @@ Thank you,
 ${studentName}
                 `;
 
-                // Create and trigger the mailto link
                 window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
                 messageEl.textContent = "Your email client has been opened to send the request. Please complete sending the email to finalize your booking request.";

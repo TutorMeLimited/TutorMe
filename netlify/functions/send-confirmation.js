@@ -6,7 +6,7 @@ function generateHtmlEmail(studentName, friendlyDate) {
     const psychologyColor = '#a259d9';
     const physicsColor = '#4361ee';
     const textColor = '#222';
-    const backgroundColor = psychologyColor; 
+    const backgroundColor = psychologyColor;
     return `<!DOCTYPE html> ...`;
 }
 

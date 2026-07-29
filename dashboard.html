@@ -63,7 +63,6 @@
         const slotMsg = document.getElementById('slot-msg');
         const videoMsg = document.getElementById('video-msg');
 
-        // Fetch config and then initialize the page
         fetch('/.netlify/functions/get-firebase-config')
             .then(response => response.json())
             .then(firebaseConfig => {
@@ -167,9 +166,8 @@
         }
 
         function loadVideos(db) {
-            // Use the generic listener for consistency.
             setupListListener(videosList, 'videos',
-                () => true, // No filter needed, show all videos
+                () => true, 
                 video => `<a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" rel="noopener noreferrer">youtube.com/watch?v=${video.id}</a>`,
                 'No videos added yet.'
             );
@@ -199,7 +197,7 @@
                     const url = new URL(videoId);
                     videoId = url.searchParams.get('v') || url.pathname.split('/').pop();
                 }
-            } catch (err) { /* Not a valid URL, assume it's an ID */ }
+            } catch (err) {  }
 
             if (!videoId) {
                 showMessage(videoMsg, 'Invalid YouTube ID or URL.', false);

@@ -55,11 +55,9 @@
         &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
     </footer>
 
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-    <!-- JavaScript Logic -->
     <script>
         const loginForm = document.getElementById('login-form');
         const emailInput = document.getElementById('email');
@@ -67,7 +65,6 @@
         const errorMessage = document.getElementById('error-message');
         const submitButton = loginForm.querySelector('.cta-btn');
 
-        // Fetch config and then initialize the page
         fetch('/.netlify/functions/get-firebase-config')
             .then(response => response.json())
             .then(firebaseConfig => {

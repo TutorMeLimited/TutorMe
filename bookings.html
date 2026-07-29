@@ -46,11 +46,10 @@
         const timeInput = document.getElementById('booking-time');
         const nextStepBtn = document.getElementById('next-step-btn');
         const bookingError = document.getElementById('booking-error');
-        
-        // Set the minimum date for the date picker to today
+
         const today = new Date();
         const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); 
         const dd = String(today.getDate()).padStart(2, '0');
         dateInput.min = `${yyyy}-${mm}-${dd}`;
 
@@ -58,9 +57,7 @@
             const selectedDate = dateInput.value;
             const selectedTime = timeInput.value;
             bookingError.style.display = 'none';
-
             if (selectedDate && selectedTime) {
-                // Combine date and time to pass to the next page
                 const isoDateTime = `${selectedDate}T${selectedTime}`;
                 window.location.href = `book.html?datetime=${encodeURIComponent(isoDateTime)}`;
             } else {

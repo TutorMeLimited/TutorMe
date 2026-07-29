@@ -1,6 +1,4 @@
 exports.handler = async function() {
-    // These keys are generally considered safe to be exposed on the client-side.
-    // They will be read from your Netlify environment variables.
     const firebaseConfig = {
         apiKey: process.env.PUBLIC_FIREBASE_API_KEY,
         authDomain: process.env.PUBLIC_FIREBASE_AUTH_DOMAIN,

@@ -67,7 +67,7 @@ exports.handler = async function(event) {
                 studentPhone: studentPhone.slice(0, 500),
                 date: date.slice(0, 500),
                 formattedDate: formattedDate.slice(0, 500)
-            },
+            }, 
             success_url: `${siteUrl}/success.html`,
             cancel_url: `${siteUrl}/book.html?slotId=${encodeURIComponent(slotId)}&payment=cancelled`
         });
