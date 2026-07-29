@@ -61,45 +61,46 @@
 
     <!-- JavaScript Logic -->
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "tutorme-99ca8.firebaseapp.com",
-            databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "tutorme-99ca8",
-            storageBucket: "tutorme-99ca8.firebasestorage.app",
-            messagingSenderId: "1012080798952",
-            appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d",
-            measurementId: "G-L8TJGV46E6"
-        };
-
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
         const loginForm = document.getElementById('login-form');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('error-message');
         const submitButton = loginForm.querySelector('.cta-btn');
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            errorMessage.textContent = '';
-            submitButton.disabled = true;
-            submitButton.textContent = 'Signing In...';
+        // Fetch config and then initialize the page
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                const app = firebase.initializeApp(firebaseConfig);
+                const auth = firebase.auth();
+                initializePage(auth);
+            })
+            .catch(error => {
+                console.error('Failed to load Firebase config:', error);
+                errorMessage.textContent = "Error: Could not load login configuration.";
+            });
 
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    console.log('Signed in successfully! Redirecting to dashboard...');
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    errorMessage.textContent = 'Invalid email or password.';
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Sign In';
-                });
-        });
+        function initializePage(auth) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = emailInput.value;
+                const password = passwordInput.value;
+                errorMessage.textContent = '';
+                submitButton.disabled = true;
+                submitButton.textContent = 'Signing In...';
+
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        console.log('Signed in successfully! Redirecting to dashboard...');
+                        window.location.href = 'dashboard.html';
+                    })
+                    .catch((error) => {
+                        errorMessage.textContent = 'Invalid email or password.';
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Sign In';
+                    });
+            });
+        }
     </script>
 </body>
 </html>

@@ -49,40 +49,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "tutorme-99ca8.firebaseapp.com",
-            databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "tutorme-99ca8",
-            storageBucket: "tutorme-99ca8.firebasestorage.app",
-            messagingSenderId: "1012080798952",
-            appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d",
-            measurementId: "G-L8TJGV46E6"
-        };
-
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.database();
-
         const authStatus = document.getElementById('auth-status');
         const dashboardContent = document.getElementById('dashboard-content');
         const signOutLink = document.getElementById('sign-out-link');
-        
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                authStatus.textContent = `Welcome, ${user.email}`;
-                dashboardContent.style.display = 'block';
-                signOutLink.style.display = 'inline';
-                loadDashboardData();
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-
-        signOutLink.addEventListener('click', () => {
-            auth.signOut();
-        });
-
         const bookingsList = document.getElementById('bookings-list');
         const unsoldList = document.getElementById('unsold-list');
         const slotsList = document.getElementById('slots-list');
@@ -94,11 +63,47 @@
         const slotMsg = document.getElementById('slot-msg');
         const videoMsg = document.getElementById('video-msg');
 
-        function loadDashboardData() {
+        // Fetch config and then initialize the page
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                const app = firebase.initializeApp(firebaseConfig);
+                const auth = firebase.auth();
+                const db = firebase.database();
+                initializePage(auth, db);
+            })
+            .catch(error => {
+                console.error('Failed to load Firebase config:', error);
+                authStatus.textContent = "Error: Could not load dashboard configuration.";
+            });
+
+        function initializePage(auth, db) {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    authStatus.textContent = `Welcome, ${user.email}`;
+                    dashboardContent.style.display = 'block';
+                    signOutLink.style.display = 'inline';
+                    loadDashboardData(db);
+                } else {
+                    window.location.href = 'login.html';
+                }
+            });
+
+            signOutLink.addEventListener('click', () => {
+                auth.signOut();
+            });
+
+            addVideoForm.addEventListener('submit', e => {
+                e.preventDefault();
+                handleAddVideo(db);
+            });
+        }
+
+        function loadDashboardData(db) {
             loadBookings();
             loadUnsoldSlots();
             loadAvailableSlots();
-            loadVideos();
+            loadVideos(db);
         }
         
         const formatDate = (isoString) => new Date(isoString).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
@@ -161,7 +166,7 @@
             );
         }
 
-        function loadVideos() {
+        function loadVideos(db) {
             // Use the generic listener for consistency.
             setupListListener(videosList, 'videos',
                 () => true, // No filter needed, show all videos
@@ -186,8 +191,7 @@
             addSlotForm.reset();
         });
 
-        addVideoForm.addEventListener('submit', e => {
-            e.preventDefault();
+        function handleAddVideo(db) {
             let videoId = videoIdInput.value.trim();
             if (!videoId) return;
             try {
@@ -205,7 +209,7 @@
                 .then(() => showMessage(videoMsg, 'Video added!', true))
                 .catch(err => showMessage(videoMsg, err.message, false));
             addVideoForm.reset();
-        });
+        }
     </script>
 </body>
 </html>

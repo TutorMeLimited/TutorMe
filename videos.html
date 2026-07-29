@@ -35,47 +35,47 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        // FIX: Using the correct, full Firebase config for Realtime Database
-        const firebaseConfig = {
-            apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "tutorme-99ca8.firebaseapp.com",
-            databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "tutorme-99ca8",
-            storageBucket: "tutorme-99ca8.firebasestorage.app",
-            messagingSenderId: "1012080798952",
-            appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d",
-            measurementId: "G-L8TJGV46E6"
-        };
-        firebase.initializeApp(firebaseConfig);
-        // FIX: Initializing the correct database service
-        const db = firebase.database();
-
         const videoList = document.getElementById('video-list');
-        // FIX: Reading from Realtime Database using the correct ref and 'value' event
-        const videosRef = db.ref('videos');
-        videosRef.on('value', (snapshot) => {
-            videoList.innerHTML = "";
-            videoList.classList.remove('is-empty'); // Reset the state
-            
-            if (!snapshot.exists()) {
-                videoList.classList.add('is-empty');
-                videoList.innerHTML = "<p>No videos available yet.</p>";
-                return;
-            } 
-            
-            snapshot.forEach(childSnapshot => {
-                const videoData = childSnapshot.val();
-                if (videoData && videoData.id) {
-                    const div = document.createElement('div');
-                    div.className = "video-container";
-                    div.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoData.id}" frameborder="0" allowfullscreen></iframe>`;
-                    videoList.appendChild(div);
-                }
+
+        // Fetch config and then initialize the page
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                firebase.initializeApp(firebaseConfig);
+                const db = firebase.database();
+                initializePage(db);
+            })
+            .catch(error => {
+                console.error('Failed to load Firebase config:', error);
+                videoList.innerHTML = `<p style='color:var(--accent);'>Error loading video configuration.</p>`;
             });
-        }, (error) => {
-            console.error("Error fetching videos:", error);
-            videoList.innerHTML = `<p style='color:var(--accent);'>Error loading videos: ${error.message}</p>`;
-        });
+
+        function initializePage(db) {
+            const videosRef = db.ref('videos');
+            videosRef.on('value', (snapshot) => {
+                videoList.innerHTML = "";
+                videoList.classList.remove('is-empty'); // Reset the state
+                
+                if (!snapshot.exists()) {
+                    videoList.classList.add('is-empty');
+                    videoList.innerHTML = "<p>No videos available yet.</p>";
+                    return;
+                } 
+                
+                snapshot.forEach(childSnapshot => {
+                    const videoData = childSnapshot.val();
+                    if (videoData && videoData.id) {
+                        const div = document.createElement('div');
+                        div.className = "video-container";
+                        div.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoData.id}" frameborder="0" allowfullscreen></iframe>`;
+                        videoList.appendChild(div);
+                    }
+                });
+            }, (error) => {
+                console.error("Error fetching videos:", error);
+                videoList.innerHTML = `<p style='color:var(--accent);'>Error loading videos: ${error.message}</p>`;
+            });
+        }
     </script>
 </body>
 </html>

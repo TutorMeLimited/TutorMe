@@ -53,19 +53,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAfOf2vN2YzPUAO6kfz4HSu8HYkK8TWZHY",
-            authDomain: "tutorme-99ca8.firebaseapp.com",
-            databaseURL: "https://tutorme-99ca8-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "tutorme-99ca8",
-            storageBucket: "tutorme-99ca8.firebasestorage.app",
-            messagingSenderId: "1012080798952",
-            appId: "1:1012080798952:web:e9067e9a68bb1841e72d5d",
-            measurementId: "G-L8TJGV46E6"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
         let formattedDate = '';
 
         const form = document.getElementById('booking-form');
@@ -77,36 +64,50 @@
         const selectedSlotDetails = document.getElementById('selected-slot-details');
         const bookingContainer = document.getElementById('booking-container');
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const dateTimeParam = urlParams.get('datetime');
+        // Fetch config and then initialize the page
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                firebase.initializeApp(firebaseConfig);
+                const db = firebase.database();
+                initializePage(db);
+            })
+            .catch(error => {
+                console.error('Failed to load Firebase config:', error);
+                bookingContainer.innerHTML = "<h2>Error</h2><p>Could not load booking system configuration. Please try again later.</p>";
+            });
 
-        if (!dateTimeParam) {
-            bookingContainer.innerHTML = "<h2>Error</h2><p>No date and time were selected. Please <a href='bookings.html'>go back</a> and choose your preferred time.</p>";
-        } else {
-            try {
-                const selectedDateTime = new Date(decodeURIComponent(dateTimeParam));
-                // Format the date for display and for the email body
-                formattedDate = selectedDateTime.toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
-                
-                selectedSlotDetails.textContent = formattedDate;
-                slotDetailsContainer.style.display = 'block';
-                confirmBtn.disabled = false;
-            } catch (e) {
-                 bookingContainer.innerHTML = "<h2>Error</h2><p>The selected date and time are invalid. Please <a href='bookings.html'>go back</a> and try again.</p>";
+        function initializePage(db) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const dateTimeParam = urlParams.get('datetime');
+
+            if (!dateTimeParam) {
+                bookingContainer.innerHTML = "<h2>Error</h2><p>No date and time were selected. Please <a href='bookings.html'>go back</a> and choose your preferred time.</p>";
+            } else {
+                try {
+                    const selectedDateTime = new Date(decodeURIComponent(dateTimeParam));
+                    // Format the date for display and for the email body
+                    formattedDate = selectedDateTime.toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
+                    
+                    selectedSlotDetails.textContent = formattedDate;
+                    slotDetailsContainer.style.display = 'block';
+                    confirmBtn.disabled = false;
+                } catch (e) {
+                     bookingContainer.innerHTML = "<h2>Error</h2><p>The selected date and time are invalid. Please <a href='bookings.html'>go back</a> and try again.</p>";
+                }
             }
-        }
 
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            confirmBtn.disabled = true;
-            confirmBtn.textContent = 'Opening Email...';
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'Opening Email...';
 
-            const studentName = nameInput.value;
-            const studentPhone = phoneInput.value;
+                const studentName = nameInput.value;
+                const studentPhone = phoneInput.value;
 
-            const recipientEmail = "tutormewest@gmail.com";
-            const subject = `Booking Request for: ${formattedDate}`;
-            const body = `
+                const recipientEmail = "tutormewest@gmail.com";
+                const subject = `Booking Request for: ${formattedDate}`;
+                const body = `
 Hello,
 
 I would like to request a consultation for the following time:
@@ -120,14 +121,15 @@ Please confirm this booking.
 
 Thank you,
 ${studentName}
-            `;
+                `;
 
-            // Create and trigger the mailto link
-            window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                // Create and trigger the mailto link
+                window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-            messageEl.textContent = "Your email client has been opened to send the request. Please complete sending the email to finalize your booking request.";
-            messageEl.className = 'message success';
-        });
+                messageEl.textContent = "Your email client has been opened to send the request. Please complete sending the email to finalize your booking request.";
+                messageEl.className = 'message success';
+            });
+        }
     </script>
 </body>
 </html> 
