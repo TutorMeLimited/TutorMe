@@ -101,13 +101,18 @@
 
         // This function runs after Firebase is initialized.
         function initializePage(auth, db) {
+            const adminUIDs = ['beMqbQLBDWaWySNx134ri1KJwQi2', 'P1gWMa5YWyWlcFwebxYEjMPzLwi2'];
+            
             auth.onAuthStateChanged(user => {
-                if (user) {
+                if (user && adminUIDs.includes(user.uid)) {
                     authStatus.textContent = `Welcome, ${user.email}`;
                     // Only show the dashboard content if the user is authenticated.
                     dashboardContent.style.display = 'block';
                     signOutLink.style.display = 'inline';
                     loadDashboardData(db);
+                } else if (user) {
+                    // Logged in, but not an admin (client). Redirect away.
+                    window.location.href = 'client-login.html';
                 } else {
                     window.location.href = 'login.html';
                 }
