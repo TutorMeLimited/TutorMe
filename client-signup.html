@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Sign In - Tutormee</title>
+    <title>Client Sign Up - Tutormee</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,27 +27,22 @@
     
     <main class="login-main">
         <div class="login-container">
-            <i class="fas fa-user-shield login-icon"></i>
-            <h1>Admin Sign In</h1>
-            <p>Please enter your credentials to access the dashboard.</p>
-            <form id="login-form">
+            <i class="fas fa-user-plus login-icon"></i>
+            <h1>Create Your Account</h1>
+            <p>Sign up to get access to our exclusive video content.</p>
+            <form id="signup-form">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" required placeholder="you@example.com">
-                    </div>
+                    <input type="email" id="email" required placeholder="you@example.com">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" required placeholder="••••••••">
-                    </div>
+                    <input type="password" id="password" required placeholder="Minimum 6 characters">
                 </div>
-                <button type="submit" class="cta-btn">Sign In</button>
+                <button type="submit" class="cta-btn">Sign Up</button>
             </form>
             <p id="error-message"></p>
+            <p style="margin-top: 1.5rem; color: #555;">Already have an account? <a href="client-login.html">Sign in here</a>.</p>
         </div>
     </main>
 
@@ -59,11 +54,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
     <script>
-        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('error-message');
-        const submitButton = loginForm.querySelector('.cta-btn');
+        const submitButton = signupForm.querySelector('.cta-btn');
 
         fetch('/.netlify/functions/get-firebase-config')
             .then(response => response.json())
@@ -74,27 +69,26 @@
             })
             .catch(error => {
                 console.error('Failed to load Firebase config:', error);
-                errorMessage.textContent = "Error: Could not load login configuration.";
+                errorMessage.textContent = "Error: Could not load signup configuration.";
             });
 
         function initializePage(auth) {
-            loginForm.addEventListener('submit', (e) => {
+            signupForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const email = emailInput.value;
                 const password = passwordInput.value;
                 errorMessage.textContent = '';
                 submitButton.disabled = true;
-                submitButton.textContent = 'Signing In...';
+                submitButton.textContent = 'Creating Account...';
 
-                auth.signInWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        console.log('Signed in successfully! Redirecting to dashboard...');
-                        window.location.href = 'dashboard.html';
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(() => {
+                        window.location.href = 'videos.html';
                     })
                     .catch((error) => {
-                        errorMessage.textContent = 'Invalid email or password.';
+                        errorMessage.textContent = error.message;
                         submitButton.disabled = false;
-                        submitButton.textContent = 'Sign In';
+                        submitButton.textContent = 'Sign Up';
                     });
             });
         }
