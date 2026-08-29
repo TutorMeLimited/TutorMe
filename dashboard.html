@@ -152,7 +152,7 @@
          * @param {string} emptyMsg - The message to display if the list is empty.
          * @param {firebase.database.Database} db - The Firebase database instance.
          */
-        const setupListListener = (listElement, dbPath, filterFn, formatFn, emptyMsg) => {
+        const setupListListener = (db, listElement, dbPath, filterFn, formatFn, emptyMsg) => {
             const dbRef = db.ref(dbPath).orderByChild('date');
             dbRef.on('value', snapshot => {
                 listElement.innerHTML = '';
@@ -175,7 +175,7 @@
 
         // Load and display the list of YouTube videos.
         function loadVideos(db) {
-            setupListListener(videosList, 'videos',
+            setupListListener(db, videosList, 'videos',
                 () => true, 
                 video => `<a href="https://www.youtube.com/watch?v=${video.id}" target="_blank" rel="noopener noreferrer">youtube.com/watch?v=${video.id}</a>`,
                 'No videos added yet.'
@@ -224,8 +224,12 @@
 
         // Load invite codes
         function loadInvites(db) {
+            console.log("loadInvites called");
+            invitesList.innerHTML = '<p>Loading invite codes...</p>';
+            
             const dbRef = db.ref('inviteCodes');
             dbRef.on('value', snapshot => {
+                console.log("inviteCodes on value fired. Exists?", snapshot.exists());
                 invitesList.innerHTML = '';
                 let hasItems = false;
                 snapshot.forEach(childSnapshot => {
