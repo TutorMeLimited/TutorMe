@@ -39,6 +39,10 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" required placeholder="Minimum 6 characters">
                 </div>
+                <div class="form-group">
+                    <label for="invite-code">Invite Code</label>
+                    <input type="text" id="invite-code" required placeholder="Enter your invite code">
+                </div>
                 <button type="submit" class="cta-btn">Sign Up</button>
             </form>
             <p id="error-message"></p>
@@ -52,11 +56,13 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
         const signupForm = document.getElementById('signup-form');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
+        const inviteCodeInput = document.getElementById('invite-code');
         const errorMessage = document.getElementById('error-message');
         const submitButton = signupForm.querySelector('.cta-btn');
 
@@ -65,23 +71,44 @@
             .then(firebaseConfig => {
                 const app = firebase.initializeApp(firebaseConfig);
                 const auth = firebase.auth();
-                initializePage(auth);
+                const db = firebase.database();
+                initializePage(auth, db);
             })
             .catch(error => {
                 console.error('Failed to load Firebase config:', error);
                 errorMessage.textContent = "Error: Could not load signup configuration.";
             });
 
-        function initializePage(auth) {
+        function initializePage(auth, db) {
             signupForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const email = emailInput.value;
                 const password = passwordInput.value;
+                const code = inviteCodeInput.value.trim().toUpperCase();
+                
                 errorMessage.textContent = '';
                 submitButton.disabled = true;
-                submitButton.textContent = 'Creating Account...';
+                submitButton.textContent = 'Verifying Invite Code...';
 
-                auth.createUserWithEmailAndPassword(email, password)
+                const inviteRef = db.ref('inviteCodes/' + code);
+                
+                inviteRef.once('value')
+                    .then(snapshot => {
+                        if (!snapshot.exists()) {
+                            throw new Error("Invalid invite code.");
+                        }
+                        if (snapshot.val() === true) {
+                            throw new Error("This invite code has already been used.");
+                        }
+                        
+                        // Code is valid and unused. Create account.
+                        submitButton.textContent = 'Creating Account...';
+                        return auth.createUserWithEmailAndPassword(email, password);
+                    })
+                    .then(() => {
+                        // Mark the code as used.
+                        return inviteRef.set(true);
+                    })
                     .then(() => {
                         window.location.href = 'videos.html';
                     })

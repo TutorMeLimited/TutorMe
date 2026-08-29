@@ -60,6 +60,15 @@
                 </form>
                 <div class="list" id="videos-list"></div>
             </div>
+            
+            <div class="section section-invites">
+                <h3><i class="fas fa-key"></i> Invite Codes</h3>
+                <form id="generate-invite-form" class="form-inline">
+                    <button type="submit" class="btn">Generate New Invite Code</button>
+                    <span id="invite-msg" class="message-span"></span>
+                </form>
+                <div class="list" id="invites-list"></div>
+            </div>
         </div>
     </div>
     <footer>
@@ -78,12 +87,15 @@
         // Get references to all the interactive elements on the page.
         const slotsList = document.getElementById('slots-list');
         const videosList = document.getElementById('videos-list');
+        const invitesList = document.getElementById('invites-list');
         const addSlotForm = document.getElementById('add-slot-form');
         const addVideoForm = document.getElementById('add-video-form');
+        const generateInviteForm = document.getElementById('generate-invite-form');
         const slotDateInput = document.getElementById('slot-date');
         const videoIdInput = document.getElementById('video-id');
         const slotMsg = document.getElementById('slot-msg');
         const videoMsg = document.getElementById('video-msg');
+        const inviteMsg = document.getElementById('invite-msg');
 
         // Fetch the Firebase configuration from our Netlify function first.
         fetch('/.netlify/functions/get-firebase-config')
@@ -123,6 +135,11 @@
                 auth.signOut();
             });
 
+            generateInviteForm.addEventListener('submit', e => {
+                e.preventDefault();
+                handleGenerateInvite(db);
+            });
+
             addVideoForm.addEventListener('submit', e => {
                 e.preventDefault();
                 handleAddVideo(db);
@@ -145,6 +162,7 @@
             loadUnsoldSlots(db);
             loadAvailableSlots(db);
             loadVideos(db);
+            loadInvites(db);
         }
         
         // A helper function to format ISO date strings into a more readable format.
@@ -260,6 +278,43 @@
                 .then(() => showMessage(videoMsg, 'Video added!', true))
                 .catch(err => showMessage(videoMsg, err.message, false));
             addVideoForm.reset();
+        }
+
+        // Handles generating a new invite code
+        function handleGenerateInvite(db) {
+            const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+            db.ref('inviteCodes/' + code).set(false)
+                .then(() => showMessage(inviteMsg, `Generated ${code}`, true))
+                .catch(err => showMessage(inviteMsg, err.message, false));
+        }
+
+        // Load invite codes
+        function loadInvites(db) {
+            const dbRef = db.ref('inviteCodes');
+            dbRef.on('value', snapshot => {
+                invitesList.innerHTML = '';
+                let hasItems = false;
+                snapshot.forEach(childSnapshot => {
+                    hasItems = true;
+                    const code = childSnapshot.key;
+                    const isUsed = childSnapshot.val();
+                    
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    item.innerHTML = `<span><strong>${code}</strong> - ${isUsed ? '<span style="color:red;">Used</span>' : '<span style="color:green;">Unused</span>'}</span>`;
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'btn';
+                    removeBtn.textContent = 'Delete';
+                    removeBtn.onclick = () => db.ref(`inviteCodes/${code}`).remove();
+                    
+                    item.appendChild(removeBtn);
+                    invitesList.appendChild(item);
+                });
+                if (!hasItems) {
+                    invitesList.innerHTML = `<p>No invite codes generated yet.</p>`;
+                }
+            });
         }
     </script>
 </body>
