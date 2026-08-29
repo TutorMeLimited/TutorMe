@@ -72,7 +72,7 @@
         const videoMsg = document.getElementById('video-msg');
         const inviteMsg = document.getElementById('invite-msg');
 
-        // Fetch the Firebase configuration from our Netlify function first.
+        // We need to grab our Firebase settings from the server before doing anything else.
         fetch('/.netlify/functions/get-firebase-config')
             .then(response => response.json())
             .then(firebaseConfig => {
@@ -86,26 +86,26 @@
                 authStatus.textContent = "Error: Could not load dashboard configuration.";
             });
 
-        // This function runs after Firebase is initialized.
+        // Once Firebase is ready to go, we can set up the rest of the page.
         function initializePage(auth, db) {
             const adminUIDs = ['beMqbQLBDWaWySNx134ri1KJwQi2', 'P1gWMa5YWyWlcFwebxYEjMPzLwi2'];
             
             auth.onAuthStateChanged(user => {
                 if (user && adminUIDs.includes(user.uid)) {
                     authStatus.textContent = `Welcome, ${user.email}`;
-                    // Only show the dashboard content if the user is authenticated.
+                    // We only want to reveal the dashboard if the user is actually an admin.
                     dashboardContent.style.display = 'block';
                     signOutLink.style.display = 'inline';
                     loadDashboardData(db);
                 } else if (user) {
-                    // Logged in, but not an admin (client). Redirect away.
+                    // If a regular student somehow gets here, let's kindly redirect them to their own portal.
                     window.location.href = 'client-login.html';
                 } else {
                     window.location.href = 'login.html';
                 }
             });
 
-            // Set up event listeners for user actions.
+            // Let's listen for when the admin clicks buttons or submits forms.
             signOutLink.addEventListener('click', () => {
                 auth.signOut();
             });
@@ -121,13 +121,13 @@
             });
         }
 
-        // Kicks off the loading of data for all sections of the dashboard.
+        // Time to pull all the live data from the database and populate the screen.
         function loadDashboardData(db) {
             loadVideos(db);
             loadInvites(db);
         }
         
-        // A helper function to format ISO date strings into a more readable format.
+        // Let's turn those ugly computer dates into something a human can actually read.
         const formatDate = (isoString) => new Date(isoString).toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
 
         const renderListItem = (listElement, text, id, onRemove) => {
@@ -143,14 +143,14 @@
         };
         
         /**
-         * A generic function to set up a real-time listener for a list of items from Firebase.
-         * It handles fetching, filtering, formatting, and rendering items, including the empty state.
+         * This handy tool will automatically watch the database and update our lists whenever something changes.
+         * It makes sure the screen always matches what's saved in the cloud.
+         * @param {firebase.database.Database} db - The Firebase database instance.
          * @param {HTMLElement} listElement - The DOM element to render the list into.
          * @param {string} dbPath - The path in the Firebase Realtime Database (e.g., 'videos').
          * @param {function} filterFn - A function that returns true if an item should be included.
          * @param {function} formatFn - A function that returns the HTML string for an item.
          * @param {string} emptyMsg - The message to display if the list is empty.
-         * @param {firebase.database.Database} db - The Firebase database instance.
          */
         const setupListListener = (db, listElement, dbPath, filterFn, formatFn, emptyMsg) => {
             const dbRef = db.ref(dbPath).orderByChild('date');
@@ -173,7 +173,7 @@
 
 
 
-        // Load and display the list of YouTube videos.
+        // Let's pull the videos from the database and show them on the screen.
         function loadVideos(db) {
             setupListListener(db, videosList, 'videos',
                 () => true, 
@@ -182,7 +182,7 @@
             );
         }
 
-        // A helper to show a temporary success or error message next to a form.
+        // We use this to briefly pop up a success or error message and then fade it out.
         const showMessage = (element, text, isSuccess) => {
             element.textContent = text;
             element.className = isSuccess ? 'message-span success' : 'message-span error';
@@ -190,11 +190,11 @@
             setTimeout(() => { element.style.opacity = 0; }, 3000);
         };
 
-        // Handles the logic for adding a new video.
+        // What should happen when the admin tries to add a new video?
         function handleAddVideo(db) {
             let videoId = videoIdInput.value.trim();
             if (!videoId) return;
-            // Try to extract the video ID from a full YouTube URL.
+            // In case they pasted a full URL instead of just the ID, let's try to pull just the ID out.
             try {
                 if (videoId.includes("youtube.com") || videoId.includes("youtu.be")) {
                     const url = new URL(videoId);
@@ -207,14 +207,14 @@
                 return;
             }
 
-            // Push the new video ID to the 'videos' path in the database.
+            // Let's save this new video safely in the database.
             db.ref('videos').push({ id: videoId })
                 .then(() => showMessage(videoMsg, 'Video added!', true))
                 .catch(err => showMessage(videoMsg, err.message, false));
             addVideoForm.reset();
         }
 
-        // Handles generating a new invite code
+        // What should happen when the admin clicks to generate a new invite code?
         function handleGenerateInvite(db) {
             const code = Math.random().toString(36).substring(2, 8).toUpperCase();
             db.ref('inviteCodes/' + code).set(false)
@@ -222,7 +222,7 @@
                 .catch(err => showMessage(inviteMsg, err.message, false));
         }
 
-        // Load invite codes
+        // Let's pull all the invite codes from the database so the admin can see them.
         function loadInvites(db) {
             console.log("loadInvites called");
             invitesList.innerHTML = '<p>Loading invite codes...</p>';

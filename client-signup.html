@@ -141,7 +141,7 @@
                 
                 errorMessage.textContent = '';
                 
-                // Validate Password Rules
+                // Let's quickly verify that the password isn't missing any of our security rules.
                 if (password !== confirmPassword) {
                     errorMessage.textContent = "Passwords do not match.";
                     return;
@@ -167,12 +167,12 @@
                             throw new Error("This invite code has already been used.");
                         }
                         
-                        // Code is valid and unused. Create account.
+                        // The invite code checks out! Let's go ahead and create their account.
                         submitButton.textContent = 'Creating Account...';
                         return auth.createUserWithEmailAndPassword(email, password);
                     })
                     .then(() => {
-                        // Mark the code as used.
+                        // Let's mark this invite code as used so no one else can claim it.
                         return inviteRef.set(true);
                     })
                     .then(() => {

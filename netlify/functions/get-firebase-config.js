@@ -1,12 +1,11 @@
 /**
  * Netlify Function: get-firebase-config
  * 
- * Securely provides the public Firebase configuration to the frontend.
- * This function reads the configuration from environment variables on the server-side,
- * preventing sensitive keys from being exposed directly in the client-side code.
+ * Safely shares your Firebase settings with your website so you don't have to hardcode them.
+ * This helper grabs keys from the server's environment settings so they stay hidden from prying eyes.
  */
 exports.handler = async function(event) {
-    // This function should only respond to GET requests.
+    // We only want this script to hand out data, not receive it.
     if (event.httpMethod !== 'GET') {
         return {
             statusCode: 405,
@@ -14,7 +13,7 @@ exports.handler = async function(event) {
         };
     }
 
-    // Construct the Firebase config object from environment variables.
+    // Let's build the Firebase configuration puzzle using our secret environment variables.
     const firebaseConfig = {
         apiKey: process.env.PUBLIC_FIREBASE_API_KEY || process.env.FIREBASE_API_KEY,
         authDomain: process.env.PUBLIC_FIREBASE_AUTH_DOMAIN || process.env.FIREBASE_AUTH_DOMAIN,
