@@ -31,25 +31,7 @@
 
         <div id="dashboard-content" style="display: none;" class="dashboard-grid">
             <!-- This section was missing its HTML but had corresponding JavaScript. I've added it back. -->
-            <div class="section section-slots">
-                <h3><i class="fas fa-calendar-plus"></i> Manage Available Slots</h3>
-                <form id="add-slot-form" class="form-inline">
-                    <input type="datetime-local" id="slot-date" required>
-                    <button type="submit" class="btn">Add Slot</button>
-                    <span id="slot-msg" class="message-span"></span>
-                </form>
-                <div class="list" id="slots-list"></div>
-            </div>
 
-            <div class="section section-bookings">
-                <h3><i class="fas fa-calendar-check"></i> Upcoming Bookings</h3>
-                <div class="list" id="bookings-list"></div>
-            </div>
-
-            <div class="section section-unsold">
-                <h3><i class="fas fa-history"></i> Past Unsold Slots</h3>
-                <div class="list" id="unsold-list"></div>
-            </div>
             
             <div class="section section-videos">
                 <h3><i class="fas fa-video"></i> Videos</h3>
@@ -82,18 +64,11 @@
         const authStatus = document.getElementById('auth-status');
         const dashboardContent = document.getElementById('dashboard-content');
         const signOutLink = document.getElementById('sign-out-link');
-        const bookingsList = document.getElementById('bookings-list');
-        const unsoldList = document.getElementById('unsold-list');
-        // Get references to all the interactive elements on the page.
-        const slotsList = document.getElementById('slots-list');
         const videosList = document.getElementById('videos-list');
         const invitesList = document.getElementById('invites-list');
-        const addSlotForm = document.getElementById('add-slot-form');
         const addVideoForm = document.getElementById('add-video-form');
         const generateInviteForm = document.getElementById('generate-invite-form');
-        const slotDateInput = document.getElementById('slot-date');
         const videoIdInput = document.getElementById('video-id');
-        const slotMsg = document.getElementById('slot-msg');
         const videoMsg = document.getElementById('video-msg');
         const inviteMsg = document.getElementById('invite-msg');
 
@@ -144,23 +119,10 @@
                 e.preventDefault();
                 handleAddVideo(db);
             });
-
-            addSlotForm.addEventListener('submit', e => {
-                e.preventDefault();
-                if (!slotDateInput.value) return;
-                // Push a new slot to the 'availableSlots' path in the database.
-                db.ref('availableSlots').push({ date: slotDateInput.value, isBooked: false })
-                    .then(() => showMessage(slotMsg, 'Slot added!', true))
-                    .catch(err => showMessage(slotMsg, err.message, false));
-                addSlotForm.reset();
-            });
         }
 
         // Kicks off the loading of data for all sections of the dashboard.
         function loadDashboardData(db) {
-            loadBookings(db);
-            loadUnsoldSlots(db);
-            loadAvailableSlots(db);
             loadVideos(db);
             loadInvites(db);
         }
@@ -209,35 +171,7 @@
             });
         };
 
-        // Load and display upcoming bookings.
-        function loadBookings(db) {
-            setupListListener(bookingsList, 'bookings',
-                booking => new Date(booking.date) > new Date(), 
-                booking => `
-                    ${formatDate(booking.date)} - <strong>${booking.studentName || 'N/A'}</strong><br>
-                    <small>Email: ${booking.studentEmail || 'N/A'} | Phone: ${booking.studentPhone || 'N/A'}</small>
-                `,
-                'No upcoming bookings.'
-            );
-        }
 
-        // Load and display slots from the past that were never booked.
-        function loadUnsoldSlots(db) {
-            setupListListener(unsoldList, 'availableSlots',
-                slot => new Date(slot.date) < new Date() && !slot.isBooked, 
-                slot => formatDate(slot.date), 
-                'No past unsold slots.'
-            );
-        };
-
-        // Load and display future slots that are available for booking.
-        function loadAvailableSlots(db) {
-            setupListListener(slotsList, 'availableSlots',
-                slot => new Date(slot.date) > new Date() && !slot.isBooked,
-                slot => formatDate(slot.date), 
-                'No available slots to show.'
-            );
-        }
 
         // Load and display the list of YouTube videos.
         function loadVideos(db) {
@@ -314,6 +248,9 @@
                 if (!hasItems) {
                     invitesList.innerHTML = `<p>No invite codes generated yet.</p>`;
                 }
+            }, (error) => {
+                console.error("Error loading invites:", error);
+                invitesList.innerHTML = `<p style="color:red">Failed to load invites: ${error.message}</p>`;
             });
         }
     </script>
