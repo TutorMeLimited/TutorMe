@@ -38,11 +38,17 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" required placeholder="••••••••">
-                    <small style="color: #666; font-size: 0.8rem; display: block; margin-top: 0.25rem;">Must be at least 8 characters, with 1 uppercase, 1 lowercase, and 1 number.</small>
+                    <ul id="password-requirements" style="list-style: none; padding-left: 0; margin-top: 0.5rem; font-size: 0.85rem; line-height: 1.4;">
+                        <li id="req-length" style="color: #d32f2f;"><i class="fas fa-times" style="width:16px;"></i> <span>At least 8 characters</span></li>
+                        <li id="req-uppercase" style="color: #d32f2f;"><i class="fas fa-times" style="width:16px;"></i> <span>At least 1 uppercase letter</span></li>
+                        <li id="req-lowercase" style="color: #d32f2f;"><i class="fas fa-times" style="width:16px;"></i> <span>At least 1 lowercase letter</span></li>
+                        <li id="req-number" style="color: #d32f2f;"><i class="fas fa-times" style="width:16px;"></i> <span>At least 1 number</span></li>
+                    </ul>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password" required placeholder="••••••••">
+                    <small id="match-message" style="display: block; margin-top: 0.3rem; font-size: 0.85rem;"></small>
                 </div>
                 <div class="form-group">
                     <label for="invite-code">Invite Code</label>
@@ -86,6 +92,46 @@
             });
 
         function initializePage(auth, db) {
+            const reqLength = document.getElementById('req-length');
+            const reqUppercase = document.getElementById('req-uppercase');
+            const reqLowercase = document.getElementById('req-lowercase');
+            const reqNumber = document.getElementById('req-number');
+            const matchMessage = document.getElementById('match-message');
+
+            function updateRequirement(element, isValid) {
+                const icon = element.querySelector('i');
+                if (isValid) {
+                    element.style.color = 'var(--chemistry)';
+                    icon.className = 'fas fa-check';
+                } else {
+                    element.style.color = '#d32f2f';
+                    icon.className = 'fas fa-times';
+                }
+            }
+
+            function checkMatch() {
+                if (confirmPasswordInput.value === '') {
+                    matchMessage.textContent = '';
+                } else if (passwordInput.value === confirmPasswordInput.value) {
+                    matchMessage.style.color = 'var(--chemistry)';
+                    matchMessage.innerHTML = '<i class="fas fa-check" style="width:16px;"></i> Passwords match';
+                } else {
+                    matchMessage.style.color = '#d32f2f';
+                    matchMessage.innerHTML = '<i class="fas fa-times" style="width:16px;"></i> Passwords do not match';
+                }
+            }
+
+            passwordInput.addEventListener('input', () => {
+                const val = passwordInput.value;
+                updateRequirement(reqLength, val.length >= 8);
+                updateRequirement(reqUppercase, /[A-Z]/.test(val));
+                updateRequirement(reqLowercase, /[a-z]/.test(val));
+                updateRequirement(reqNumber, /\d/.test(val));
+                checkMatch();
+            });
+
+            confirmPasswordInput.addEventListener('input', checkMatch);
+
             signupForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const email = emailInput.value;
