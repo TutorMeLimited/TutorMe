@@ -547,6 +547,6 @@ h2 {
 }
 
 .highlight-flash {
-    animation: flashHighlight 1.5s ease-out 3;
+    animation: flashHighlight 0.5s ease-out 2;
     border-radius: 8px;
 }
