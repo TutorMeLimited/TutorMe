@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin FAQ - Tutormee</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page-body">
+    <header>
+        <h1>Tutormee</h1>
+        <p>Specialist online tutoring for A-Level & GCSE</p>
+        <div class="website-link">
+            Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
+        </div>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="Our-services.html">Our Services</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="client-login.html">Videos</a>
+        <a href="contact-us.html">Contact Us</a>
+        <a href="login.html">Admin Login</a>
+    </nav>
+    
+    <div id="auth-status" style="text-align:center; padding:1rem;">Checking authorization...</div>
+    
+    <main class="login-main" id="faq-content" style="display:none; max-width: 800px; margin: 2rem auto; text-align: left;">
+        <div class="login-container" style="max-width: 100%;">
+            <h1 style="color:var(--accent);"><i class="fas fa-question-circle"></i> Admin FAQ</h1>
+            <p>Welcome to the Admin FAQ. Here are some quick answers to common dashboard tasks.</p>
+            
+            <div style="margin-top: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
+                <h3 style="color:var(--physics);">How do I grant a student access to the videos?</h3>
+                <p>Go to the Dashboard and click <strong>"Generate New Invite Code"</strong>. Click the <strong>Copy</strong> button next to it and send it to the student. They will enter this code on the Sign Up page.</p>
+            </div>
+            
+            <div style="margin-top: 1rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
+                <h3 style="color:var(--physics);">Can an invite code be used multiple times?</h3>
+                <p>No. Each invite code is valid for a single use. Once a student creates an account with it, the code is marked as "Used" and cannot be redeemed again.</p>
+            </div>
+            
+            <div style="margin-top: 1rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
+                <h3 style="color:var(--physics);">How do I temporarily block a user?</h3>
+                <p>In the Manage Users section, click the <strong>"Suspend"</strong> button next to the user. They will instantly lose access to the platform. You can click <strong>"Unsuspend"</strong> at any time to restore their access.</p>
+            </div>
+            
+            <div style="margin-top: 1rem; padding-bottom: 1rem;">
+                <h3 style="color:var(--physics);">How do I add a new video?</h3>
+                <p>In the Videos section on the Dashboard, paste either the full YouTube URL (e.g. <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ</code>) or just the ID (<code>dQw4w9WgXcQ</code>) and click Add Video.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="dashboard.html" class="cta-btn" style="text-decoration: none;">Back to Dashboard</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script>
+        const authStatus = document.getElementById('auth-status');
+        const faqContent = document.getElementById('faq-content');
+
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                firebase.initializeApp(firebaseConfig);
+                const auth = firebase.auth();
+                
+                const adminUIDs = ['beMqbQLBDWaWySNx134ri1KJwQi2', 'P1gWMa5YWyWlcFwebxYEjMPzLwi2'];
+                
+                auth.onAuthStateChanged(user => {
+                    if (user && adminUIDs.includes(user.uid)) {
+                        authStatus.style.display = 'none';
+                        faqContent.style.display = 'block';
+                    } else if (user) {
+                        window.location.href = 'client-login.html';
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Failed to load Firebase config:', error);
+                authStatus.textContent = "Error loading configuration.";
+            });
+    </script>
+</body>
+</html>
