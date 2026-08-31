@@ -51,6 +51,13 @@
                 </form>
                 <div class="list" id="invites-list"></div>
             </div>
+            
+            <div class="section section-users">
+                <h3><i class="fas fa-users"></i> Manage Users</h3>
+                <div class="list" id="users-list">
+                    <p>Loading users...</p>
+                </div>
+            </div>
         </div>
     </div>
     <footer>
@@ -61,11 +68,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
+        const signOutLink = document.getElementById('sign-out-link');
         const authStatus = document.getElementById('auth-status');
         const dashboardContent = document.getElementById('dashboard-content');
-        const signOutLink = document.getElementById('sign-out-link');
+        
         const videosList = document.getElementById('videos-list');
         const invitesList = document.getElementById('invites-list');
+        const usersList = document.getElementById('users-list');
+        
         const addVideoForm = document.getElementById('add-video-form');
         const generateInviteForm = document.getElementById('generate-invite-form');
         const videoIdInput = document.getElementById('video-id');
@@ -96,7 +106,7 @@
                     // We only want to reveal the dashboard if the user is actually an admin.
                     dashboardContent.style.display = 'block';
                     signOutLink.style.display = 'inline';
-                    loadDashboardData(db);
+                    loadDashboardData(auth, db);
                 } else if (user) {
                     // If a regular student somehow gets here, let's kindly redirect them to their own portal.
                     window.location.href = 'client-login.html';
@@ -122,9 +132,10 @@
         }
 
         // Time to pull all the live data from the database and populate the screen.
-        function loadDashboardData(db) {
+        function loadDashboardData(auth, db) {
             loadVideos(db);
             loadInvites(db);
+            loadUsers(auth);
         }
         
         // Let's turn those ugly computer dates into something a human can actually read.
@@ -256,6 +267,86 @@
                 console.error("Error loading invites:", error);
                 invitesList.innerHTML = `<p style="color:red">Failed to load invites: ${error.message}</p>`;
             });
+        }
+
+        // Fetch the user list from our Netlify backend
+        async function loadUsers(auth) {
+            try {
+                const token = await auth.currentUser.getIdToken();
+                const response = await fetch('/.netlify/functions/manage-users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch users');
+                }
+                
+                const data = await response.json();
+                
+                usersList.innerHTML = '';
+                if (data.users.length === 0) {
+                    usersList.innerHTML = '<p>No users found.</p>';
+                    return;
+                }
+                
+                data.users.forEach(u => {
+                    const item = document.createElement('div');
+                    item.className = 'list-item';
+                    
+                    const statusHtml = u.isAdmin ? '<span style="color:var(--primary);">Admin</span>' : 
+                                      (u.disabled ? '<span style="color:red;">Suspended</span>' : '<span style="color:green;">Active</span>');
+                    
+                    let buttonsHtml = '';
+                    if (!u.isAdmin) {
+                        const suspendAction = u.disabled ? 'unsuspend' : 'suspend';
+                        const suspendText = u.disabled ? 'Unsuspend' : 'Suspend';
+                        buttonsHtml = `
+                            <button class="btn" style="background:${u.disabled ? 'var(--chemistry)' : '#d32f2f'};" onclick="manageUser('${u.uid}', '${suspendAction}')">${suspendText}</button>
+                            <button class="btn" onclick="if(confirm('Are you sure you want to permanently delete this user?')) manageUser('${u.uid}', 'delete')">Delete</button>
+                        `;
+                    }
+                    
+                    item.innerHTML = `
+                        <div style="flex-grow: 1;">
+                            <strong>${u.email}</strong> - ${statusHtml}
+                            <br><small style="color:#666;">Joined: ${new Date(u.creationTime).toLocaleDateString()}</small>
+                        </div>
+                        <div style="display:flex; gap: 0.5rem;">
+                            ${buttonsHtml}
+                        </div>
+                    `;
+                    usersList.appendChild(item);
+                });
+                
+            } catch (error) {
+                console.error("Error loading users:", error);
+                usersList.innerHTML = `<p style="color:red">Error loading users. Make sure your Netlify function has the right permissions.</p>`;
+            }
+        }
+        
+        // Send a request to the Netlify backend to delete or suspend a user
+        async function manageUser(uid, action) {
+            try {
+                const token = await firebase.auth().currentUser.getIdToken();
+                const response = await fetch('/.netlify/functions/manage-users', {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ uid, action })
+                });
+                
+                const data = await response.json();
+                if (!response.ok) {
+                    alert(data.error || 'Something went wrong.');
+                } else {
+                    // Reload the list
+                    loadUsers(firebase.auth());
+                }
+            } catch (error) {
+                alert('Request failed: ' + error.message);
+            }
         }
     </script>
 </body>
