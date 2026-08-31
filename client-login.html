@@ -88,8 +88,12 @@
                     .then(() => {
                         window.location.href = 'videos.html';
                     })
-                    .catch(() => {
-                        errorMessage.textContent = 'Invalid email or password.';
+                    .catch((error) => {
+                        if (error.code === 'auth/user-disabled') {
+                            errorMessage.textContent = 'Your account has been suspended.';
+                        } else {
+                            errorMessage.textContent = 'Invalid email or password.';
+                        }
                         submitButton.disabled = false;
                         submitButton.textContent = 'Sign In';
                     });

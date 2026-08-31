@@ -53,7 +53,10 @@
             </div>
             
             <div class="section section-users">
-                <h3><i class="fas fa-users"></i> Manage Users</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="margin-bottom: 0;"><i class="fas fa-users"></i> Manage Users</h3>
+                    <input type="text" id="user-search" placeholder="Search by email..." style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 5px; width: 200px;">
+                </div>
                 <div class="list" id="users-list">
                     <p>Loading users...</p>
                 </div>
@@ -128,6 +131,19 @@
             addVideoForm.addEventListener('submit', e => {
                 e.preventDefault();
                 handleAddVideo(db);
+            });
+            const userSearchInput = document.getElementById('user-search');
+            userSearchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const items = usersList.querySelectorAll('.list-item');
+                items.forEach(item => {
+                    const emailElem = item.querySelector('strong');
+                    if (emailElem && emailElem.textContent.toLowerCase().includes(term)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
             });
         }
 
@@ -252,12 +268,30 @@
                     item.className = 'list-item';
                     item.innerHTML = `<span><strong>${code}</strong> - ${isUsed ? '<span style="color:red;">Used</span>' : '<span style="color:green;">Unused</span>'}</span>`;
                     
+                    const btnGroup = document.createElement('div');
+                    btnGroup.style.display = 'flex';
+                    btnGroup.style.gap = '0.5rem';
+
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'btn';
+                    copyBtn.style.background = 'var(--biology)';
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    copyBtn.onclick = () => {
+                        navigator.clipboard.writeText(code).then(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            setTimeout(() => copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy', 2000);
+                        });
+                    };
+                    
                     const removeBtn = document.createElement('button');
                     removeBtn.className = 'btn';
                     removeBtn.textContent = 'Delete';
                     removeBtn.onclick = () => db.ref(`inviteCodes/${code}`).remove();
                     
-                    item.appendChild(removeBtn);
+                    btnGroup.appendChild(copyBtn);
+                    btnGroup.appendChild(removeBtn);
+                    
+                    item.appendChild(btnGroup);
                     invitesList.appendChild(item);
                 });
                 if (!hasItems) {
