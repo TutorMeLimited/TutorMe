@@ -40,7 +40,7 @@
                     <input type="password" id="password" required placeholder="••••••••">
                 </div>
                 <div style="text-align: right; margin-top: -1rem; margin-bottom: 1.5rem;">
-                    <a href="forgot-password.html" style="color: var(--accent); text-decoration: none; font-size: 0.9rem; font-weight: bold;">Forgot password?</a>
+                    <a href="forgot-password.html" id="forgot-password-link" style="color: var(--accent); text-decoration: none; font-size: 0.9rem; font-weight: bold; display: inline-block; padding: 2px;">Forgot password?</a>
                 </div>
                 <button type="submit" class="cta-btn">Sign In</button>
             </form>
@@ -98,6 +98,20 @@
                         submitButton.textContent = 'Sign In';
                     });
             });
+
+            // Look for highlight request from FAQ
+            const urlParams = new URLSearchParams(window.location.search);
+            const highlightId = urlParams.get('highlight');
+            if (highlightId) {
+                setTimeout(() => {
+                    const el = document.querySelector('.' + highlightId) || document.getElementById(highlightId);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('highlight-flash');
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                }, 500); // Shorter timeout for unauthenticated page
+            }
         }
     </script>
 </body>

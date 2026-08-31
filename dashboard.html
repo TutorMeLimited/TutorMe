@@ -388,6 +388,22 @@
                 alert('Request failed: ' + error.message);
             }
         }
+
+        // Look for highlight request from FAQ
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const highlightId = urlParams.get('highlight');
+            if (highlightId) {
+                setTimeout(() => {
+                    const el = document.querySelector('.' + highlightId) || document.getElementById(highlightId);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.classList.add('highlight-flash');
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                }, 1000);
+            }
+        });
     </script>
 </body>
 </html>
