@@ -83,6 +83,13 @@
             });
 
         function initializePage(auth) {
+            // Auto sign-in if already authenticated
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    window.location.href = 'videos.html';
+                }
+            });
+
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const email = document.getElementById('email').value;
@@ -94,7 +101,7 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'Signing in...';
 
-                const persistenceType = rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
+                const persistenceType = rememberMe ? 'local' : 'session';
 
                 auth.setPersistence(persistenceType)
                     .then(() => {

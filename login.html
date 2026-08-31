@@ -82,6 +82,14 @@
             });
 
         function initializePage(auth) {
+            // Auto sign-in if already authenticated
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    // For admin, we should check if they are in admin list ideally, but dashboard.html does it anyway
+                    window.location.href = 'dashboard.html';
+                }
+            });
+
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const email = emailInput.value;
@@ -91,7 +99,7 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'Signing In...';
 
-                const persistenceType = rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
+                const persistenceType = rememberMe ? 'local' : 'session';
 
                 auth.setPersistence(persistenceType)
                     .then(() => {
