@@ -501,4 +501,40 @@ h2 {
 .list-item .btn:hover { background: var(--physics); }
 .message-span { transition: opacity 0.3s; }
 .message-span.success { color: var(--chemistry); font-weight: bold; margin-left: 1rem; }
-.message-span.error { color: var(--accent); font-weight: bold; margin-left: 1rem; }
+.message-span.error { color: var(--accent); font-weight: bold; margin-left: 1rem; }/* Dashboard Forms */
+.form-inline {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.form-inline input {
+    padding: 0.8rem;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    flex-grow: 1;
+    max-width: 400px;
+    transition: border-color 0.3s;
+}
+.form-inline input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+.form-inline .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.1s;
+}
+.form-inline .btn:hover {
+    background: var(--physics);
+}
+.form-inline .btn:active {
+    transform: scale(0.98);
+}
