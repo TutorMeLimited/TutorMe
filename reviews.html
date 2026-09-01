@@ -225,7 +225,7 @@
             })
             .catch(error => {
                 console.error('Failed to load Firebase config:', error);
-                authMessage.innerHTML = <p style='color:var(--accent);'>Error loading configuration.</p>;
+                authMessage.innerHTML = `<p style='color:var(--accent);'>Error loading configuration.</p>`;
             });
 
         function loadReviews(db) {
@@ -250,12 +250,12 @@
                         if(i < rev.rating) starsHtml += '<i class="fas fa-star"></i>';
                         else starsHtml += '<i class="far fa-star"></i>';
                     }
-                    div.innerHTML = 
-                        <div class="stars"></div>
-                        <div class="author"></div>
-                        <div class="date"></div>
-                        <div class="text"></div>
-                    ;
+                    div.innerHTML = `
+                        <div class="stars">${starsHtml}</div>
+                        <div class="author">${rev.author}</div>
+                        <div class="date">${dateStr}</div>
+                        <div class="text">${escapeHtml(rev.text)}</div>
+                    `;
                     reviewsList.appendChild(div);
                 });
             });
