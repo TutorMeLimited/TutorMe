@@ -70,14 +70,78 @@
             <p>Make sense of the physical world&mdash;engaging support for GCSE Physics.</p>
         </div>
     </section>
-        <footer>
+
+    <section class="container" style="max-width: 900px; margin-top: 3rem; margin-bottom: 3rem;">
+        <h2 style="text-align: center; color: var(--primary);">What Our Students Say</h2>
+        <div id="public-reviews-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+            <p style="text-align: center; width: 100%; color: #888;">Loading reviews...</p>
+        </div>
+    </section>
+
+    <footer>
         &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
             <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
             <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                const db = firebase.database();
+                const reviewsList = document.getElementById('public-reviews-list');
+                
+                db.ref('reviews').orderByChild('timestamp').limitToLast(6).on('value', snapshot => {
+                    reviewsList.innerHTML = '';
+                    if (!snapshot.exists()) {
+                        reviewsList.innerHTML = '<p style="text-align: center; width: 100%;">No reviews yet.</p>';
+                        return;
+                    }
+                    const allReviews = [];
+                    snapshot.forEach(child => { allReviews.push(child.val()); });
+                    
+                    allReviews.reverse().forEach(rev => {
+                        const div = document.createElement('div');
+                        div.style.cssText = 'background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);';
+                        const dateStr = new Date(rev.timestamp).toLocaleDateString();
+                        let starsHtml = '';
+                        for(let i=0; i<5; i++) {
+                            if(i < rev.rating) starsHtml += '<i class="fas fa-star" style="color: #ffd700;"></i>';
+                            else starsHtml += '<i class="far fa-star" style="color: #ddd;"></i>';
+                        }
+                        div.innerHTML = `
+                            <div style="margin-bottom: 0.5rem;">${starsHtml}</div>
+                            <div style="font-weight: bold; color: var(--primary); margin-bottom: 0.5rem;">${escapeHtml(rev.author)}</div>
+                            <div style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">${dateStr}</div>
+                            <div style="line-height: 1.5; color: #444;">${escapeHtml(rev.text)}</div>
+                        `;
+                        reviewsList.appendChild(div);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Failed to load reviews:', error);
+                document.getElementById('public-reviews-list').innerHTML = '<p style="text-align: center; width: 100%;">Could not load reviews.</p>';
+            });
+
+        function escapeHtml(unsafe) {
+            return (unsafe || '')
+                 .toString()
+                 .replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;");
+        }
+    </script>
 </body>
 </html>
+
 
 

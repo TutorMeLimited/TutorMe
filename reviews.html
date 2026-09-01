@@ -78,6 +78,13 @@
             color: #888;
             margin-bottom: 1rem;
         }
+        .delete-btn {
+            background-color: #dc3545;
+            margin-left: 10px;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 <body>
@@ -104,7 +111,7 @@
         </div>
         
         <div class="review-form">
-            <h3 style="margin-top: 0; color: var(--accent);">Leave a Review</h3>
+            <h3 style="margin-top: 0; color: var(--accent);" id="form-title">Leave a Review</h3>
             <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">Share your experience with Tutormee!</p>
             <form id="submit-review-form">
                 <div class="star-rating" id="star-selector">
@@ -116,7 +123,10 @@
                 </div>
                 <input type="hidden" id="rating-val" value="5" required>
                 <textarea id="review-text" placeholder="Write your review here..." required></textarea>
-                <button type="submit" class="cta-btn" id="submit-btn">Post Review</button>
+                <div style="display: flex; align-items: center;">
+                    <button type="submit" class="cta-btn" id="submit-btn">Post Review</button>
+                    <button type="button" class="cta-btn delete-btn" id="delete-btn" style="display: none;">Delete</button>
+                </div>
                 <p id="form-msg" style="margin-top: 1rem; font-size: 0.9rem;"></p>
             </form>
         </div>
@@ -150,9 +160,12 @@
         const ratingVal = document.getElementById('rating-val');
         const msg = document.getElementById('form-msg');
         const submitBtn = document.getElementById('submit-btn');
+        const deleteBtn = document.getElementById('delete-btn');
+        const formTitle = document.getElementById('form-title');
+        
         let currentUser = null;
+        let dbRef = null;
 
-        // Interactive stars
         const stars = starSelector.querySelectorAll('i');
         const updateStars = (val) => {
             stars.forEach((s, idx) => {
@@ -175,6 +188,7 @@
                 firebase.initializeApp(firebaseConfig);
                 const auth = firebase.auth();
                 const db = firebase.database();
+                dbRef = db;
 
                 auth.onAuthStateChanged(user => {
                     if (user) {
@@ -182,6 +196,27 @@
                         authMessage.style.display = 'none';
                         reviewsContainer.style.display = 'block';
                         signOutLink.style.display = 'inline';
+                        
+                        // Check if user already has a review
+                        db.ref('reviews/' + user.uid).on('value', snapshot => {
+                            if (snapshot.exists()) {
+                                const data = snapshot.val();
+                                document.getElementById('review-text').value = data.text;
+                                ratingVal.value = data.rating;
+                                updateStars(data.rating);
+                                submitBtn.textContent = 'Update Review';
+                                formTitle.textContent = 'Edit Your Review';
+                                deleteBtn.style.display = 'inline-block';
+                            } else {
+                                document.getElementById('review-text').value = '';
+                                ratingVal.value = 5;
+                                updateStars(5);
+                                submitBtn.textContent = 'Post Review';
+                                formTitle.textContent = 'Leave a Review';
+                                deleteBtn.style.display = 'none';
+                            }
+                        });
+                        
                         loadReviews(db);
                     } else {
                         window.location.href = 'client-login.html';
@@ -194,33 +229,50 @@
                     e.preventDefault();
                     if(!currentUser) return;
                     submitBtn.disabled = true;
-                    submitBtn.textContent = 'Posting...';
+                    const isUpdate = submitBtn.textContent === 'Update Review';
+                    submitBtn.textContent = isUpdate ? 'Updating...' : 'Posting...';
+                    
                     const text = document.getElementById('review-text').value;
                     const rating = parseInt(ratingVal.value);
                     const email = currentUser.email;
-                    // Mask email for privacy
                     const maskedName = email.split('@')[0].substring(0, 3) + '***';
 
-                    const reviewRef = db.ref('reviews').push();
-                    reviewRef.set({
+                    db.ref('reviews/' + currentUser.uid).set({
                         text: text,
                         rating: rating,
                         author: maskedName,
                         timestamp: firebase.database.ServerValue.TIMESTAMP
                     }).then(() => {
                         msg.style.color = 'green';
-                        msg.textContent = 'Review posted successfully!';
-                        document.getElementById('review-text').value = '';
-                        updateStars(5);
-                        ratingVal.value = 5;
+                        msg.textContent = isUpdate ? 'Review updated successfully!' : 'Review posted successfully!';
                         setTimeout(() => { msg.textContent = ''; }, 3000);
                     }).catch(err => {
                         msg.style.color = 'red';
-                        msg.textContent = 'Failed to post: ' + err.message;
+                        msg.textContent = 'Failed to save: ' + err.message;
                     }).finally(() => {
                         submitBtn.disabled = false;
-                        submitBtn.textContent = 'Post Review';
+                        submitBtn.textContent = isUpdate ? 'Update Review' : 'Post Review';
                     });
+                });
+
+                deleteBtn.addEventListener('click', () => {
+                    if(!currentUser) return;
+                    if(confirm("Are you sure you want to delete your review?")) {
+                        deleteBtn.disabled = true;
+                        deleteBtn.textContent = 'Deleting...';
+                        db.ref('reviews/' + currentUser.uid).remove()
+                        .then(() => {
+                            msg.style.color = 'green';
+                            msg.textContent = 'Review deleted successfully!';
+                            setTimeout(() => { msg.textContent = ''; }, 3000);
+                        }).catch(err => {
+                            msg.style.color = 'red';
+                            msg.textContent = 'Failed to delete: ' + err.message;
+                        }).finally(() => {
+                            deleteBtn.disabled = false;
+                            deleteBtn.textContent = 'Delete';
+                        });
+                    }
                 });
             })
             .catch(error => {
@@ -240,7 +292,6 @@
                 snapshot.forEach(child => {
                     allReviews.push(child.val());
                 });
-                // Show newest first
                 allReviews.reverse().forEach(rev => {
                     const div = document.createElement('div');
                     div.className = 'review-card';
@@ -252,7 +303,7 @@
                     }
                     div.innerHTML = `
                         <div class="stars">${starsHtml}</div>
-                        <div class="author">${rev.author}</div>
+                        <div class="author">${escapeHtml(rev.author)}</div>
                         <div class="date">${dateStr}</div>
                         <div class="text">${escapeHtml(rev.text)}</div>
                     `;
@@ -262,7 +313,8 @@
         }
 
         function escapeHtml(unsafe) {
-            return unsafe
+            return (unsafe || '')
+                 .toString()
                  .replace(/&/g, "&amp;")
                  .replace(/</g, "&lt;")
                  .replace(/>/g, "&gt;")
