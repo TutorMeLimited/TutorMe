@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        fetch('/.netlify/functions/get-firebase-config')
+        .then(r => r.json())
+        .then(config => fetch(config.databaseURL + '/settings/theme.json'))
+        .then(r => r.json())
+        .then(theme => { if(theme) document.documentElement.setAttribute('data-theme', theme); })
+        .catch(() => {});
+    </script>
 </head>
 <body>
     <header>
@@ -113,6 +121,54 @@
 
         // Once Firebase is ready to go, we can set up the rest of the page.
         function initializePage(auth, db) {
+            const themeBtn = document.getElementById('change-theme-btn');
+            if (themeBtn) {
+                const themes = ['default', 'ocean', 'nature', 'sunset', 'dark'];
+                let currentThemeIndex = 0;
+                
+                themeBtn.addEventListener('click', () => {
+                    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+                    const newTheme = themes[currentThemeIndex];
+                    db.ref('settings/theme').set(newTheme).then(() => {
+                        document.documentElement.setAttribute('data-theme', newTheme);
+                    });
+                });
+
+                db.ref('settings/theme').on('value', snap => {
+                    if(snap.exists()) {
+                        const theme = snap.val();
+                        document.documentElement.setAttribute('data-theme', theme);
+                        currentThemeIndex = themes.indexOf(theme) !== -1 ? themes.indexOf(theme) : 0;
+                    } else {
+                        document.documentElement.removeAttribute('data-theme');
+                        currentThemeIndex = 0;
+                    }
+                });
+            }
+        
+            const themeBtn = document.getElementById('change-theme-btn');
+            const themes = ['default', 'ocean', 'nature', 'sunset', 'dark'];
+            let currentThemeIndex = 0;
+            
+            themeBtn.addEventListener('click', () => {
+                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+                const newTheme = themes[currentThemeIndex];
+                db.ref('settings/theme').set(newTheme).then(() => {
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                });
+            });
+
+            // Listen for theme changes to keep admin dashboard in sync too
+            db.ref('settings/theme').on('value', snap => {
+                if(snap.exists()) {
+                    const theme = snap.val();
+                    document.documentElement.setAttribute('data-theme', theme);
+                    currentThemeIndex = themes.indexOf(theme) !== -1 ? themes.indexOf(theme) : 0;
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                    currentThemeIndex = 0;
+                }
+            });
             const adminUIDs = ['beMqbQLBDWaWySNx134ri1KJwQi2', 'P1gWMa5YWyWlcFwebxYEjMPzLwi2'];
             
             auth.onAuthStateChanged(user => {
@@ -413,6 +469,9 @@
     </script>
 </body>
 </html>
+
+
+
 
 
 

@@ -550,3 +550,54 @@ h2 {
     animation: flashHighlight 1s ease-out 2;
     border-radius: 8px;
 }
+
+/* --- Themes --- */
+:root[data-theme="ocean"] {
+    --sociology: #03045e;
+    --psychology: #0077b6;
+    --chemistry: #00b4d8;
+    --biology: #90e0ef;
+    --physics: #caf0f8;
+    --accent: #ffb703;
+}
+
+:root[data-theme="nature"] {
+    --sociology: #2d6a4f;
+    --psychology: #40916c;
+    --chemistry: #52b788;
+    --biology: #74c69d;
+    --physics: #95d5b2;
+    --accent: #d90429;
+}
+
+:root[data-theme="sunset"] {
+    --sociology: #ff5400;
+    --psychology: #ff6d00;
+    --chemistry: #ff8500;
+    --biology: #ff9100;
+    --physics: #ff9e00;
+    --accent: #9d0208;
+}
+
+:root[data-theme="dark"] {
+    --sociology: #1a1a1a;
+    --psychology: #2d2d2d;
+    --chemistry: #404040;
+    --biology: #595959;
+    --physics: #737373;
+    --accent: #00f5d4;
+    --text: #ffffff;
+}
+:root[data-theme="dark"] body {
+    background: #121212;
+}
+:root[data-theme="dark"] .login-container, 
+:root[data-theme="dark"] .portal-card, 
+:root[data-theme="dark"] .review-card, 
+:root[data-theme="dark"] .review-form {
+    background: #1e1e1e !important;
+    color: #fff !important;
+}
+:root[data-theme="dark"] .faq-answer {
+    color: #ddd !important;
+}
