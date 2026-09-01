@@ -8,11 +8,23 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
+        const cachedTheme = localStorage.getItem('site-theme');
+        if (cachedTheme) {
+            document.documentElement.setAttribute('data-theme', cachedTheme);
+        }
         fetch('/.netlify/functions/get-firebase-config')
         .then(r => r.json())
         .then(config => fetch(config.databaseURL + '/settings/theme.json'))
         .then(r => r.json())
-        .then(theme => { if(theme) document.documentElement.setAttribute('data-theme', theme); })
+        .then(theme => { 
+            if(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('site-theme', theme);
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.removeItem('site-theme');
+            }
+        })
         .catch(() => {});
     </script>
 </head>
@@ -62,6 +74,7 @@
     </footer>
 </body>
 </html>
+
 
 
 
