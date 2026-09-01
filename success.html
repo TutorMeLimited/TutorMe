@@ -25,17 +25,39 @@
         if (cachedTheme) {
             document.documentElement.setAttribute('data-theme', cachedTheme);
         }
+        
+        const cachedCustom = localStorage.getItem('site-custom-theme');
+        if (cachedCustom) {
+            try {
+                const customTheme = JSON.parse(cachedCustom);
+                for (const [key, value] of Object.entries(customTheme)) {
+                    document.documentElement.style.setProperty(key, value);
+                }
+            } catch(e){}
+        }
+
         fetch('/.netlify/functions/get-firebase-config')
         .then(r => r.json())
-        .then(config => fetch(config.databaseURL + '/settings/theme.json'))
+        .then(config => fetch(config.databaseURL + '/settings.json'))
         .then(r => r.json())
-        .then(theme => { 
+        .then(settings => { 
+            const theme = settings ? settings.theme : null;
             if(theme) {
                 document.documentElement.setAttribute('data-theme', theme);
                 localStorage.setItem('site-theme', theme);
             } else {
                 document.documentElement.removeAttribute('data-theme');
                 localStorage.removeItem('site-theme');
+            }
+
+            if (theme === 'custom' && settings.customTheme) {
+                localStorage.setItem('site-custom-theme', JSON.stringify(settings.customTheme));
+                for (const [key, value] of Object.entries(settings.customTheme)) {
+                    document.documentElement.style.setProperty(key, value);
+                }
+            } else {
+                localStorage.removeItem('site-custom-theme');
+                document.documentElement.style = '';
             }
         })
         .catch(() => {});
@@ -67,6 +89,7 @@
     </footer>
 </body>
 </html>
+
 
 
 

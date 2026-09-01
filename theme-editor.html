@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Editor - Tutormee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        const cachedTheme = localStorage.getItem('site-theme');
+        if (cachedTheme) {
+            document.documentElement.setAttribute('data-theme', cachedTheme);
+        }
+        
+        const cachedCustom = localStorage.getItem('site-custom-theme');
+        if (cachedCustom) {
+            try {
+                const customTheme = JSON.parse(cachedCustom);
+                for (const [key, value] of Object.entries(customTheme)) {
+                    document.documentElement.style.setProperty(key, value);
+                }
+            } catch(e){}
+        }
+
+        fetch('/.netlify/functions/get-firebase-config')
+        .then(r => r.json())
+        .then(config => fetch(config.databaseURL + '/settings.json'))
+        .then(r => r.json())
+        .then(settings => { 
+            const theme = settings ? settings.theme : null;
+            if(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('site-theme', theme);
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.removeItem('site-theme');
+            }
+
+            if (theme === 'custom' && settings.customTheme) {
+                localStorage.setItem('site-custom-theme', JSON.stringify(settings.customTheme));
+                for (const [key, value] of Object.entries(settings.customTheme)) {
+                    document.documentElement.style.setProperty(key, value);
+                }
+            } else {
+                localStorage.removeItem('site-custom-theme');
+                document.documentElement.style = '';
+            }
+        })
+        .catch(() => {});
+    </script>
+    <style>
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .color-card {
+            background: var(--bg-container);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px #0002;
+            text-align: center;
+        }
+        .color-card input[type="color"] {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        .color-card label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tutormee</h1>
+        <p>Specialist online tutoring for A-Level & GCSE</p>
+        <div class="website-link">
+            Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
+        </div>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Admin Dashboard</a>
+        <a id="sign-out-link" style="cursor: pointer;">Sign Out</a>
+    </nav>
+    <div class="container">
+        <h2><i class="fas fa-palette"></i> Theme Editor</h2>
+        <p id="auth-status">Verifying authentication...</p>
+        <div id="editor-content" style="display: none;">
+            <p style="text-align: center; margin-bottom: 2rem;">Adjust the colors below to create a fully custom theme. Your changes will be previewed live.</p>
+            
+            <form id="theme-form">
+                <div class="color-grid" id="color-grid">
+                    <!-- Color inputs will be injected here -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="cta-btn" style="padding: 1rem 3rem;"><i class="fas fa-save"></i> Save Custom Theme & Set Active</button>
+                    <span id="save-msg" class="message-span"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <script>
+        const adminUIDs = ['beMqbQLBDWaWySNx134ri1KJwQi2', 'P1gWMa5YWyWlcFwebxYEjMPzLwi2'];
+        const variables = [
+            '--sociology', '--psychology', '--chemistry', '--biology', '--physics',
+            '--accent', '--header', '--text', '--bg-main', '--bg-container'
+        ];
+        
+        const defaultColors = {
+            '--sociology': '#ffc300', '--psychology': '#a259d9', '--chemistry': '#38b000',
+            '--biology': '#00b4d8', '--physics': '#4361ee', '--accent': '#f72585',
+            '--header': '#ffffff', '--text': '#222222', '--bg-main': '#f8f9fa', '--bg-container': '#ffffff'
+        };
+
+        const grid = document.getElementById('color-grid');
+        const form = document.getElementById('theme-form');
+        const saveMsg = document.getElementById('save-msg');
+
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(r => r.json())
+            .then(firebaseConfig => {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                const auth = firebase.auth();
+                const db = firebase.database();
+
+                auth.onAuthStateChanged(user => {
+                    if (user && adminUIDs.includes(user.uid)) {
+                        document.getElementById('auth-status').style.display = 'none';
+                        document.getElementById('editor-content').style.display = 'block';
+                        initializeEditor(db);
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+                });
+
+                document.getElementById('sign-out-link').addEventListener('click', () => auth.signOut());
+            })
+            .catch(error => {
+                document.getElementById('auth-status').innerText = 'Error loading configuration.';
+            });
+
+        function initializeEditor(db) {
+            // Build the UI
+            variables.forEach(varName => {
+                const label = varName.replace('--', '').replace('-', ' ');
+                const div = document.createElement('div');
+                div.className = 'color-card';
+                div.innerHTML = `
+                    <label>${label}</label>
+                    <input type="color" id="${varName}" name="${varName}">
+                `;
+                grid.appendChild(div);
+                
+                // Live preview listener
+                const input = div.querySelector('input');
+                input.addEventListener('input', (e) => {
+                    document.documentElement.style.setProperty(varName, e.target.value);
+                    document.documentElement.setAttribute('data-theme', 'custom');
+                });
+            });
+
+            // Fetch current customTheme if it exists
+            db.ref('settings/customTheme').once('value').then(snap => {
+                const currentCustom = snap.val() || {};
+                variables.forEach(varName => {
+                    const input = document.getElementById(varName);
+                    input.value = currentCustom[varName] || defaultColors[varName];
+                });
+            });
+
+            // Save logic
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveMsg.innerText = "Saving...";
+                saveMsg.className = "message-span";
+                
+                const newCustom = {};
+                variables.forEach(varName => {
+                    newCustom[varName] = document.getElementById(varName).value;
+                });
+
+                // Set theme to custom AND update customTheme object
+                const updates = {
+                    'settings/theme': 'custom',
+                    'settings/customTheme': newCustom
+                };
+                
+                db.ref().update(updates).then(() => {
+                    localStorage.setItem('site-theme', 'custom');
+                    localStorage.setItem('site-custom-theme', JSON.stringify(newCustom));
+                    saveMsg.innerText = "Saved successfully!";
+                    saveMsg.classList.add('success');
+                    setTimeout(() => saveMsg.innerText = '', 3000);
+                }).catch(err => {
+                    saveMsg.innerText = "Error: " + err.message;
+                    saveMsg.classList.add('error');
+                });
+            });
+        }
+    </script>
+</body>
+</html>

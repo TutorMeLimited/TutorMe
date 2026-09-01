@@ -1,5 +1,7 @@
-/* --- Global Variables & Body --- */
+﻿/* --- Global Variables & Body --- */
 :root {
+    --bg-main: #f8f9fa;
+    --bg-container: #ffffff;
     --sociology: #ffc300;
     --psychology: #a259d9;
     --chemistry: #38b000;
@@ -14,7 +16,7 @@ body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f8f9fa;
+    background: var(--bg-main);
     color: var(--text);
 }
 
@@ -73,7 +75,7 @@ footer a {
 .container {
     max-width: 850px;
     margin: 2.5rem auto;
-    background: #fff;
+    background: var(--bg-container);
     padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 2px 12px #0002;
@@ -162,7 +164,7 @@ h2 {
 /* --- Page Specific: Index & Our Services --- */
 .hero {
     padding: 2rem 1rem 1rem 1rem;
-    background: #fff5e1;
+    background: var(--bg-main);
     text-align: center;
 }
 
@@ -175,7 +177,7 @@ h2 {
 }
 
 .description-section {
-    background: #f3f0ff;
+    background: var(--bg-main);
     border-left: 8px solid var(--psychology);
     border-radius: 12px;
     margin: 2.5rem auto 2rem auto;
@@ -214,7 +216,7 @@ h2 {
 }
 
 .subject {
-    background: #fff;
+    background: var(--bg-container);
     border-radius: 16px;
     box-shadow: 0 2px 12px #0002;
     width: 270px;
@@ -248,12 +250,12 @@ h2 {
 
 .subject p {
     font-size: 1rem;
-    color: #444;
+    color: var(--text);
 }
 
 /* --- Page Specific: Our Services --- */
 .offerings-section {
-    background: #e0f7fa;
+    background: var(--bg-main);
     border-left: 8px solid var(--biology);
     border-radius: 12px;
     margin: 2.5rem auto;
@@ -275,7 +277,7 @@ h2 {
 }
 
 .offering {
-    background: #fff;
+    background: var(--bg-container);
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 2px 8px #0001;
@@ -334,7 +336,7 @@ h2 {
     border-radius: 8px;
     margin-bottom: 1.5rem;
     font-weight: bold;
-    color: #333;
+    color: var(--text);
 }
 
 .message {
@@ -373,7 +375,7 @@ h2 {
 .contact-form label {
     font-weight: bold;
     margin-bottom: -0.5rem;
-    color: #333;
+    color: var(--text);
 }
 
 .contact-form input,
@@ -437,7 +439,7 @@ h2 {
     padding: 2rem 1rem;
 }
 .login-container {
-    background: #fff;
+    background: var(--bg-container);
     padding: 2.5rem 2rem;
     border-radius: 16px;
     box-shadow: 0 4px 20px #0003;
@@ -448,7 +450,7 @@ h2 {
     /* The margin is handled by the parent .login-body flex container. */
 }
 .login-container h1 { color: var(--accent); margin-bottom: 0.5rem; }
-.login-container p { color: #666; margin-bottom: 2rem; }
+.login-container p { color: var(--text); margin-bottom: 2rem; }
 .login-container .cta-btn {
     width: 100%;
     border-radius: 30px; /* Match the booking confirmation button */
@@ -480,11 +482,11 @@ h2 {
     max-width: 900px;
 }
 #sign-out-link { cursor: pointer; color: var(--physics); }
-#auth-status { text-align: center; margin-bottom: 30px; color: #555; }
+#auth-status { text-align: center; margin-bottom: 30px; color: var(--text); }
 .section { margin-bottom: 2.5rem; }
 .section h3 { color: var(--psychology); margin-bottom: 1rem; text-align: left; }
 .list {
-    background: #f8f9fa; border-radius: 10px; padding: 1rem;
+    background: var(--bg-main); border-radius: 10px; padding: 1rem;
     margin-bottom: 1rem; box-shadow: 0 1px 4px #0001; min-height: 40px;
 }
 .list-item {
@@ -580,6 +582,8 @@ h2 {
 }
 
 :root[data-theme="dark"] {
+    --bg-main: #121212;
+    --bg-container: #1e1e1e;
     --sociology: #1a1a1a;
     --psychology: #2d2d2d;
     --chemistry: #404040;
@@ -588,16 +592,10 @@ h2 {
     --accent: #00f5d4;
     --text: #ffffff;
 }
-:root[data-theme="dark"] body {
-    background: #121212;
-}
-:root[data-theme="dark"] .login-container, 
-:root[data-theme="dark"] .portal-card, 
-:root[data-theme="dark"] .review-card, 
-:root[data-theme="dark"] .review-form {
-    background: #1e1e1e !important;
-    color: #fff !important;
-}
+
+
 :root[data-theme="dark"] .faq-answer {
     color: #ddd !important;
 }
+
+

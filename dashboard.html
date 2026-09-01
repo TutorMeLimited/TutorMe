@@ -136,30 +136,27 @@
 
         // Once Firebase is ready to go, we can set up the rest of the page.
         function initializePage(auth, db) {
-            const themeBtn = document.getElementById('change-theme-btn');
-            if (themeBtn) {
-                const themes = ['default', 'ocean', 'nature', 'sunset', 'dark'];
-                let currentThemeIndex = 0;
+            db.ref('settings').on('value', snap => {
+                const settings = snap.val() || {};
+                const theme = settings.theme;
+                if(theme) {
+                    document.documentElement.setAttribute('data-theme', theme);
+                    localStorage.setItem('site-theme', theme);
+                } else {
+                    document.documentElement.removeAttribute('data-theme');
+                    localStorage.removeItem('site-theme');
+                }
                 
-                themeBtn.addEventListener('click', () => {
-                    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-                    const newTheme = themes[currentThemeIndex];
-                    db.ref('settings/theme').set(newTheme).then(() => {
-                        document.documentElement.setAttribute('data-theme', newTheme);
-                    });
-                });
-
-                db.ref('settings/theme').on('value', snap => {
-                    if(snap.exists()) {
-                        const theme = snap.val();
-                        document.documentElement.setAttribute('data-theme', theme);
-                        currentThemeIndex = themes.indexOf(theme) !== -1 ? themes.indexOf(theme) : 0;
-                    } else {
-                        document.documentElement.removeAttribute('data-theme');
-                        currentThemeIndex = 0;
+                if (theme === 'custom' && settings.customTheme) {
+                    localStorage.setItem('site-custom-theme', JSON.stringify(settings.customTheme));
+                    for (const [key, value] of Object.entries(settings.customTheme)) {
+                        document.documentElement.style.setProperty(key, value);
                     }
-                });
-            }
+                } else {
+                    localStorage.removeItem('site-custom-theme');
+                    document.documentElement.style = '';
+                }
+            });
 
             const adminUIDs = ['beMqbQLBDWaWySNx134ri1KJwQi2', 'P1gWMa5YWyWlcFwebxYEjMPzLwi2'];
             
@@ -461,6 +458,11 @@
     </script>
 </body>
 </html>
+
+
+
+
+
 
 
 
