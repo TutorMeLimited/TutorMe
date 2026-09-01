@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,8 +20,8 @@
         <a href="index.html">Home</a>
         <a href="Our-services.html">Our Services</a>
         <a href="bookings.html">Bookings</a>
-        <a href="client-login.html">Videos</a>
         <a href="contact-us.html">Contact Us</a>
+        <a href="client-login.html">Customer Portal</a>
         <a href="login.html">Admin Login</a>
     </nav>
     
@@ -86,7 +86,7 @@
             // Auto sign-in if already authenticated
             auth.onAuthStateChanged(user => {
                 if (user) {
-                    window.location.href = 'videos.html';
+                    window.location.href = 'portal.html';
                 }
             });
 
@@ -108,7 +108,7 @@
                         return auth.signInWithEmailAndPassword(email, password);
                     })
                     .then((userCredential) => {
-                        window.location.href = 'videos.html';
+                        window.location.href = 'portal.html';
                     })
                     .catch((error) => {
                         if (error.code === 'auth/user-disabled') {
@@ -138,4 +138,6 @@
     </script>
 </body>
 </html>
+
+
 

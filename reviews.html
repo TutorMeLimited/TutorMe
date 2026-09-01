@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews - Tutormee</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .back-btn {
+            background-color: var(--physics);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-btn:hover {
+            background-color: #0c69d8;
+        }
+        .review-form {
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+        }
+        .review-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+            margin-bottom: 1rem;
+            font-family: inherit;
+        }
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            color: #ddd;
+            font-size: 1.5rem;
+        }
+        .star-rating i.active {
+            color: #ffd700;
+        }
+        .review-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .review-card .stars {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+        .review-card .author {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .review-card .date {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tutormee</h1>
+        <p>Specialist online tutoring for A-Level & GCSE</p>
+        <div class="website-link">
+            Visit us: <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>
+        </div>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="Our-services.html">Our Services</a>
+        <a href="bookings.html">Bookings</a>
+        <a href="contact-us.html">Contact Us</a>
+        <a href="client-login.html">Customer Portal</a>
+        <a href="login.html">Admin Login</a>
+        <a id="sign-out-link" style="display: none; cursor: pointer;">Sign Out</a>
+    </nav>
+    <div class="container" id="reviews-container" style="display: none; max-width: 800px;">
+        <div class="reviews-header">
+            <h2 style="color: var(--primary); margin: 0;">Customer Reviews</h2>
+            <a href="portal.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portal</a>
+        </div>
+        
+        <div class="review-form">
+            <h3 style="margin-top: 0; color: var(--accent);">Leave a Review</h3>
+            <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">Share your experience with Tutormee!</p>
+            <form id="submit-review-form">
+                <div class="star-rating" id="star-selector">
+                    <i class="fas fa-star" data-val="1"></i>
+                    <i class="fas fa-star" data-val="2"></i>
+                    <i class="fas fa-star" data-val="3"></i>
+                    <i class="fas fa-star" data-val="4"></i>
+                    <i class="fas fa-star" data-val="5"></i>
+                </div>
+                <input type="hidden" id="rating-val" value="5" required>
+                <textarea id="review-text" placeholder="Write your review here..." required></textarea>
+                <button type="submit" class="cta-btn" id="submit-btn">Post Review</button>
+                <p id="form-msg" style="margin-top: 1rem; font-size: 0.9rem;"></p>
+            </form>
+        </div>
+
+        <h3 style="color: var(--sociology); margin-bottom: 1.5rem;">Recent Reviews</h3>
+        <div id="reviews-list">
+            <p>Loading reviews...</p>
+        </div>
+    </div>
+    <div id="auth-message" class="container" style="text-align: center;">
+        <p>Verifying access...</p>
+    </div>
+    <footer>
+        &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
+        <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+            <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
+            <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
+        </div>
+    </footer>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        const reviewsContainer = document.getElementById('reviews-container');
+        const authMessage = document.getElementById('auth-message');
+        const signOutLink = document.getElementById('sign-out-link');
+        const reviewsList = document.getElementById('reviews-list');
+        const reviewForm = document.getElementById('submit-review-form');
+        const starSelector = document.getElementById('star-selector');
+        const ratingVal = document.getElementById('rating-val');
+        const msg = document.getElementById('form-msg');
+        const submitBtn = document.getElementById('submit-btn');
+        let currentUser = null;
+
+        // Interactive stars
+        const stars = starSelector.querySelectorAll('i');
+        const updateStars = (val) => {
+            stars.forEach((s, idx) => {
+                if (idx < val) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        };
+        updateStars(5);
+        stars.forEach(s => {
+            s.addEventListener('click', (e) => {
+                const val = e.target.getAttribute('data-val');
+                ratingVal.value = val;
+                updateStars(val);
+            });
+        });
+
+        fetch('/.netlify/functions/get-firebase-config')
+            .then(response => response.json())
+            .then(firebaseConfig => {
+                firebase.initializeApp(firebaseConfig);
+                const auth = firebase.auth();
+                const db = firebase.database();
+
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        currentUser = user;
+                        authMessage.style.display = 'none';
+                        reviewsContainer.style.display = 'block';
+                        signOutLink.style.display = 'inline';
+                        loadReviews(db);
+                    } else {
+                        window.location.href = 'client-login.html';
+                    }
+                });
+
+                signOutLink.addEventListener('click', () => auth.signOut());
+
+                reviewForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if(!currentUser) return;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Posting...';
+                    const text = document.getElementById('review-text').value;
+                    const rating = parseInt(ratingVal.value);
+                    const email = currentUser.email;
+                    // Mask email for privacy
+                    const maskedName = email.split('@')[0].substring(0, 3) + '***';
+
+                    const reviewRef = db.ref('reviews').push();
+                    reviewRef.set({
+                        text: text,
+                        rating: rating,
+                        author: maskedName,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    }).then(() => {
+                        msg.style.color = 'green';
+                        msg.textContent = 'Review posted successfully!';
+                        document.getElementById('review-text').value = '';
+                        updateStars(5);
+                        ratingVal.value = 5;
+                        setTimeout(() => { msg.textContent = ''; }, 3000);
+                    }).catch(err => {
+                        msg.style.color = 'red';
+                        msg.textContent = 'Failed to post: ' + err.message;
+                    }).finally(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Post Review';
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Failed to load Firebase config:', error);
+                authMessage.innerHTML = <p style='color:var(--accent);'>Error loading configuration.</p>;
+            });
+
+        function loadReviews(db) {
+            const revRef = db.ref('reviews').orderByChild('timestamp');
+            revRef.on('value', (snapshot) => {
+                reviewsList.innerHTML = '';
+                if (!snapshot.exists()) {
+                    reviewsList.innerHTML = '<p>No reviews yet. Be the first to leave one!</p>';
+                    return;
+                }
+                const allReviews = [];
+                snapshot.forEach(child => {
+                    allReviews.push(child.val());
+                });
+                // Show newest first
+                allReviews.reverse().forEach(rev => {
+                    const div = document.createElement('div');
+                    div.className = 'review-card';
+                    const dateStr = new Date(rev.timestamp).toLocaleDateString();
+                    let starsHtml = '';
+                    for(let i=0; i<5; i++) {
+                        if(i < rev.rating) starsHtml += '<i class="fas fa-star"></i>';
+                        else starsHtml += '<i class="far fa-star"></i>';
+                    }
+                    div.innerHTML = 
+                        <div class="stars"></div>
+                        <div class="author"></div>
+                        <div class="date"></div>
+                        <div class="text"></div>
+                    ;
+                    reviewsList.appendChild(div);
+                });
+            });
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                 .replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>

@@ -20,8 +20,8 @@
         <a href="index.html">Home</a>
         <a href="Our-services.html">Our Services</a>
         <a href="bookings.html">Bookings</a>
-        <a href="client-login.html">Videos</a>
         <a href="contact-us.html">Contact Us</a>
+        <a href="client-login.html">Customer Portal</a>
         <a href="login.html">Admin Login</a>
     </nav>
     
@@ -186,7 +186,7 @@
                         return inviteRef.set(true);
                     })
                     .then(() => {
-                        window.location.href = 'videos.html';
+                        window.location.href = 'portal.html';
                     })
                     .catch((error) => {
                         errorMessage.textContent = error.message;
@@ -198,4 +198,6 @@
     </script>
 </body>
 </html>
+
+
 

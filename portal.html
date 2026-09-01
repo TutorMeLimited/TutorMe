@@ -3,9 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videos - Tutormee</title>
+    <title>Customer Portal - Tutormee</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .portal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .portal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .portal-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        .portal-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .portal-card p {
+            color: #555;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -19,19 +59,32 @@
         <a href="index.html">Home</a>
         <a href="Our-services.html">Our Services</a>
         <a href="bookings.html">Bookings</a>
-        <a href="client-login.html">Videos</a>
         <a href="contact-us.html">Contact Us</a>
+        <a href="client-login.html">Customer Portal</a>
         <a href="login.html">Admin Login</a>
         <a id="sign-out-link" style="display: none; cursor: pointer;">Sign Out</a>
     </nav>
-    <div class="container" id="videos-container" style="display: none;">
-        <h2>Our Educational Videos</h2>
-        <div class="video-list" id="video-list"></div>
+    <div class="container" id="portal-container" style="display: none; max-width: 900px;">
+        <h2 style="text-align: center; color: var(--primary);">Welcome to the Customer Portal</h2>
+        <p style="text-align: center; color: #555; margin-bottom: 2rem;">Select an option below to continue.</p>
+        
+        <div class="portal-grid">
+            <a href="videos.html" class="portal-card">
+                <i class="fas fa-video"></i>
+                <h3>Educational Videos</h3>
+                <p>Access our exclusive library of curated educational videos tailored to your learning needs.</p>
+            </a>
+            <a href="reviews.html" class="portal-card">
+                <i class="fas fa-star"></i>
+                <h3>Reviews</h3>
+                <p>Leave a review or read feedback from other Tutormee students and parents.</p>
+            </a>
+        </div>
     </div>
     <div id="auth-message" class="container" style="text-align: center;">
         <p>Verifying access...</p>
     </div>
-        <footer>
+    <footer>
         &copy; 2025 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
             <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
@@ -41,10 +94,8 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        const videoList = document.getElementById('video-list');
-        const videosContainer = document.getElementById('videos-container');
+        const portalContainer = document.getElementById('portal-container');
         const authMessage = document.getElementById('auth-message');
         const signOutLink = document.getElementById('sign-out-link');
 
@@ -53,14 +104,12 @@
             .then(firebaseConfig => {
                 firebase.initializeApp(firebaseConfig);
                 const auth = firebase.auth();
-                const db = firebase.database();
 
                 auth.onAuthStateChanged(user => {
                     if (user) {
                         authMessage.style.display = 'none';
-                        videosContainer.style.display = 'block';
+                        portalContainer.style.display = 'block';
                         signOutLink.style.display = 'inline';
-                        initializePage(db);
                     } else {
                         window.location.href = 'client-login.html';
                     }
@@ -70,37 +119,8 @@
             })
             .catch(error => {
                 console.error('Failed to load Firebase config:', error);
-                videoList.innerHTML = `<p style='color:var(--accent);'>Error loading video configuration.</p>`;
+                authMessage.innerHTML = <p style='color:var(--accent);'>Error loading portal configuration.</p>;
             });
-
-        function initializePage(db) {
-            const videosRef = db.ref('videos');
-            videosRef.on('value', (snapshot) => {
-                videoList.innerHTML = "";
-                videoList.classList.remove('is-empty'); 
-                
-                if (!snapshot.exists()) {
-                    videoList.classList.add('is-empty');
-                    videoList.innerHTML = "<p>No videos available yet.</p>";
-                    return;
-                } 
-                
-                snapshot.forEach(childSnapshot => {
-                    const videoData = childSnapshot.val();
-                    if (videoData && videoData.id) {
-                        const div = document.createElement('div');
-                        div.className = "video-container";
-                        div.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoData.id}" frameborder="0" allowfullscreen></iframe>`;
-                        videoList.appendChild(div);
-                    }
-                });
-            }, (error) => {
-                console.error("Error fetching videos:", error);
-                videoList.innerHTML = `<p style='color:var(--accent);'>Error loading videos: ${error.message}</p>`;
-            });
-        }
     </script>
 </body>
 </html>
-
-
