@@ -1,19 +1,20 @@
-﻿/* --- Global Variables & Body --- */
+﻿@import url('https://fonts.cdnfonts.com/css/aileron');
+/* --- Global Variables & Body --- */
 :root {
     --bg-main: #f8f9fa;
     --bg-container: #ffffff;
-    --sociology: #ffc300;
-    --psychology: #a259d9;
-    --chemistry: #38b000;
-    --biology: #00b4d8;
-    --physics: #4361ee;
+    --sociology: #29386d;
+    --psychology: #62cdd7;
+    --chemistry: #29386d;
+    --biology: #62cdd7;
+    --physics: #29386d;
     --header: #fff;
-    --text: #222;
-    --accent: #f72585;
+    --text: #000000;
+    --accent: #29386d;
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Aileron', 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: var(--bg-main);
@@ -22,8 +23,8 @@ body {
 
 /* --- Common Header, Nav, Footer --- */
 header {
-    background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
-    color: var(--header);
+    background: linear-gradient(90deg, var(--sociology) 0%, var(--psychology) 100%);
+    color: #ffffff;
     text-align: center;
     padding: 2rem 1rem 1rem 1rem;
 }
@@ -34,12 +35,12 @@ header {
 }
 
 .website-link a {
-    color: var(--header);
+    color: #ffffff;
     text-decoration: underline;
 }
 
 nav {
-    background: var(--header);
+    background: linear-gradient(90deg, var(--sociology) 0%, var(--psychology) 100%);
     box-shadow: 0 2px 8px #0001;
     padding: 1rem;
     text-align: center;
@@ -53,9 +54,7 @@ nav a {
     transition: color 0.2s;
 }
 
-nav a:hover {
-    color: var(--physics);
-}
+nav a:hover { color: var(--biology); }
 
 footer {
     background: var(--accent);
@@ -386,7 +385,7 @@ h2 {
     border: 1px solid #ccc;
     font-size: 1rem;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Aileron', 'Segoe UI', Arial, sans-serif;
 }
 
 .contact-form textarea { resize: vertical; min-height: 150px; }
@@ -597,5 +596,21 @@ h2 {
 :root[data-theme="dark"] .faq-answer {
     color: #ddd !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
