@@ -8,8 +8,8 @@
     --biology: #00b4d8;
     --physics: #4361ee;
     --header: #fff;
-    --text: #222;
-    --accent: #f72585;
+    --text: #000000;
+    --accent: #007bff;
 }
 
 body {
@@ -597,5 +597,6 @@ h2 {
 :root[data-theme="dark"] .faq-answer {
     color: #ddd !important;
 }
+
 
 
