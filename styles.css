@@ -1,19 +1,20 @@
-﻿/* --- Global Variables & Body --- */
+﻿@import url('https://fonts.cdnfonts.com/css/aileron');
+/* --- Global Variables & Body --- */
 :root {
     --bg-main: #f8f9fa;
     --bg-container: #ffffff;
-    --sociology: #ffc300;
-    --psychology: #a259d9;
-    --chemistry: #38b000;
-    --biology: #00b4d8;
-    --physics: #4361ee;
+    --sociology: #29386d;
+    --psychology: #62cdd7;
+    --chemistry: #29386d;
+    --biology: #62cdd7;
+    --physics: #29386d;
     --header: #fff;
     --text: #000000;
-    --accent: #007bff;
+    --accent: #29386d;
 }
 
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Aileron', 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
     background: var(--bg-main);
@@ -53,9 +54,7 @@ nav a {
     transition: color 0.2s;
 }
 
-nav a:hover {
-    color: var(--physics);
-}
+nav a:hover { color: var(--biology); }
 
 footer {
     background: var(--accent);
@@ -386,7 +385,7 @@ h2 {
     border: 1px solid #ccc;
     font-size: 1rem;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Aileron', 'Segoe UI', Arial, sans-serif;
 }
 
 .contact-form textarea { resize: vertical; min-height: 150px; }
@@ -597,6 +596,9 @@ h2 {
 :root[data-theme="dark"] .faq-answer {
     color: #ddd !important;
 }
+
+
+
 
 
 
