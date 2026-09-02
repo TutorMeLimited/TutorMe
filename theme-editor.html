@@ -76,6 +76,40 @@
             font-size: 0.9rem;
             text-transform: capitalize;
         }
+        .theme-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex-grow: 1;
+            min-width: 250px;
+        }
+        .control-group label {
+            font-weight: bold;
+        }
+        select, input[type="text"] {
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .delete-btn {
+            background: #d90429;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -91,27 +125,56 @@
         <a href="dashboard.html">Admin Dashboard</a>
         <a id="sign-out-link" style="cursor: pointer;">Sign Out</a>
     </nav>
-    <div class="container">
+    <div class="container" style="max-width: 900px;">
         <h2><i class="fas fa-palette"></i> Theme Editor</h2>
         <p id="auth-status">Verifying authentication...</p>
+        
         <div id="editor-content" style="display: none;">
-            <p style="text-align: center; margin-bottom: 2rem;">Adjust the colors below to create a fully custom theme. Your changes will be previewed live.</p>
+            <div class="theme-controls">
+                <div class="control-group">
+                    <label>Apply a Saved Theme (Presets & Custom)</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <select id="theme-selector">
+                            <optgroup label="Presets">
+                                <option value="default">Default</option>
+                                <option value="ocean">Ocean</option>
+                                <option value="nature">Nature</option>
+                                <option value="sunset">Sunset</option>
+                                <option value="dark">Dark</option>
+                            </optgroup>
+                            <optgroup label="Saved Custom Themes" id="custom-themes-group">
+                                <!-- Saved custom themes injected here -->
+                            </optgroup>
+                        </select>
+                        <button id="apply-btn" class="cta-btn" style="margin-top: 0; padding: 0.8rem 1.5rem;">Apply</button>
+                        <button id="delete-btn" class="delete-btn" style="display: none;" title="Delete this custom theme"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 2rem 0;">
+
+            <h3>Custom Theme Builder</h3>
+            <p style="margin-bottom: 2rem;">Adjust the colors below to preview live changes. You can then save your setup to use later.</p>
             
             <form id="theme-form">
                 <div class="color-grid" id="color-grid">
                     <!-- Color inputs will be injected here -->
                 </div>
                 
-                <div style="text-align: center; margin-top: 2rem;">
-                    <button type="submit" class="cta-btn" style="padding: 1rem 3rem;"><i class="fas fa-save"></i> Save Custom Theme & Set Active</button>
+                <div class="theme-controls" style="background: var(--bg-main); padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
+                    <div class="control-group">
+                        <label>Save as New Theme Name</label>
+                        <input type="text" id="new-theme-name" placeholder="e.g. Spring Vibes">
+                    </div>
+                    <button type="submit" class="cta-btn" style="margin-top: 0;"><i class="fas fa-save"></i> Save & Apply Custom</button>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
                     <span id="save-msg" class="message-span"></span>
                 </div>
             </form>
         </div>
     </div>
-    <footer>
-        &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.
-    </footer>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -124,22 +187,29 @@
             '--accent', '--header', '--text', '--bg-main', '--bg-container'
         ];
         
-        const defaultColors = {
-            '--sociology': '#ffc300', '--psychology': '#a259d9', '--chemistry': '#38b000',
-            '--biology': '#00b4d8', '--physics': '#4361ee', '--accent': '#f72585',
-            '--header': '#ffffff', '--text': '#222222', '--bg-main': '#f8f9fa', '--bg-container': '#ffffff'
+        // Approximations of Preset Themes for the color pickers to reflect them accurately
+        const presets = {
+            'default': { '--sociology': '#ffc300', '--psychology': '#a259d9', '--chemistry': '#38b000', '--biology': '#00b4d8', '--physics': '#4361ee', '--accent': '#f72585', '--header': '#ffffff', '--text': '#222222', '--bg-main': '#f8f9fa', '--bg-container': '#ffffff' },
+            'ocean': { '--sociology': '#03045e', '--psychology': '#0077b6', '--chemistry': '#00b4d8', '--biology': '#90e0ef', '--physics': '#caf0f8', '--accent': '#ffb703', '--header': '#ffffff', '--text': '#222222', '--bg-main': '#f8f9fa', '--bg-container': '#ffffff' },
+            'nature': { '--sociology': '#2d6a4f', '--psychology': '#40916c', '--chemistry': '#52b788', '--biology': '#74c69d', '--physics': '#95d5b2', '--accent': '#d90429', '--header': '#ffffff', '--text': '#222222', '--bg-main': '#f8f9fa', '--bg-container': '#ffffff' },
+            'sunset': { '--sociology': '#ff5400', '--psychology': '#ff6d00', '--chemistry': '#ff8500', '--biology': '#ff9100', '--physics': '#ff9e00', '--accent': '#9d0208', '--header': '#ffffff', '--text': '#222222', '--bg-main': '#f8f9fa', '--bg-container': '#ffffff' },
+            'dark': { '--sociology': '#1a1a1a', '--psychology': '#2d2d2d', '--chemistry': '#404040', '--biology': '#595959', '--physics': '#737373', '--accent': '#00f5d4', '--header': '#111111', '--text': '#ffffff', '--bg-main': '#121212', '--bg-container': '#1e1e1e' }
         };
 
         const grid = document.getElementById('color-grid');
         const form = document.getElementById('theme-form');
         const saveMsg = document.getElementById('save-msg');
+        const themeSelector = document.getElementById('theme-selector');
+        const applyBtn = document.getElementById('apply-btn');
+        const deleteBtn = document.getElementById('delete-btn');
+        const customThemesGroup = document.getElementById('custom-themes-group');
+        
+        let savedCustomThemes = {};
 
         fetch('/.netlify/functions/get-firebase-config')
             .then(r => r.json())
             .then(firebaseConfig => {
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
+                if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
                 const auth = firebase.auth();
                 const db = firebase.database();
 
@@ -160,7 +230,7 @@
             });
 
         function initializeEditor(db) {
-            // Build the UI
+            // Build Color Pickers
             variables.forEach(varName => {
                 const label = varName.replace('--', '').replace('-', ' ');
                 const div = document.createElement('div');
@@ -179,43 +249,146 @@
                 });
             });
 
-            // Fetch current customTheme if it exists
-            db.ref('settings/customTheme').once('value').then(snap => {
-                const currentCustom = snap.val() || {};
+            // Fetch current settings to populate UI
+            db.ref('settings').on('value', snap => {
+                const settings = snap.val() || {};
+                const currentTheme = settings.theme || 'default';
+                savedCustomThemes = settings.savedThemes || {};
+                
+                // Populate Dropdown
+                customThemesGroup.innerHTML = '';
+                Object.keys(savedCustomThemes).forEach(themeName => {
+                    const opt = document.createElement('option');
+                    opt.value = 'custom:' + themeName;
+                    opt.innerText = themeName;
+                    customThemesGroup.appendChild(opt);
+                });
+                
+                // Set active dropdown value
+                if (currentTheme !== 'custom') {
+                    themeSelector.value = currentTheme;
+                } else if (settings.activeCustomName && savedCustomThemes[settings.activeCustomName]) {
+                    themeSelector.value = 'custom:' + settings.activeCustomName;
+                }
+
+                // Show/hide delete button
+                deleteBtn.style.display = themeSelector.value.startsWith('custom:') ? 'block' : 'none';
+
+                // Populate Pickers
+                let activeColors = presets.default;
+                if (currentTheme === 'custom' && settings.customTheme) {
+                    activeColors = settings.customTheme;
+                } else if (presets[currentTheme]) {
+                    activeColors = presets[currentTheme];
+                }
+                
                 variables.forEach(varName => {
                     const input = document.getElementById(varName);
-                    input.value = currentCustom[varName] || defaultColors[varName];
+                    input.value = activeColors[varName] || presets.default[varName];
                 });
             });
 
-            // Save logic
+            // Dropdown change listener (just previews)
+            themeSelector.addEventListener('change', () => {
+                deleteBtn.style.display = themeSelector.value.startsWith('custom:') ? 'block' : 'none';
+                
+                let colorsToPreview;
+                if (themeSelector.value.startsWith('custom:')) {
+                    const name = themeSelector.value.split(':')[1];
+                    colorsToPreview = savedCustomThemes[name];
+                    document.documentElement.setAttribute('data-theme', 'custom');
+                    for (const [key, value] of Object.entries(colorsToPreview)) {
+                        document.documentElement.style.setProperty(key, value);
+                    }
+                } else {
+                    colorsToPreview = presets[themeSelector.value];
+                    document.documentElement.setAttribute('data-theme', themeSelector.value);
+                    document.documentElement.style = '';
+                }
+                
+                variables.forEach(varName => {
+                    const input = document.getElementById(varName);
+                    if (colorsToPreview && colorsToPreview[varName]) {
+                        input.value = colorsToPreview[varName];
+                    }
+                });
+            });
+
+            // Apply Button
+            applyBtn.addEventListener('click', () => {
+                const val = themeSelector.value;
+                let updates = {};
+                
+                if (val.startsWith('custom:')) {
+                    const name = val.split(':')[1];
+                    updates['settings/theme'] = 'custom';
+                    updates['settings/customTheme'] = savedCustomThemes[name];
+                    updates['settings/activeCustomName'] = name;
+                } else {
+                    updates['settings/theme'] = val;
+                    updates['settings/activeCustomName'] = null;
+                }
+                
+                db.ref().update(updates).then(() => {
+                    showMessage("Theme applied successfully!", "success");
+                }).catch(err => showMessage(err.message, "error"));
+            });
+
+            // Delete Button
+            deleteBtn.addEventListener('click', () => {
+                const val = themeSelector.value;
+                if (val.startsWith('custom:')) {
+                    const name = val.split(':')[1];
+                    if (confirm(`Are you sure you want to delete the theme "${name}"?`)) {
+                        db.ref('settings/savedThemes/' + name).remove().then(() => {
+                            // If they delete the active theme, revert to default
+                            db.ref('settings').once('value').then(s => {
+                                if (s.val() && s.val().activeCustomName === name) {
+                                    db.ref('settings/theme').set('default');
+                                    db.ref('settings/activeCustomName').remove();
+                                }
+                            });
+                            showMessage("Theme deleted.", "success");
+                        });
+                    }
+                }
+            });
+
+            // Save Custom Form
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                saveMsg.innerText = "Saving...";
-                saveMsg.className = "message-span";
+                
+                let name = document.getElementById('new-theme-name').value.trim();
                 
                 const newCustom = {};
                 variables.forEach(varName => {
                     newCustom[varName] = document.getElementById(varName).value;
                 });
 
-                // Set theme to custom AND update customTheme object
-                const updates = {
-                    'settings/theme': 'custom',
-                    'settings/customTheme': newCustom
-                };
+                const updates = {};
+                updates['settings/theme'] = 'custom';
+                updates['settings/customTheme'] = newCustom;
+                
+                if (name) {
+                    // Safe key for Firebase
+                    const safeName = name.replace(/[.#$[\]]/g, '');
+                    updates['settings/savedThemes/' + safeName] = newCustom;
+                    updates['settings/activeCustomName'] = safeName;
+                } else {
+                    updates['settings/activeCustomName'] = null; // Unsaved custom
+                }
                 
                 db.ref().update(updates).then(() => {
-                    localStorage.setItem('site-theme', 'custom');
-                    localStorage.setItem('site-custom-theme', JSON.stringify(newCustom));
-                    saveMsg.innerText = "Saved successfully!";
-                    saveMsg.classList.add('success');
-                    setTimeout(() => saveMsg.innerText = '', 3000);
-                }).catch(err => {
-                    saveMsg.innerText = "Error: " + err.message;
-                    saveMsg.classList.add('error');
-                });
+                    showMessage("Custom theme saved and applied!", "success");
+                    document.getElementById('new-theme-name').value = '';
+                }).catch(err => showMessage(err.message, "error"));
             });
+        }
+        
+        function showMessage(msg, type) {
+            saveMsg.innerText = msg;
+            saveMsg.className = "message-span " + type;
+            setTimeout(() => saveMsg.innerText = '', 3000);
         }
     </script>
 </body>
