@@ -6,7 +6,7 @@
     --sociology: #29386d;
     --psychology: #62cdd7;
     --chemistry: #29386d;
-    --biology: #62cdd7;
+    --biology: #29386d;
     --physics: #29386d;
     --header: #fff;
     --text: #000000;
@@ -132,7 +132,7 @@ footer a {
 
 .phone-input-wrapper {
     position: relative;
-    display: flex;
+    
 }
 
 .phone-prefix {
@@ -230,17 +230,24 @@ h2 {
     box-shadow: 0 6px 20px #0003;
 }
 
-.subject.sociology { border-top: 6px solid var(--sociology); }
-.subject.psychology { border-top: 6px solid var(--psychology); }
-.subject.chemistry { border-top: 6px solid var(--chemistry); }
+.subject.sociology { border-top: 6px solid var(--biology); }
+.subject.psychology { border-top: 6px solid var(--biology); }
+.subject.chemistry { border-top: 6px solid var(--biology); }
 .subject.biology { border-top: 6px solid var(--biology); }
-.subject.physics { border-top: 6px solid var(--physics); }
+.subject.physics { border-top: 6px solid var(--biology); }
 
 .subject img {
     width: 68px;
     height: 68px;
     margin-bottom: 1rem;
 }
+
+
+
+
+
+
+
 
 .subject h3 {
     margin-top: 0;
@@ -614,3 +621,41 @@ h2 {
 
 
 
+
+
+
+
+/* Topic Container Styles */
+.topics-container {
+    text-align: left;
+    font-size: 0.95rem;
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    border-radius: 12px;
+    background: var(--bg-container);
+    /* box-shadow removed per user request */
+}
+.topics-container strong {
+    color: #29386d;
+    display: block;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+.topics-container ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+.topics-container li {
+    margin-bottom: 0.5rem;
+    color: #62cdd7;
+    font-weight: 600;
+    display: flex;
+    
+    line-height: 1.4;
+}
+
+.topics-container ul + strong { margin-top: 1.2rem; }
+
+.subject h3 .topic-name { color: #29386d; }
+.subject h3 .topic-level { color: var(--sociology); } /* Blue */
