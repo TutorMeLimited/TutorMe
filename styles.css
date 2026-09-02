@@ -23,8 +23,8 @@ body {
 
 /* --- Common Header, Nav, Footer --- */
 header {
-    background: linear-gradient(90deg, var(--sociology), var(--psychology), var(--chemistry), var(--biology), var(--physics));
-    color: var(--header);
+    background: linear-gradient(90deg, var(--sociology) 0%, var(--psychology) 100%);
+    color: #ffffff;
     text-align: center;
     padding: 2rem 1rem 1rem 1rem;
 }
@@ -35,12 +35,12 @@ header {
 }
 
 .website-link a {
-    color: var(--header);
+    color: #ffffff;
     text-decoration: underline;
 }
 
 nav {
-    background: var(--header);
+    background: linear-gradient(90deg, var(--sociology) 0%, var(--psychology) 100%);
     box-shadow: 0 2px 8px #0001;
     padding: 1rem;
     text-align: center;
@@ -596,6 +596,18 @@ h2 {
 :root[data-theme="dark"] .faq-answer {
     color: #ddd !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
