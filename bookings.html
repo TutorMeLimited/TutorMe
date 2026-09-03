@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -67,19 +67,18 @@
         <a href="help.html">Help</a>
         <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
     </nav>
-    <div class="container" id="booking-page-container">
+    <script id="anywhere_book_now_script" src="https://assets.setmore.com/integration/book-now/live/v1/anywhere-book-now.js"></script>
+    
+    <div class="container" id="booking-page-container" style="max-width: 900px; text-align: center; margin-top: 2rem; margin-bottom: 3rem;">
         <h2>Book a Tutoring Session</h2>
-        <p>Please select an available time slot below.</p>
-        <div class="form-group">
-            <label for="booking-date">Select a Date</label>
-            <input type="date" id="booking-date" required>
+        <p style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text, #333);">Schedule your session or free consultation directly using our Setmore booking system below.</p>
+        
+        <div style="margin-bottom: 2rem;">
+            <button id="Anywhere_button_iframe" class="anywhere-book-now-button cta-btn" style="background-color: var(--primary, #29386d); color: #fff; border: none; padding: 14px 28px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s, background-color 0.2s;" data-booking-url="https://tutormee.setmore.com" data-new-tab="false">
+                <i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>Book Now
+            </button>
         </div>
-        <div class="form-group">
-            <label for="booking-time">Select a Time</label>
-            <input type="time" id="booking-time" required>
         </div>
-        <button id="next-step-btn" class="cta-btn">Enter Your Details</button>
-        <p id="booking-error" class="message error" style="display: none;"></p>
     </div>
         <footer>
         &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
@@ -88,32 +87,6 @@
             <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
-
-    <script>
-        const dateInput = document.getElementById('booking-date');
-        const timeInput = document.getElementById('booking-time');
-        const nextStepBtn = document.getElementById('next-step-btn');
-        const bookingError = document.getElementById('booking-error');
-
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0'); 
-        const dd = String(today.getDate()).padStart(2, '0');
-        dateInput.min = `${yyyy}-${mm}-${dd}`;
-
-        nextStepBtn.onclick = function() {
-            const selectedDate = dateInput.value;
-            const selectedTime = timeInput.value;
-            bookingError.style.display = 'none';
-            if (selectedDate && selectedTime) {
-                const isoDateTime = `${selectedDate}T${selectedTime}`;
-                window.location.href = `book.html?datetime=${encodeURIComponent(isoDateTime)}`;
-            } else {
-                bookingError.textContent = 'Please select both a date and a time.';
-                bookingError.style.display = 'block';
-            }
-        };
-    </script>
 </body>
 </html>
 

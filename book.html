@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -68,28 +68,21 @@
         <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
     </nav>
     
-    <div class="container" id="booking-container">
-        <h2>Confirm Your Booking</h2>
-        <div id="slot-details-container" style="display: none;">
-            <p>You have selected the following time slot:</p>
-            <div id="selected-slot-details" class="slot-details"></div>
+    <script id="anywhere_book_now_script" src="https://assets.setmore.com/integration/book-now/live/v1/anywhere-book-now.js"></script>
+    
+    <div class="container" id="booking-container" style="max-width: 900px; text-align: center; margin-top: 2rem; margin-bottom: 3rem;">
+        <h2>Book a Tutoring Session</h2>
+        <p style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text, #333);">Schedule your session directly using our Setmore booking calendar below.</p>
+        
+        <div style="margin-bottom: 2rem;">
+            <button id="Anywhere_button_iframe" class="anywhere-book-now-button cta-btn" style="background-color: var(--primary, #29386d); color: #fff; border: none; padding: 14px 28px; font-size: 16px; font-weight: 600; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" data-booking-url="https://tutormee.setmore.com" data-new-tab="false">
+                <i class="fas fa-calendar-alt" style="margin-right: 8px;"></i>Book Now via Setmore
+            </button>
         </div>
-        <form id="booking-form">
-            <p>Please provide your details below. Clicking the button will open your email client to send the request.</p>
-            <div class="form-group">
-                <label for="student-name">Your Full Name</label>
-                <input type="text" id="student-name" required>
-            </div>
-            <div class="form-group">
-                <label for="student-phone">Your Phone Number</label>
-                <div class="phone-input-wrapper">
-                    <span class="phone-prefix">+44</span>
-                    <input type="tel" id="student-phone" required placeholder="7123 456789">
-                </div>
-            </div>
-            <button type="submit" id="confirm-booking-btn" class="cta-btn" disabled>Request Booking via Email</button>
-        </form>
-        <p id="form-message" class="message"></p>
+
+        <div class="setmore-iframe-wrapper" style="width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); background: #ffffff;">
+            <iframe src="https://tutormee.setmore.com" width="100%" height="700px" frameborder="0" style="border:none; width: 100%; min-height: 650px;" title="Setmore Booking Calendar"></iframe>
+        </div>
     </div>
 
         <footer>
@@ -99,85 +92,6 @@
             <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script>
-        let formattedDate = '';
-
-        const form = document.getElementById('booking-form');
-        const nameInput = document.getElementById('student-name');
-        const phoneInput = document.getElementById('student-phone');
-        const confirmBtn = document.getElementById('confirm-booking-btn');
-        const messageEl = document.getElementById('form-message');
-        const slotDetailsContainer = document.getElementById('slot-details-container');
-        const selectedSlotDetails = document.getElementById('selected-slot-details');
-        const bookingContainer = document.getElementById('booking-container');
-
-        fetch('/.netlify/functions/get-firebase-config')
-            .then(response => response.json())
-            .then(firebaseConfig => {
-                firebase.initializeApp(firebaseConfig);
-                const db = firebase.database();
-                initializePage(db);
-            })
-            .catch(error => {
-                console.error('Failed to load Firebase config:', error);
-                bookingContainer.innerHTML = "<h2>Error</h2><p>Could not load booking system configuration. Please try again later.</p>";
-            });
-
-        function initializePage(db) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const dateTimeParam = urlParams.get('datetime');
-
-            if (!dateTimeParam) {
-                bookingContainer.innerHTML = "<h2>Error</h2><p>No date and time were selected. Please <a href='bookings.html'>go back</a> and choose your preferred time.</p>";
-            } else {
-                try {
-                    const selectedDateTime = new Date(decodeURIComponent(dateTimeParam));
-                    formattedDate = selectedDateTime.toLocaleString('en-GB', { dateStyle: 'full', timeStyle: 'short' });
-                    
-                    selectedSlotDetails.textContent = formattedDate;
-                    slotDetailsContainer.style.display = 'block';
-                    confirmBtn.disabled = false;
-                } catch (e) {
-                     bookingContainer.innerHTML = "<h2>Error</h2><p>The selected date and time are invalid. Please <a href='bookings.html'>go back</a> and try again.</p>";
-                }
-            }
-
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                confirmBtn.disabled = true;
-                confirmBtn.textContent = 'Opening Email...';
-
-                const studentName = nameInput.value;
-                const studentPhone = phoneInput.value;
-
-                const recipientEmail = "tutormewest@gmail.com";
-                const subject = `Booking Request for: ${formattedDate}`;
-                const body = `
-Hello,
-
-I would like to request a consultation for the following time:
-${formattedDate}
-
-My details are:
-Name: ${studentName}
-Phone: +44 ${studentPhone}
-
-Please confirm this booking.
-
-Thank you,
-${studentName}
-                `;
-
-                window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-                messageEl.textContent = "Your email client has been opened to send the request. Please complete sending the email to finalize your booking request.";
-                messageEl.className = 'message success';
-            });
-        }
-    </script>
 </body>
 </html> 
 
