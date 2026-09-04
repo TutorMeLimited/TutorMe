@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <script>
         const cachedTheme = localStorage.getItem('site-theme');
         if (cachedTheme) {
@@ -59,20 +60,20 @@
         </div>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Our-services.html">Our Services</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="contact-us.html">Contact Us</a>
-        <a href="client-login.html">Customer Portal</a>
-        <a href="help.html">Help</a>
-        <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
+        <a href="/">Home</a>
+        <a href="/Our-services">Our Services</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/contact-us">Contact Us</a>
+        <a href="/client-login">Customer Portal</a>
+        <a href="/help">Help</a>
+        <a href="/login" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
     </nav>
     <section class="hero">
-        <h2>Start Your Success Journey!</h2>
-        <p>Boost confidence and results in <b>Biology</b>, <b>Chemistry</b> & <b>Physics</b> (GCSE).</p>
-        <a href="bookings.html" class="cta-btn">Book a Free Consultation</a>
+        <h2 data-aos="fade-down">Start Your Success Journey!</h2>
+        <p data-aos="fade-up" data-aos-delay="100">Boost confidence and results in <b>Science (GCSE)</b>, <b>Psychology</b> & <b>Sociology</b> (A-Level & GCSE).</p>
+        <a data-aos="fade-up" data-aos-delay="200" href="/bookings" class="cta-btn">Book a Free Consultation</a>
     </section>
-    <section class="description-section" id="why-Tutormee">
+    <section data-aos="fade-up" class="description-section" id="why-Tutormee">
         <h2>Why should you choose Tutormee?</h2>
         <p>
             At <strong>Tutormee</strong> we have teachers from different backgrounds who are nurturing and attentive to each pupil&rsquo;s needs. As a collective, we bring over <strong>10 years of experience</strong> teaching A-Level & GCSE students.
@@ -93,7 +94,67 @@
 
 <section class="subjects-wrapper" id="subjects" style="margin: 3rem 0;">
     <div class="subjects">
-        <div class="subject chemistry">
+        <div data-aos="fade-up" class="subject sociology">
+            <img src="https://img.icons8.com/color/96/conference-call.png" alt="Sociology Icon"/>
+            <h3><span class="topic-name">Sociology</span> <span class="topic-level">(A-Level & GCSE)</span></h3>
+            <p>Understand society, culture, and human behaviour. Engaging lessons for exam success.</p>
+            <div class="topics-container">
+                <strong>GCSE Topics:</strong>
+                <ul>
+                    <li>📋 Research Methods</li>
+                    <li>👨‍👩‍👧‍👦 Families and Households</li>
+                    <li>🎓 Education</li>
+                    <li>⚖️ Crime and Deviance</li>
+                    <li>📊 Social Stratification</li>
+                </ul>
+                <strong>A Level Topics:</strong>
+                <ul>
+                    <li>👨‍👩‍👧‍👦 Families and Households</li>
+                    <li>🎓 Education</li>
+                    <li>📋 Theory and Methods</li>
+                    <li>🔬 Methods in Context</li>
+                    <li>🙏 Beliefs in Society</li>
+                    <li>⚖️ Crime and Deviance</li>
+                </ul>
+            </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="100" class="subject psychology">
+            <img src="https://img.icons8.com/color/96/psychology.png" alt="Psychology Icon"/>
+            <h3><span class="topic-name">Psychology</span> <span class="topic-level">(A-Level & GCSE)</span></h3>
+            <p>Explore the mind, behaviour, and mental processes. Expert support for top grades.</p>
+            <div class="topics-container">
+                <strong>Topics Covered:</strong>
+                <ul>
+                    <li>📋 Research Methods</li>
+                    <li>🔄 Approaches</li>
+                    <li>🧠 Biopsychology</li>
+                    <li>👥 Social Influence</li>
+                    <li>💭 Memory</li>
+                    <li>🤝 Attachment</li>
+                    <li>😤 Aggression</li>
+                    <li>⚖️ Issues and Debates</li>
+                    <li>🏥 Clinical Psychology and Mental Health</li>
+                </ul>
+            </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="200" class="subject biology">
+            <img src="https://img.icons8.com/?size=100&id=9116&format=png&color=000000" alt="Biology Icon"/>
+            <h3><span class="topic-name">Biology</span> <span class="topic-level">(GCSE)</span></h3>
+            <p>Interactive lessons on life sciences, tailored for GCSE students.</p>
+            <div class="topics-container">
+                <strong>GCSE Topics:</strong>
+                <ul>
+                    <li>🧬 Cell Biology</li>
+                    <li>🔬 Organisation</li>
+                    <li>🦠 Infection and Response</li>
+                    <li>🌱 Bioenergetics</li>
+                    <li>🧠 Homeostasis and Response</li>
+                    <li>🧬 Inheritance and Variation</li>
+                    <li>🌍 Ecology</li>
+                </ul>
+            </div>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="300" class="subject chemistry">
             <img src="https://img.icons8.com/color/96/test-tube.png" alt="Chemistry Icon"/>
             <h3><span class="topic-name">Chemistry</span> <span class="topic-level">(GCSE)</span></h3>
             <p>Fun experiments and clear explanations to master GCSE Chemistry concepts.</p>
@@ -113,24 +174,7 @@
                 </ul>
             </div>
         </div>
-        <div class="subject biology">
-            <img src="https://img.icons8.com/?size=100&id=9116&format=png&color=000000" alt="Biology Icon"/>
-            <h3><span class="topic-name">Biology</span> <span class="topic-level">(GCSE)</span></h3>
-            <p>Interactive lessons on life sciences, tailored for GCSE students.</p>
-            <div class="topics-container">
-                <strong>GCSE Topics:</strong>
-                <ul>
-                    <li>🧬 Cell Biology</li>
-                    <li>🔬 Organisation</li>
-                    <li>🦠 Infection and Response</li>
-                    <li>🌱 Bioenergetics</li>
-                    <li>🧠 Homeostasis and Response</li>
-                    <li>🧬 Inheritance and Variation</li>
-                    <li>🌍 Ecology</li>
-                </ul>
-            </div>
-        </div>
-        <div class="subject physics">
+        <div data-aos="fade-up" data-aos-delay="400" class="subject physics">
             <img src="https://img.icons8.com/color/96/physics.png" alt="Physics Icon"/>
             <h3><span class="topic-name">Physics</span> <span class="topic-level">(GCSE)</span></h3>
             <p>Make sense of the physical world&mdash;engaging support for GCSE Physics.</p>
@@ -151,7 +195,7 @@
     </div>
 </section>
 
-    <section class="container" style="max-width: 900px; margin-top: 3rem; margin-bottom: 3rem;">
+    <section data-aos="fade-up" class="container" style="max-width: 900px; margin-top: 3rem; margin-bottom: 3rem;">
         <h2 style="text-align: center; color: var(--primary);">What Our Students Say</h2>
         <div id="public-reviews-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
             <p style="text-align: center; width: 100%; color: #888;">Loading reviews...</p>
@@ -161,8 +205,8 @@
     <footer>
         &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
-            <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
+            <a href="/terms" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
+            <a href="/privacy" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -220,6 +264,8 @@
                  .replace(/'/g, "&#039;");
         }
     </script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
 </body>
 </html>
 

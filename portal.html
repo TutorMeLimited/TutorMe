@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Customer Portal - Tutormee</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .portal-grid {
@@ -98,26 +99,26 @@
         </div>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Our-services.html">Our Services</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="contact-us.html">Contact Us</a>
-        <a href="client-login.html">Customer Portal</a>
-        <a href="help.html">Help</a>
-        <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
+        <a href="/">Home</a>
+        <a href="/Our-services">Our Services</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/contact-us">Contact Us</a>
+        <a href="/client-login">Customer Portal</a>
+        <a href="/help">Help</a>
+        <a href="/login" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
         <a id="sign-out-link" style="display: none; cursor: pointer;">Sign Out</a>
     </nav>
-    <div class="container" id="portal-container" style="display: none; max-width: 900px;">
+    <div class="container" data-aos="fade-up" id="portal-container" style="display: none; max-width: 900px;">
         <h2 style="text-align: center; color: var(--primary);">Welcome to the Customer Portal</h2>
         <p style="text-align: center; color: #555; margin-bottom: 2rem;">Select an option below to continue.</p>
         
         <div class="portal-grid">
-            <a href="videos.html" class="portal-card">
+            <a href="/videos" data-aos="fade-up" data-aos-delay="100" class="portal-card">
                 <i class="fas fa-video"></i>
                 <h3>Educational Videos</h3>
                 <p>Access our exclusive library of curated educational videos tailored to your learning needs.</p>
             </a>
-            <a href="reviews.html" class="portal-card">
+            <a href="/reviews" data-aos="fade-up" data-aos-delay="100" class="portal-card">
                 <i class="fas fa-star"></i>
                 <h3>Reviews</h3>
                 <p>Leave a review or read feedback from other Tutormee students and parents.</p>
@@ -130,8 +131,8 @@
     <footer>
         &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
-            <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
+            <a href="/terms" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
+            <a href="/privacy" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
     
@@ -154,7 +155,7 @@
                         portalContainer.style.display = 'block';
                         signOutLink.style.display = 'inline';
                     } else {
-                        window.location.href = 'client-login.html';
+                        window.location.href = '/client-login';
                     }
                 });
 
@@ -165,6 +166,8 @@
                 authMessage.innerHTML = `<p style='color:var(--accent);'>Error loading portal configuration.</p>`;
             });
     </script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
 </body>
 </html>
 

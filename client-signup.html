@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -59,13 +59,13 @@
         </div>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Our-services.html">Our Services</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="contact-us.html">Contact Us</a>
-        <a href="client-login.html">Customer Portal</a>
-        <a href="help.html">Help</a>
-        <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
+        <a href="/">Home</a>
+        <a href="/Our-services">Our Services</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/contact-us">Contact Us</a>
+        <a href="/client-login">Customer Portal</a>
+        <a href="/help">Help</a>
+        <a href="/login" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
     </nav>
     
     <main class="login-main">
@@ -100,21 +100,21 @@
                 <div class="form-group" style="text-align: left; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 10px;">
                     <input type="checkbox" id="terms-agree" required style="margin-top: 5px; cursor: pointer; width: auto;">
                     <label for="terms-agree" style="font-size: 0.95rem; line-height: 1.4; color: #555; font-weight: normal; margin-bottom: 0;">
-                        I have read and agree to the <a href="terms.html" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: bold;">Terms & Conditions</a> and <a href="privacy.html" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: bold;">Privacy Policy</a>.
+                        I have read and agree to the <a href="/terms" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: bold;">Terms & Conditions</a> and <a href="/privacy" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: bold;">Privacy Policy</a>.
                     </label>
                 </div>
                 <button type="submit" class="cta-btn">Sign Up</button>
             </form>
             <p id="error-message"></p>
-            <p style="margin-top: 1.5rem; color: #555;">Already have an account? <a href="client-login.html">Sign in here</a>.</p>
+            <p style="margin-top: 1.5rem; color: #555;">Already have an account? <a href="/client-login">Sign in here</a>.</p>
         </div>
     </main>
 
         <footer>
         &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
-            <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
+            <a href="/terms" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
+            <a href="/privacy" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
 
@@ -229,7 +229,7 @@
                         return inviteRef.set(true);
                     })
                     .then(() => {
-                        window.location.href = 'portal.html';
+                        window.location.href = '/portal';
                     })
                     .catch((error) => {
                         errorMessage.textContent = error.message;

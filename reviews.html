@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Customer Reviews - Tutormee</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .reviews-header {
@@ -138,19 +139,19 @@
         </div>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Our-services.html">Our Services</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="contact-us.html">Contact Us</a>
-        <a href="client-login.html">Customer Portal</a>
-        <a href="help.html">Help</a>
-        <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
+        <a href="/">Home</a>
+        <a href="/Our-services">Our Services</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/contact-us">Contact Us</a>
+        <a href="/client-login">Customer Portal</a>
+        <a href="/help">Help</a>
+        <a href="/login" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
         <a id="sign-out-link" style="display: none; cursor: pointer;">Sign Out</a>
     </nav>
-    <div class="container" id="reviews-container" style="display: none; max-width: 800px;">
+    <div class="container" data-aos="fade-up" id="reviews-container" style="display: none; max-width: 800px;">
         <div class="reviews-header">
             <h2 style="color: var(--primary); margin: 0;">Customer Reviews</h2>
-            <a href="portal.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portal</a>
+            <a href="/portal" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Portal</a>
         </div>
         
         <div class="review-form">
@@ -185,8 +186,8 @@
     <footer>
         &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
-            <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
+            <a href="/terms" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
+            <a href="/privacy" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
     
@@ -262,7 +263,7 @@
                         
                         loadReviews(db);
                     } else {
-                        window.location.href = 'client-login.html';
+                        window.location.href = '/client-login';
                     }
                 });
 
@@ -365,6 +366,8 @@
                  .replace(/'/g, "&#039;");
         }
     </script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
 </body>
 </html>
 

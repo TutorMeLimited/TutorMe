@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -121,8 +121,8 @@
         </div>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Admin Dashboard</a>
+        <a href="/">Home</a>
+        <a href="/dashboard">Admin Dashboard</a>
         <a id="sign-out-link" style="cursor: pointer;">Sign Out</a>
     </nav>
     <div class="container" style="max-width: 900px;">
@@ -219,7 +219,7 @@
                         document.getElementById('editor-content').style.display = 'block';
                         initializeEditor(db);
                     } else {
-                        window.location.href = 'login.html';
+                        window.location.href = '/login';
                     }
                 });
 

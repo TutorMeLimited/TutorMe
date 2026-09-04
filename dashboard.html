@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <script>
         const cachedTheme = localStorage.getItem('site-theme');
         if (cachedTheme) {
@@ -38,16 +39,16 @@
         </div>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Our-services.html">Our Services</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="contact-us.html">Contact Us</a>
-        <a href="client-login.html">Customer Portal</a>
-        <a href="help.html">Help</a>
-        <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
+        <a href="/">Home</a>
+        <a href="/Our-services">Our Services</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/contact-us">Contact Us</a>
+        <a href="/client-login">Customer Portal</a>
+        <a href="/help">Help</a>
+        <a href="/login" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
         <a id="sign-out-link" style="display: none;">Sign Out</a>
     </nav>
-    <div class="container" id="dashboard-container">
+    <div class="container" data-aos="fade-up" id="dashboard-container">
         <h2>Admin Dashboard</h2>
         <p id="auth-status">Verifying authentication...</p>
 
@@ -85,10 +86,10 @@
             </div>
 
             <div style="text-align: center; margin-top: 3rem; margin-bottom: 2rem;">
-                <a href="admin-faq.html" class="btn" style="text-decoration: none; padding: 1rem 2rem; background: var(--physics); border-radius: 30px; font-weight: bold; color: white; display: inline-block;">
+                <a href="/admin-faq" class="btn" style="text-decoration: none; padding: 1rem 2rem; background: var(--physics); border-radius: 30px; font-weight: bold; color: white; display: inline-block;">
                     <i class="fas fa-question-circle"></i> Admin FAQ
                 </a>
-                <a href="theme-editor.html" class="btn" style="text-decoration: none; padding: 1rem 2rem; background: var(--psychology); border-radius: 30px; font-weight: bold; color: white; display: inline-block; margin-left: 1rem;">
+                <a href="/theme-editor" class="btn" style="text-decoration: none; padding: 1rem 2rem; background: var(--psychology); border-radius: 30px; font-weight: bold; color: white; display: inline-block; margin-left: 1rem;">
                     <i class="fas fa-palette"></i> Theme Editor
                 </a>
             </div>
@@ -97,8 +98,8 @@
         <footer>
         &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
-            <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
+            <a href="/terms" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
+            <a href="/privacy" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
 
@@ -169,9 +170,9 @@
                     loadDashboardData(auth, db);
                 } else if (user) {
                     // If a regular student somehow gets here, let's kindly redirect them to their own portal.
-                    window.location.href = 'client-login.html';
+                    window.location.href = '/client-login';
                 } else {
-                    window.location.href = 'login.html';
+                    window.location.href = '/login';
                 }
             });
 
@@ -456,6 +457,8 @@
             }
         });
     </script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
 </body>
 </html>
 

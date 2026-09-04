@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <script>
         const cachedTheme = localStorage.getItem('site-theme');
         if (cachedTheme) {
@@ -59,95 +60,95 @@
         </div>
     </header>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="Our-services.html">Our Services</a>
-        <a href="bookings.html">Bookings</a>
-        <a href="contact-us.html">Contact Us</a>
-        <a href="client-login.html">Customer Portal</a>
-        <a href="help.html">Help</a>
-        <a href="login.html" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
+        <a href="/">Home</a>
+        <a href="/Our-services">Our Services</a>
+        <a href="/bookings">Bookings</a>
+        <a href="/contact-us">Contact Us</a>
+        <a href="/client-login">Customer Portal</a>
+        <a href="/help">Help</a>
+        <a href="/login" title="Admin Login" style="font-size: 1.2rem;"><i class="fas fa-user-shield"></i></a>
     </nav>
     
     <section class="services-hero" style="text-align: center; padding: 4rem 2rem; background-color: var(--bg-container);">
-        <h1 style="color: var(--psychology, #3FC5CD); font-size: 2.5rem; margin-bottom: 1rem;">🎓 Our Services</h1>
-        <h2 style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--text);">GCSE & A-Level Tuition</h2>
-        <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto; color: var(--text);"><strong style="color: #29386d;">Expert teaching. Small groups. Personalised support.</strong></p>
-        <p style="font-size: 1.1rem; max-width: 800px; margin: 1.5rem auto; color: var(--text);"><strong style="color: #29386d;">TutorMee provides online tuition for GCSE Science, helping students build knowledge, confidence and exam technique.</strong></p>
+        <h1 data-aos="fade-down" style="color: var(--psychology, #3FC5CD); font-size: 2.5rem; margin-bottom: 1rem;">🎓 Our Services</h1>
+        <h2 data-aos="fade-up" data-aos-delay="100" style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--text);">GCSE & A-Level Tuition</h2>
+        <p data-aos="fade-up" data-aos-delay="200" style="font-size: 1.2rem; max-width: 800px; margin: 0 auto; color: var(--text);"><strong style="color: #29386d;">Expert teaching. Small groups. Personalised support.</strong></p>
+        <p data-aos="fade-up" data-aos-delay="300" style="font-size: 1.1rem; max-width: 800px; margin: 1.5rem auto; color: var(--text);"><strong style="color: #29386d;">TutorMee provides online tuition for GCSE & A-Level Science, Psychology and Sociology, helping students build knowledge, confidence and exam technique.</strong></p>
     </section>
 
     <section class="services-content" style="max-width: 1000px; margin: 0 auto; padding: 2rem;">
         
         <div class="service-block" style="margin-bottom: 3rem;">
-            <h2 style="color: var(--psychology, #3FC5CD); border-bottom: 2px solid var(--psychology, #3FC5CD); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">📚 What We Offer</h2>
+            <h2 data-aos="fade-right" style="color: var(--psychology, #3FC5CD); border-bottom: 2px solid var(--psychology, #3FC5CD); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">📚 What We Offer</h2>
             <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem;">
-                <div style="flex: 1; min-width: 250px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center;">
+                <div data-aos="fade-up" data-aos-delay="0" style="flex: 1; min-width: 250px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🧬</div>
-                    <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem; font-size: 1.5rem;">Biology</h3>
-                    <p style="color: var(--text); font-weight: 600; font-size: 1.1rem;">GCSE</p>
+                    <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem; font-size: 1.5rem;">Science</h3>
+                    <p style="color: var(--text); font-weight: 600; font-size: 1.1rem;">GCSE | Biology | Chemistry | Physics</p>
                 </div>
-                <div style="flex: 1; min-width: 250px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🧪</div>
-                    <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem; font-size: 1.5rem;">Chemistry</h3>
-                    <p style="color: var(--text); font-weight: 600; font-size: 1.1rem;">GCSE</p>
+                <div data-aos="fade-up" data-aos-delay="150" style="flex: 1; min-width: 250px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🧠</div>
+                    <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem; font-size: 1.5rem;">Psychology</h3>
+                    <p style="color: var(--text); font-weight: 600; font-size: 1.1rem;">GCSE | A-Level</p>
                 </div>
-                <div style="flex: 1; min-width: 250px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔬</div>
-                    <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem; font-size: 1.5rem;">Physics</h3>
-                    <p style="color: var(--text); font-weight: 600; font-size: 1.1rem;">GCSE</p>
+                <div data-aos="fade-up" data-aos-delay="300" style="flex: 1; min-width: 250px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🌍</div>
+                    <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem; font-size: 1.5rem;">Sociology</h3>
+                    <p style="color: var(--text); font-weight: 600; font-size: 1.1rem;">GCSE | A-Level</p>
                 </div>
             </div>
         </div>
 
         <div class="service-block" style="margin-bottom: 3rem;">
-            <h2 style="color: var(--psychology, #3FC5CD); border-bottom: 2px solid var(--psychology, #3FC5CD); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">💷 Simple, Accessible Tuition</h2>
+            <h2 data-aos="fade-right" style="color: var(--psychology, #3FC5CD); border-bottom: 2px solid var(--psychology, #3FC5CD); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">💷 Simple, Accessible Tuition</h2>
             <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
-                <div style="flex: 1; min-width: 300px; background: var(--bg-container); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                <div data-aos="fade-up" style="flex: 1; min-width: 300px; background: var(--bg-container); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee;">
                     <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem;">👥 Group Tuition</h3>
                     <p style="font-size: 1.4rem; font-weight: 700; color: #29386d; margin-bottom: 0.75rem;">£25 <span style="font-size: 0.9rem; font-weight: 400;">per month</span></p>
                     <p style="color: var(--text);">Regular online group tuition designed to provide high quality teaching and collaborative learning. <strong style="color: #29386d;">MAX 10</strong> students per group.</p>
                     <div style="text-align: right; margin-top: 1rem;">
-                        <a href="bookings.html" style="display: inline-block; background-color: var(--psychology, #3FC5CD); color: #fff; padding: 10px 22px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.95rem;">Book Now</a>
+                        <a href="/bookings" style="display: inline-block; background-color: var(--psychology, #3FC5CD); color: #fff; padding: 10px 22px; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.95rem;">Book Now</a>
                     </div>
                 </div>
-                <div style="flex: 1; min-width: 300px; background: var(--bg-container); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                <div data-aos="fade-up" data-aos-delay="150" style="flex: 1; min-width: 300px; background: var(--bg-container); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee;">
                     <h3 style="color: var(--psychology, #3FC5CD); margin-bottom: 0.5rem;">👤 1-to-1 Tuition</h3>
                     <p style="font-size: 1.4rem; font-weight: 700; color: #29386d; margin-bottom: 0.75rem;">£35 <span style="font-size: 0.9rem; font-weight: 400;">per month</span></p>
                     <p style="color: var(--text); margin-bottom: 1rem;">Available on a <strong style="color: #29386d;">case-by-case</strong> basis depending on individual requirements.</p>
-                    <p style="color: var(--text); font-weight: 600;">📧 Please <a href="contact-us.html" style="color: var(--psychology, #3FC5CD); text-decoration: underline;">contact us</a> to discuss 1-to-1 tuition and availability.</p>
+                    <p style="color: var(--text); font-weight: 600;">📧 Please <a href="/contact-us" style="color: var(--psychology, #3FC5CD); text-decoration: underline;">contact us</a> to discuss 1-to-1 tuition and availability.</p>
                 </div>
             </div>
         </div>
 
         <div class="service-block" style="margin-bottom: 4rem;">
-            <h2 style="color: var(--psychology, #3FC5CD); padding-bottom: 0.5rem; margin-bottom: 2rem; text-align: center; font-size: 2rem;">⏱️ How Our Group Sessions Work</h2>
+            <h2 data-aos="fade-down" style="color: var(--psychology, #3FC5CD); padding-bottom: 0.5rem; margin-bottom: 2rem; text-align: center; font-size: 2rem;">⏱️ How Our Group Sessions Work</h2>
             
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
                 
-                <div style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
+                <div data-aos="fade-up" style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🕐</div>
                     <h4 style="color: var(--psychology, #3FC5CD); margin-bottom: 1rem; font-size: 1.3rem;">1-Hour Sessions</h4>
                     <p style="font-size: 1rem; color: var(--text); line-height: 1.6;">Each session includes <strong style="color: #29386d;">focused teaching</strong> followed by <strong style="color: #29386d;">15 minutes of dedicated Q&A</strong>, giving pupils time to ask questions and clarify anything they are unsure about.</p>
                 </div>
 
-                <div style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
+                <div data-aos="fade-up" data-aos-delay="100" style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
                     <h4 style="color: var(--psychology, #3FC5CD); margin-bottom: 1rem; font-size: 1.3rem;">Weekly Topic Updates</h4>
                     <p style="font-size: 1rem; color: var(--text); line-height: 1.6;">Every Sunday, pupils receive an email confirming the <strong style="color: #29386d;">topic and content</strong> that will be covered in the upcoming sessions.</p>
                 </div>
 
-                <div style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
+                <div data-aos="fade-up" data-aos-delay="200" style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🔗</div>
                     <h4 style="color: var(--psychology, #3FC5CD); margin-bottom: 1rem; font-size: 1.3rem;">Easy Online Access</h4>
                     <p style="font-size: 1rem; color: var(--text); line-height: 1.6;">The session link is sent to pupils <strong style="color: #29386d;">1 hour before</strong> the lesson begins, making it easy to join on time.</p>
                 </div>
 
-                <div style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
+                <div data-aos="fade-up" data-aos-delay="100" style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🎥</div>
                     <h4 style="color: var(--psychology, #3FC5CD); margin-bottom: 1rem; font-size: 1.3rem;">Missed a Session?</h4>
                     <p style="font-size: 1rem; color: var(--text); line-height: 1.6;">All tutoring sessions, including the Q&A, are <strong style="color: #29386d;">recorded and uploaded to our Video Library</strong>, allowing pupils to catch up or revisit lessons whenever they need to.</p>
                 </div>
 
-                <div style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
+                <div data-aos="fade-up" data-aos-delay="200" style="flex: 1 1 300px; max-width: 350px; background: var(--bg-container); padding: 2rem 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; border-top: 4px solid var(--psychology, #3FC5CD); text-align: center;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
                     <h4 style="color: var(--psychology, #3FC5CD); margin-bottom: 1rem; font-size: 1.3rem;">Regular Check-Ups</h4>
                     <p style="font-size: 1rem; color: var(--text); line-height: 1.6;"><strong style="color: #29386d;">Regular progress check-ups</strong> are available to help identify areas for improvement and ensure pupils are getting the support they need.</p>
@@ -157,7 +158,7 @@
         </div>
 
         <div class="service-block" style="margin-bottom: 4rem; text-align: center;">
-            <h2 style="color: var(--psychology, #3FC5CD); margin-bottom: 1.5rem;">🎯 What Students Develop</h2>
+            <h2 data-aos="fade-up" style="color: var(--psychology, #3FC5CD); margin-bottom: 1.5rem;">🎯 What Students Develop</h2>
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
                 <span style="background: var(--bg-container); border: 2px solid var(--psychology, #3FC5CD); color: var(--text); padding: 0.6rem 1.2rem; border-radius: 25px; font-weight: 600; font-size: 1.05rem;">🧠 Subject Knowledge</span>
                 <span style="background: var(--bg-container); border: 2px solid var(--psychology, #3FC5CD); color: var(--text); padding: 0.6rem 1.2rem; border-radius: 25px; font-weight: 600; font-size: 1.05rem;">✍️ Exam Technique</span>
@@ -167,21 +168,23 @@
             </div>
         </div>
 
-        <div class="service-cta" style="text-align: center; padding: 3rem 2rem; background: var(--bg-container); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
+        <div data-aos="zoom-in" class="service-cta" style="text-align: center; padding: 3rem 2rem; background: var(--bg-container); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
             <h2 style="color: var(--psychology, #3FC5CD); margin-bottom: 1rem; font-size: 1.8rem;">🚀 Understand More. Practise More. Achieve More.</h2>
-            <p style="font-size: 1.2rem; color: var(--text); margin-bottom: 2rem; font-weight: 600;"><strong style="color: #29386d;">GCSE | Science</strong></p>
+            <p style="font-size: 1.2rem; color: var(--text); margin-bottom: 2rem; font-weight: 600;"><strong style="color: #29386d;">GCSE & A-Level | Science • Psychology • Sociology</strong></p>
             <p style="font-size: 1.1rem; color: var(--text); margin-bottom: 2rem;">📩 Ready to get started? Explore our tuition options or contact us to discuss the best option for your child.</p>
-            <a href="bookings.html" class="cta-btn" style="background-color: var(--psychology, #3FC5CD); font-size: 1.1rem; padding: 14px 28px; color: #fff;">Book a Free Consultation</a>
+            <a href="/bookings" class="cta-btn" style="background-color: var(--psychology, #3FC5CD); font-size: 1.1rem; padding: 14px 28px; color: #fff;">Book a Free Consultation</a>
         </div>
     </section>
 
         <footer>
         &copy; 2026 Tutormee | <a href="https://www.Tutormee.co.uk" target="_blank">www.Tutormee.co.uk</a>. All rights reserved.<br>
         <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="terms.html" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
-            <a href="privacy.html" style="color: white; text-decoration: underline;">Privacy Policy</a>
+            <a href="/terms" style="color: white; text-decoration: underline;">Terms &amp; Conditions</a> | 
+            <a href="/privacy" style="color: white; text-decoration: underline;">Privacy Policy</a>
         </div>
     </footer>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
 </body>
 </html>
 
